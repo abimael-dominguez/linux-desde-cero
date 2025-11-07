@@ -1,6 +1,6 @@
 # Temario de Linux
 
-Este repositorio contiene la documentación del curso de Linux, con comandos de terminal organizados por secciones.
+Repositorio de documentación del curso 'Linux desde Cero'. Cubre introducción a Linux, shell, GNOME, KDE, permisos, directorios y redes. Objetivos: uso básico como admin, asignación de permisos, configuración de GNOME y manipulación de directorios. Secundarios: redirecciones, tuberías y administración de paquetes.
 
 ## Tabla de Contenidos
 
