@@ -101,3 +101,48 @@ Repositorio de documentación del curso 'Linux desde Cero'. Cubre introducción 
 - 11.9 Protocolos de Internet (IP)
 - 11.10 Denominación simbólica de Sistemas de Internet
 - 11.11 Comandos TELNET y FTP
+
+
+## Distribución de Tiempo
+
+El curso tiene una duración total de 20 horas, dividido en 4 sesiones de 5 horas cada sábado (de 9:00 am a 2:00 pm), con 30 minutos de receso de 11:00 am a 11:30 am por sesión. El enfoque es mínimo en teoría, máximo en práctica hands-on, ejercicios, instalaciones y revisión de ejercicios. Se incluye tiempo para revisiones de prerrequisitos (instalaciones de Docker, AWS, etc.) y prácticas en entornos virtuales.
+
+### Sábado 1: Introducción y Estructura de Archivos (5 horas)
+- **9:00 - 11:00:**
+  - Revisión de prerrequisitos e instalaciones (Docker, AWS CLI, instancias EC2) - práctica hands-on
+  - Tema 1: Introducción a Linux - mínima teoría, práctica: instalación de distro en Docker, usuarios y grupos
+  - Tema 2: Un Enfoque a Linux - práctica: entrada/salida del sistema en contenedor
+- **11:00 - 11:30:** Receso
+- **11:30 - 2:00:**
+  - Tema 3: Estructura del sistema de archivos - práctica: navegación, tipos de archivos, enlaces, paths, permisos (ejercicios hands-on)
+  - Ejercicios y revisión: práctica de comandos básicos, resolución de problemas
+  - Revisión general y Q&A
+
+### Sábado 2: Entornos Gráficos (GNOME y KDE) (5 horas)
+- **9:00 - 11:00:**
+  - Tema 4: X WINDOW - mínima teoría, práctica: configuración básica en VM
+  - Tema 5: GNOME - práctica: iniciación, aplicaciones auxiliares, file manager, terminales, multimedia, configuración (ejercicios hands-on)
+- **11:00 - 11:30:** Receso
+- **11:30 - 2:00:**
+  - Tema 6: KDE - práctica: partes de pantalla, administración de archivos, navegación, creación/movimiento de directorios, enlaces, propiedades, aplicaciones, configuración (ejercicios hands-on)
+  - Ejercicios y revisión: comparación GNOME vs KDE, personalización
+  - Revisión general y Q&A
+
+### Sábado 3: El Shell y Comandos Básicos (5 horas)
+- **9:00 - 11:00:**
+  - Repaso de navegación y permisos
+  - Tema 7: El Shell - mínima teoría, práctica intensiva: comandos ls, mkdir, rmdir, cd, pwd, cp, mv, ln, rm, file, chmod/chown/chgrp, du/df, cat/pr, more/less, grep, tar/gzip, lpr (ejercicios hands-on por cada comando)
+- **11:00 - 11:30:** Receso
+- **11:30 - 2:00:**
+  - Tema 8: Redirecciones y tuberías - práctica: redirecciones, tuberías, tee, errores (ejercicios)
+  - Revisión de ejercicios y Q&A
+
+### Sábado 4: Ejecución Avanzada y Redes (5 horas)
+- **9:00 - 11:00:**
+  - Tema 9: Ejecución de programas - práctica: ejecución en fondo (&), kill, nice, nohup, time, top (ejercicios)
+  - Tema 10: Programas de comandos - práctica: scripts, variables, echo, parámetros (ejercicios de scripting básico)
+- **11:00 - 11:30:** Receso
+- **11:30 - 2:00:**
+  - Tema 11: SCP Copias Remotas - práctica: compilación (make), expresiones regulares, comandos de red, scp (ejercicios en AWS EC2)
+  - Ejercicios integrales y revisión
+  - Revisión final, troubleshooting y Q&A
