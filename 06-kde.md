@@ -140,11 +140,13 @@ Estos tres ejercicios ejecutan una calculadora que se ubicará en "Aplicaciones"
 
 ## 6.13 Configuración avanzada del sistema
 
+Ir a Equipo --> Preferencias del Sistema
+
 **Nota:** "KDE Control Center" (nombre antiguo) ahora es "System Settings" en Plasma.
 
 | ID | Configuración | Resultado |
 |---|---|---|
-| 6.13.A | System Settings → Comportamiento del Espacio de Trabajo → Escritorios Virtuales → Aumentar a 4 → Nombres: Trabajo, Estudio, Navegación, Música → Ctrl+F8 | 4 escritorios virtuales con nombres custom |
+| 6.13.A | System Settings → Comportamiento del Espacio de Trabajo → Escritorios Virtuales → Aumentar a 4 → Nombres: Trabajo, Estudio, Navegación, Música → Ctrl+F8 (o click en los recuadros que aparecen abajo) | 4 escritorios virtuales con nombres custom |
 | 6.13.B | System Settings → Arranque y Apagado → Gestión de Sesiones → "Empezar con sesión vacía" | Apps NO se restauran al reiniciar |
 | 6.13.C | System Settings → Conexiones (Red) → Configurar interfaces y VPNs | Network Manager de Plasma |
 
