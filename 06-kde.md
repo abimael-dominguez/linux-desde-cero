@@ -75,6 +75,7 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 | 6.6.C | `ln original.txt enlace_duro.txt` | Hard link (mismo inode, solo en mismo filesystem) |
 | 6.6.D | Dolphin: observar íconos | Symlink tiene flecha superpuesta. Hard link = igual que original |
 | 6.6.E | `ls -li` | Inode (1ra columna): original y hard link tienen el mismo, symlink difiere |
+| 6.6.G | `rm original.txt` → Luego `cat enlace_simbolico.txt` (error) y `cat enlace_duro.txt` (funciona) | Symlink se rompe (broken link). Hard link mantiene el contenido intacto |
 | 6.6.F | Dolphin: clic derecho en `original.txt` → "Crear enlace" | Crea symlink en el mismo directorio |
 
 ## 6.7 Asociación de tipos de archivo (MIME types)
