@@ -2,6 +2,8 @@
 
 Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y veremos las diferencias clave con GNOME.
 
+Nota: ejecicios realizado con `kubuntu-16.04.6-desktop-amd64`
+
 ## 6.1 Partes de la pantalla
 
 | ID | Ejercicio | Resultado |
@@ -117,6 +119,8 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 | 6.10.D | **KFind**: Menú > Utilidades → Buscar en `/etc` → Patrón `*.conf` → Modificado últimos 7 días → Buscar | Búsqueda avanzada con filtros de fecha/tamaño/contenido |
 
 ## 6.11 System Settings (Configuración)
+
+Ir a Equipo --> Preferencias del Sistema
 
 | ID | Configuración | Resultado |
 |---|---|---|
