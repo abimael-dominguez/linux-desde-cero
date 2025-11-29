@@ -53,6 +53,21 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 
 ## 6.6 Links (Simbólicos y Hard Links)
 
+**Explicación:** Los links permiten acceder al mismo archivo desde múltiples ubicaciones sin duplicar datos.
+
+- **Hard Link**: Otro nombre para el mismo archivo físico. Comparte el mismo inode (número único del archivo en disco). Si borras el archivo original, el hard link sigue funcionando perfectamente (el archivo existe mientras al menos un hard link apunte a él). Solo funciona dentro del mismo filesystem.
+- **Symbolic Link (Symlink)**: Un puntero que apunta al archivo original. Si borras el original, el symlink se rompe ("broken link"). Puede apuntar a archivos en diferentes filesystems o directorios.
+
+**¿Qué es un inode?** Estructura de datos que representa un archivo en el disco. Contiene metadatos (permisos, tamaño, timestamps, punteros a bloques de datos) pero NO el nombre del archivo ni su contenido. Cada archivo tiene un inode único por filesystem. Los hard links comparten el mismo inode.
+
+**Desde KDE (Dolphin) sin terminal:**
+- **Symlinks**: Sí, clic derecho en archivo → "Crear enlace" (crea symlink automáticamente).
+- **Hard Links**: No directamente en GUI; requiere terminal (`ln` sin `-s`).
+
+**Casos de uso:**
+- **Hard Links**: Backup de archivos críticos (ej: `ln /etc/passwd /backup/passwd_backup`). El backup sobrevive si borras el original.
+- **Symbolic Links**: Enlaces a directorios compartidos (ej: `ln -s /mnt/shared /home/user/shared`). Facilita acceso sin duplicar datos. También para versiones de software (ej: `ln -s /usr/bin/python3.9 /usr/bin/python`).
+
 | ID | Comando/Acción | Resultado |
 |---|---|---|
 | 6.6.A | `echo "Soy el archivo original" > original.txt` | Crea archivo con contenido |
@@ -60,6 +75,7 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 | 6.6.C | `ln original.txt enlace_duro.txt` | Hard link (mismo inode, solo en mismo filesystem) |
 | 6.6.D | Dolphin: observar íconos | Symlink tiene flecha superpuesta. Hard link = igual que original |
 | 6.6.E | `ls -li` | Inode (1ra columna): original y hard link tienen el mismo, symlink difiere |
+| 6.6.F | Dolphin: clic derecho en `original.txt` → "Crear enlace" | Crea symlink en el mismo directorio |
 
 ## 6.7 Asociación de tipos de archivo (MIME types)
 
