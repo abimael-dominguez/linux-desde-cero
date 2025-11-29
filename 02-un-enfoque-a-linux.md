@@ -13,6 +13,13 @@ Este capítulo profundiza en cómo Linux gestiona **la entrada y salida (I/O) de
 - `stdout` (salida estándar) = descriptor 1
 - `stderr` (salida de error) = descriptor 2
 
+### Operadores de redirección y pipes
+- `>`: Redirige `stdout` a un archivo, sobrescribiéndolo (ej: `comando > archivo.txt`).
+- `>>`: Redirige `stdout` a un archivo, añadiendo al final (ej: `comando >> archivo.txt`).
+- `2>`: Redirige `stderr` a un archivo (ej: `comando 2> errores.txt`).
+- `|`: Pipe, envía `stdout` de un comando como `stdin` a otro (ej: `comando1 | comando2`).
+- `tee`: Lee de `stdin`, escribe a `stdout` y a un archivo (ej: `comando | tee archivo.txt`). Piensa en `tee` como una T: toma la entrada, la guarda en un archivo y la envía al siguiente comando en el pipe.
+
 ```bash
 # Enviar salida a archivo y errores a otro
 comando > salida.txt 2> errores.txt
@@ -111,40 +118,7 @@ journalctl -u ssh.service -n 100 | tee ssh-ultimos.log
 
 ---
 
-## 2.4 Archivos especiales: /proc y /sys
-
-### /proc: información de procesos y kernel
-```bash
-# Información del kernel
-cat /proc/version
-uname -a
-
-# CPU y memoria
-cat /proc/cpuinfo | head -20
-cat /proc/meminfo | head -20
-
-# PID actual y su cmdline
-echo $$          # PID del shell actual
-cat /proc/$$/cmdline | tr "\0" " "; echo
-```
-
-**Explicación:** `/proc` es un pseudo-filesystem que expone estados del kernel y procesos en tiempo real.
-
-### /sys: configuración del sistema y dispositivos
-```bash
-# Ver dispositivos de bloque (discos)
-ls -l /sys/block
-
-# Parámetros de dispositivos
-ls /sys/class/net
-cat /sys/class/net/eth0/mtu    # MTU actual
-```
-
-**💡 Tip:** cambios en `/sys` suelen requerir privilegios y afectan hardware en vivo.
-
----
-
-## 2.5 Entrada/Salida en archivos y texto
+## 2.4 Entrada/Salida en archivos y texto
 
 ### Lectura, escritura y visualización
 ```bash
@@ -183,208 +157,86 @@ sed -i '' 's/Linea/Linea corregida/g' demo.txt
 
 ---
 
-## 2.6 I/O de procesos: redirecciones avanzadas
+## 2.5 I/O de procesos: redirecciones avanzadas
 
 ### Operadores útiles
-- `<<< "texto"`: here-string (pasa texto directo a `stdin`).
-- `<<EOF ... EOF`: here-documento (bloques largos).
-- `>|`: sobrescribe incluso si `noclobber` está activo.
-- `exec`: reconfigura descriptores del shell actual.
+- `<<< "texto"`: Here-string. Pasa una cadena de texto directamente como entrada estándar (`stdin`) a un comando, sin necesidad de archivos temporales. Útil para probar comandos con texto fijo.
+- `<<EOF ... EOF`: Here-documento. Permite pasar bloques largos de texto (múltiples líneas) como `stdin` a un comando. Termina con la palabra clave (EOF). Ideal para crear archivos o scripts inline.
+- `>|`: Sobrescribe un archivo incluso si la opción `noclobber` de bash está activada (que normalmente previene sobrescribir archivos existentes).
 
 ```bash
-# Here-string
+# Here-string: Busca "linux" en el texto dado, ignorando mayúsculas
 grep -i linux <<< "Aprendiendo Linux desde cero"
+# Salida: Linux (encuentra la palabra)
 
-# Here-doc para crear un archivo
+# Here-doc: Crea un script bash con contenido multilínea
 cat <<'EOF' > script.sh
 #!/usr/bin/env bash
 set -euo pipefail
 echo "Hola desde script"
 EOF
 chmod +x script.sh
-
-# Reasignar stdout a un archivo para el shell actual
-exec 1>salida_global.log
-printf "Esta linea va al archivo stdout global\n"
-# Restaurar stdout a la terminal
-exec 1>&2; exec 2>/dev/tty
+# Ahora script.sh es un archivo ejecutable con el contenido del here-doc
 ```
 
-**Explicación:** `exec` cambia los descriptores del proceso shell. Úsalo con cuidado.
+**Explicación:** Estos operadores simplifican la automatización en scripts, permitiendo insertar texto directamente sin crear archivos intermedios. El here-string es para texto corto; el here-doc para bloques largos. `>|` es útil cuando bash protege archivos por defecto.
 
 ---
 
-## 2.7 I/O y red: sockets y herramientas
-
-```bash
-# Ver puertos en escucha
-ss -tuln
-
-# Probar conexión TCP simple (instalar netcat)
-apt update && apt install -y netcat-openbsd
-nc -vz google.com 80
-
-# Escuchar en un puerto local (ejemplo)
-nc -l 12345
-# En otra terminal:
-echo "Hola" | nc 127.0.0.1 12345
-```
-
-**Salida esperada:**
-- `ss -tuln`: servicios escuchando (tcp/udp) y direcciones.
-- `nc -vz`: prueba conexión y reporta si el puerto está abierto.
-- `nc -l`: muestra el mensaje recibido por el socket.
-
-**💡 Tip de seguridad:** limitar accesos con firewall (`ufw`, `iptables`) y no dejar `nc -l` en entornos productivos.
-
----
-
-## 2.8 Monitoreo de I/O del sistema
-
-```bash
-# I/O de disco
-apt install -y iotop sysstat
-sudo iotop      # I/O por proceso (requiere CAP_SYS_ADMIN)
-iostat -x 1 5   # Estadísticas extendidas cada 1s, 5 iteraciones
-
-# I/O de archivos en tiempo real
-apt install -y inotify-tools
-inotifywait -m -r -e create,modify,delete /var/log
-
-# I/O del kernel y mensajes
-dmesg | less
-journalctl -f   # Follow logs en tiempo real
-```
-
-**Explicación:**
-- `iotop`: consumo de I/O por proceso.
-- `iostat`: latencia, throughput y utilización de discos.
-- `inotifywait`: eventos de filesystem.
-- `journalctl`: sistema de logging de systemd.
-
----
-
-## 2.9 Ejercicios prácticos guiados
+## 2.6 Ejercicios prácticos guiados
 
 ### Ejercicio 1: Redirecciones y pipes
 Objetivo: dominar `>`, `>>`, `2>`, `|`, `tee`.
+
+**Comando:**
 ```bash
 printf "%s\n" {1..100} | tee numeros.txt | grep -E '^[13579]$|[13579]$' > impares.txt 2> errores.log
 wc -l numeros.txt impares.txt
 ```
-**Salida esperada:**
-- `numeros.txt`: 100 líneas
-- `impares.txt`: 50 líneas
 
-### Ejercicio 2: Inspección de procesos y /proc
+**Explicación paso a paso:**
+- `printf "%s\n" {1..100}`: Genera los números del 1 al 100, uno por línea.
+- `| tee numeros.txt`: Envía la salida a `tee`, que la duplica: una copia va a `numeros.txt` y la otra continúa por el pipe.
+- `| grep -E '^[13579]$|[13579]$'`: Filtra líneas que empiecen o terminen con dígitos impares (1,3,5,7,9). El regex busca números de un dígito que sean impares.
+- `> impares.txt`: Redirige la salida filtrada (números impares) a `impares.txt`.
+- `2> errores.log`: Redirige cualquier error (stderr) a `errores.log`.
+- `wc -l numeros.txt impares.txt`: Cuenta las líneas en ambos archivos.
+
+**Salida esperada:**
+- `numeros.txt`: 100 líneas (todos los números del 1 al 100).
+- `impares.txt`: 50 líneas (números impares: 1,3,5,...,99).
+
+**Aprendizaje:** Practica cómo combinar pipes para procesar datos en cadena, redirigir salidas y errores, y usar `tee` para bifurcar flujos.
+
+### Ejercicio 2: Inspección básica de procesos
 ```bash
-sleep 120 &
+sleep 10 &
 echo $! > pid.txt
-cat /proc/$(cat pid.txt)/status | head -20
+ps -p $(cat pid.txt)
 kill $(cat pid.txt)
 ```
-**Explicación:**
-- `sleep 120 &`: ejecuta en segundo plano.
-- `$!`: PID del último job en background.
-- `/proc/<pid>/status`: estado detallado.
 
-### Ejercicio 3: Monitoreo de I/O
-```bash
-( dd if=/dev/zero of=prueba.bin bs=1M count=200 ) &
-iostat -x 1 3
-```
-**Explicación:**
-- `dd`: genera I/O de escritura controlado.
-- `iostat`: verifica comportamiento del disco durante la operación.
+**Explicación paso a paso:**
+- `sleep 10 &`: Ejecuta el comando `sleep 10` en segundo plano (background), lo que pausa el proceso por 10 segundos sin bloquear la terminal.
+- `echo $! > pid.txt`: `$!` es la variable que contiene el PID del último proceso ejecutado en background. Se guarda en `pid.txt`.
+- `ps -p $(cat pid.txt)`: `ps -p` muestra información detallada del proceso con el PID leído de `pid.txt`. `$(cat pid.txt)` es sustitución de comando para obtener el PID.
+- `kill $(cat pid.txt)`: Envía una señal SIGTERM al proceso para terminarlo.
+
+**Salida esperada:**
+- `ps -p`: Muestra detalles como PID, TTY, tiempo de CPU, comando (sleep 10).
+- El proceso `sleep` se detiene antes de los 10 segundos.
+
+**Aprendizaje:** Entiende cómo manejar procesos en background, capturar PIDs y usar `ps` para inspeccionar procesos en ejecución.
 
 ---
 
-## 2.10 Tips y buenas prácticas
+## 2.7 Tips y buenas prácticas
 - Usa `set -euo pipefail` en scripts para manejo robusto de errores.
 - Valida primero con `head`, `tail`, `wc -l` antes de procesar archivos grandes.
-- Prefiere `ss` sobre `netstat` (más moderno y sin dependencias).
 - Redirige `stderr` por separado cuando depures (`2>debug.log`).
-- Documenta cambios de `umask` y permisos al crear archivos.
-- No ejecutes comandos intensivos en I/O en servidores en horario pico.
+- Documenta cambios de permisos al crear archivos.
 
 ---
 
-## 2.11 Referencias rápidas
-- `man bash`, `man 2 open`, `man tee`, `man grep`, `man sed`, `man awk`
-- `info coreutils` para detalles exhaustivos de utilidades GNU.
-
----
-
-## 2.12 Casos de Uso Real en el Trabajo (SysAdmin/DevOps)
-
-Estas son situaciones comunes que enfrentarán en entornos laborales reales.
-
-### Caso 1: Limpiar un log gigante sin detener el servicio
-**Problema:** Un servidor web tiene un log de 50GB (`access.log`) y el disco está lleno. No puedes reiniciar el servicio (Apache/Nginx) porque es producción.
-**Solución Incorrecta:** `rm access.log` (El proceso sigue escribiendo en el descriptor de archivo borrado y el espacio no se libera).
-**Solución Profesional:** Truncar el archivo.
-```bash
-# Opción 1: Redirección nula (la más rápida y común)
-> /var/log/nginx/access.log
-
-# Opción 2: Usando truncate
-truncate -s 0 /var/log/nginx/access.log
-```
-**Por qué funciona:** Mantiene el mismo inodo y descriptor de archivo, pero el tamaño se vuelve 0 bytes. El servicio sigue escribiendo felizmente desde el byte 0.
-
-### Caso 2: ¿Quién tiene bloqueado este archivo?
-**Problema:** Intentas desmontar un USB o borrar un directorio y obtienes "Device or resource busy".
-**Herramienta:** `lsof` (List Open Files) o `fuser`.
-```bash
-# Ver quién usa el archivo/directorio
-lsof /mnt/backup
-# O
-fuser -v /mnt/backup
-
-# Matar todos los procesos que usan ese punto de montaje (¡Cuidado!)
-fuser -k -v /mnt/backup
-```
-
-### Caso 3: Depurar scripts que fallan silenciosamente
-**Problema:** Un cronjob falla pero no ves nada en la salida.
-**Solución:** Redirigir stdout y stderr + modo debug.
-```bash
-#!/bin/bash
-set -x  # Imprime cada comando antes de ejecutarlo
-exec > /tmp/debug_script.log 2>&1  # Todo va al log
-
-echo "Iniciando backup..."
-# ... resto del script
-```
-
----
-
-## 2.13 Dinámicas para clase en vivo (Instructor)
-
-Ejercicios visuales para despertar a la clase y demostrar conceptos en tiempo real.
-
-### Dinámica 1: "La carrera del disco vs RAM"
-**Objetivo:** Demostrar la velocidad de I/O y el concepto de dispositivos especiales.
-```bash
-# Escribir a disco (lento - limitado por I/O)
-# Nota: conv=fdatasync asegura que se escriba físicamente
-time dd if=/dev/zero of=testfile bs=1M count=1000 conv=fdatasync
-
-# Escribir a /dev/null (rápido - limitado por CPU)
-time dd if=/dev/zero of=/dev/null bs=1M count=10000
-```
-**Pregunta:** "¿Por qué el segundo comando procesó 10 veces más datos en una fracción del tiempo?"
-
-### Dinámica 2: "Chat Hacker" (Sockets)
-**Objetivo:** Entender que "todo es un archivo", incluso la red.
-1.  **Instructor:** Ejecuta `nc -l 8080` (Se pone a escuchar).
-2.  **Alumno:** Ejecuta `nc localhost 8080` (o la IP del instructor).
-3.  **Acción:** Escriban mensajes y vean cómo aparecen en la otra terminal.
-4.  **Bonus:** Redirigir un archivo al chat: `cat /etc/issue | nc localhost 8080`.
-
-### Dinámica 3: "Espiando procesos" (File Descriptors)
-**Objetivo:** Ver los archivos abiertos de un proceso en tiempo real.
-1.  Abrir un editor de texto en una terminal: `nano secreto.txt`.
-2.  En otra terminal, buscar su PID: `pgrep -a nano`.
-3.  Listar sus descriptores de archivo: `ls -l /proc/<PID>/fd`.
-4.  **Resultado:** Verán `0`, `1`, `2` (stdin, stdout, stderr) apuntando a `/dev/pts/X` (la terminal) y quizás el descriptor del archivo `secreto.txt`.
+## 2.8 Referencias rápidas
+- `man bash`, `man tee`, `man grep`, `man sed`
