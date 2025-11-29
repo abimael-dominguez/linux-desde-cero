@@ -1,0 +1,55 @@
+# .gitignore para proyectos de scripting en Linux/Bash
+# Ignora archivos temporales, logs y elementos no esenciales
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+*.out
+
+# Directorios temporales
+/tmp/
+/temp/
+/cache/
+
+# Archivos de backup
+*.bak
+*.backup
+*.old
+
+# Archivos de configuración personal
+.config/
+.local/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Directorios comunes en desarrollo
+node_modules/
+__pycache__/
+*.pyc
+
+# Archivos de IDE/editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de compilación (si aplica)
+*.o
+*.exe
+a.out
+
+# Archivos de datos sensibles o grandes
+*.db
+*.sqlite
+*.zip
+*.tar.gz
+*.iso
