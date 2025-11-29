@@ -8,7 +8,8 @@ Linux es un núcleo (kernel) libre y de código abierto que, combinado con utili
 
 ### Objetivos rápidos
 - Comprender la diferencia entre kernel y sistema operativo.
-- Identificar ventajas de Linux frente a sistemas propietarios.
+- Identificar ventajas de Linux para desarrollo (estabilidad, herramientas, comunidad).
+- Familiarizarse con comandos básicos que usarás diariamente como desarrollador.
 
 ### Actividad práctica (15 min)
 
@@ -193,9 +194,11 @@ Una distribución empaqueta el kernel con gestores de paquetes, utilidades y con
 ### Comparativa exprés
 | Distribución | Gestor | Ciclo     | Caso de uso             |
 |--------------|--------|-----------|-------------------------|
-| Debian       | APT    | estable   | Servidores e IoT        |
-| Fedora       | DNF    | rápido    | Desktop cutting-edge    |
-| Arch         | Pacman | rolling   | Usuarios avanzados      |
+| Debian       | APT    | estable   | Servidores e IoT, desarrollo estable |
+| Fedora       | DNF    | rápido    | Desktop cutting-edge, desarrollo innovador |
+| Arch         | Pacman | rolling   | Usuarios avanzados, desarrollo bleeding-edge |
+
+**Para desarrolladores:** Elige Debian/Ubuntu para estabilidad en producción, Fedora para últimas herramientas, Arch para máxima customización.
 
 ### Actividad práctica (20 min)
 
@@ -418,12 +421,54 @@ pacman -Qi nombre-paquete
 - Los gestores de paquetes requieren privilegios root (usa `sudo`)
 - Puedes combinar acciones: `apt update && apt upgrade -y`
 
+**Ejercicio opcional: Instalación de herramientas de desarrollo**
+
+Como desarrolladores, instala herramientas comunes:
+
+1. Instala lenguajes de programación:
+```bash
+apt install -y python3 python3-pip nodejs npm openjdk-17-jdk
+```
+
+2. Instala editores y herramientas:
+```bash
+apt install -y vim nano emacs-nox code  # VS Code si está disponible
+```
+
+3. Instala herramientas de desarrollo:
+```bash
+apt install -y git curl wget build-essential gdb valgrind
+```
+
+4. Instala Docker (para contenedores):
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+```
+
+5. Verifica las instalaciones:
+```bash
+python3 --version
+node --version
+java -version
+git --version
+docker --version
+```
+
+6. Configura Python pip:
+```bash
+pip3 install --upgrade pip
+pip3 install virtualenv
+```
+
 ## 1.3 Entorno de trabajo: EL SHELL Y X WINDOW
 
-- **Shell**: interfaz de comandos (bash, zsh) que permite automatizar tareas mediante scripts.
+- **Shell**: interfaz de comandos (bash) que permite automatizar tareas mediante scripts.
 - **X Window System**: capa gráfica modular que habilita escritorios como GNOME o KDE y soporta arquitectura cliente/servidor.
 
 ### Flujo sugerido (25 min)
+
+**Importancia para desarrolladores:** El shell es tu herramienta principal para automatizar tareas, gestionar versiones de código, desplegar aplicaciones y administrar servidores. Dominar Bash te hará más eficiente.
 
 #### 1. Identificar shell actual
 
@@ -439,7 +484,7 @@ echo $SHELL
 **Explicación:** 
 - `$SHELL` es una variable de entorno que contiene la ruta al shell de login del usuario
 - `/bin/bash` indica que Bash (Bourne Again Shell) es el shell predeterminado
-- Otros posibles valores: `/bin/zsh`, `/bin/sh`, `/bin/dash`, `/bin/fish`
+- Otros posibles valores: `/bin/sh`, `/bin/dash`, `/bin/fish`
 
 **Comando alternativo para ver el shell en ejecución:**
 ```bash
@@ -656,6 +701,91 @@ du -sh /*
 - `!$` usa el último argumento del comando anterior
 - Alias útil: `alias ll='ls -lha'` (agrégalo a `.bashrc`)
 
+**Ejercicio opcional: Introducción a scripting en Bash**
+
+Crea tu primer script para automatizar tareas:
+
+1. Crea un script simple:
+```bash
+nano ~/mi_primer_script.sh
+```
+
+2. Escribe el contenido:
+```bash
+#!/bin/bash
+echo "Hola, soy un script de Bash"
+echo "Fecha actual: $(date)"
+echo "Usuario: $USER"
+echo "Directorio actual: $(pwd)"
+echo "Archivos en este directorio:"
+ls -la
+```
+
+3. Haz el script ejecutable:
+```bash
+chmod +x ~/mi_primer_script.sh
+```
+
+4. Ejecuta el script:
+```bash
+~/mi_primer_script.sh
+```
+
+5. Crea un script más avanzado con variables y condicionales:
+```bash
+nano ~/script_avanzado.sh
+```
+
+Contenido:
+```bash
+#!/bin/bash
+
+# Script para verificar el estado del sistema
+
+echo "=== Verificación del Sistema ==="
+echo "Fecha: $(date)"
+echo "Usuario: $USER"
+echo ""
+
+# Verificar si estamos en un contenedor
+if [ -f /.dockerenv ]; then
+    echo "✓ Ejecutándose en contenedor Docker"
+else
+    echo "✓ Ejecutándose en sistema nativo"
+fi
+
+# Verificar espacio en disco
+echo ""
+echo "Espacio en disco:"
+df -h /
+
+# Verificar memoria
+echo ""
+echo "Uso de memoria:"
+free -h
+
+# Verificar procesos del usuario
+echo ""
+echo "Procesos del usuario $USER:"
+ps aux | grep "^$USER" | head -5
+
+echo ""
+echo "Script completado exitosamente"
+```
+
+6. Ejecuta y analiza la salida:
+```bash
+chmod +x ~/script_avanzado.sh
+~/script_avanzado.sh
+```
+
+7. Opcional: Programa el script para ejecutarse automáticamente:
+```bash
+# Añade al crontab para ejecutar diariamente a las 9 AM
+crontab -e
+# Añade: 0 9 * * * /home/tu_usuario/script_avanzado.sh
+```
+
 ---
 
 #### 3. Variables de entorno para X Window
@@ -746,107 +876,101 @@ printenv HOME
 
 ---
 
-#### 4. Ejecutar aplicación gráfica simple
+#### 4. Variables de entorno para X Window (Opcional para desarrolladores)
 
 ```bash
-# Primero, instalar paquetes de X11 si no están
-apt update && apt install -y x11-apps
-
-# Ejecutar xeyes en segundo plano
-xeyes &
+echo $DISPLAY
 ```
 
-**Salida esperada (con X11 funcional):**
+**Salida esperada (si X11 está activo):**
 ```
-[1] 1234
+:0
 ```
 
 **Explicación:**
-- `&` al final ejecuta el proceso en segundo plano
-- `[1]` es el número de trabajo (job number)
-- `1234` es el PID (Process ID) del proceso
-- Se abre una ventana con ojos que siguen el cursor
-
-**Si no hay display X11:**
-```
-Error: Can't open display:
-```
-
-**Más ejemplos de aplicaciones X11 básicas:**
+- `$DISPLAY` indica dónde mostrar las ventanas X11
+- `:0` = primera sesión X local
+- En contenedores o servidores sin GUI, estará vacío
 
 ```bash
-# Reloj analógico
-xclock &
-
-# Calculadora simple
-xcalc &
-
-# Información del display
-xdpyinfo | head -20
-
-# Ver aplicaciones gráficas en ejecución
-ps aux | grep -E 'xeyes|xclock|xcalc'
-
-# Traer proceso del segundo plano al primero
-fg
-
-# Listar trabajos en segundo plano
-jobs
-
-# Salida esperada:
-# [1]+  Running                 xeyes &
-
-# Matar un proceso en segundo plano por número de job
-kill %1
-
-# O por PID
-kill 1234
+echo $XDG_SESSION_TYPE
 ```
 
-**Comandos adicionales de gestión de procesos:**
+**Salida esperada:**
+```
+x11
+```
+o
+```
+wayland
+```
+
+**Explicación:**
+- `x11`: sesión usando X Window System
+- `wayland`: protocolo moderno
+- `tty`: sesión en terminal sin entorno gráfico
+
+**Variables de entorno importantes para desarrolladores:**
 
 ```bash
-# Ver procesos del usuario actual
-ps aux | grep $USER
-
-# Ver procesos en árbol
-ps auxf
-pstree
-
-# Monitor interactivo de procesos
-top
-# (presiona 'q' para salir)
-
-# Monitor interactivo mejorado (si está instalado)
-htop
-
-# Ver uso de recursos del sistema
-vmstat 1 5      # Estadísticas cada 1 seg, 5 veces
-iostat          # Estadísticas de I/O
-free -h         # Uso de memoria
-
-# Salida de free -h:
-#               total        used        free      shared  buff/cache   available
-# Mem:          7.7Gi       2.1Gi       3.2Gi       0.1Gi       2.4Gi       5.3Gi
-# Swap:         2.0Gi          0B       2.0Gi
+echo $PATH          # Rutas donde se buscan ejecutables
+echo $HOME          # Directorio home
+echo $USER          # Usuario actual
+echo $SHELL         # Shell actual
+echo $EDITOR        # Editor predeterminado
+echo $LANG          # Configuración de idioma
 ```
 
-**💡 Tips:**
-- En servidores sin entorno gráfico, no intentes ejecutar aplicaciones X11
-- Para usar X11 desde SSH: `ssh -X usuario@servidor`
-- Para contenedores Docker con GUI, debes compartir el socket X11:
-  ```bash
-  docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ubuntu:22.04
-  ```
+**💡 Tip:** Para desarrollo remoto, usa SSH con X forwarding: `ssh -X usuario@servidor`
+
+---
+
+**Ejercicio opcional: Configuración de entorno de desarrollo**
+
+Como futuros desarrolladores, configura tu entorno básico:
+
+1. Instala herramientas esenciales:
+```bash
+apt update && apt install -y git curl wget vim nano build-essential
+```
+
+2. Configura Git (reemplaza con tus datos):
+```bash
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu.email@ejemplo.com"
+```
+
+3. Crea un directorio para proyectos:
+```bash
+mkdir ~/proyectos && cd ~/proyectos
+```
+
+4. Clona un repositorio de ejemplo:
+```bash
+git clone https://github.com/octocat/Hello-World.git
+```
+
+5. Verifica tu configuración:
+```bash
+git config --list
+echo "Entorno listo para desarrollo"
+```
 
 ## 1.4 Usuarios y grupos
 
-Linux implementa seguridad mediante cuentas (UID) y grupos (GID). Cada proceso corre con credenciales específicas y los permisos de archivos dependen de usuario, grupo y otros.
+Linux implementa un sistema de seguridad basado en **usuarios** (identificados por UID) y **grupos** (identificados por GID). Todo archivo y proceso en Linux pertenece a un usuario específico y tiene permisos definidos para el propietario, el grupo y otros usuarios.
+
+**¿Por qué es importante?**
+- **Seguridad**: Controla quién puede acceder a qué recursos
+- **Colaboración**: Permite que equipos trabajen en proyectos compartidos
+- **Aislamiento**: Separa aplicaciones y usuarios para evitar conflictos
+- **Auditoría**: Rastrea quién hace qué en el sistema
 
 ### Conceptos clave
 - Archivos de configuración: `/etc/passwd`, `/etc/shadow` y `/etc/group`.
 - Diferencia entre usuarios administrativos (UID 0) y regulares.
 - Grupos primarios y suplementarios.
+- **Para desarrolladores:** Entender permisos es crucial para compartir código, configurar entornos de desarrollo seguros y gestionar accesos en equipos colaborativos.
 
 ### Taller práctico (30 min)
 
@@ -855,6 +979,12 @@ Linux implementa seguridad mediante cuentas (UID) y grupos (GID). Cada proceso c
 ```bash
 getent passwd | head
 ```
+
+**Explicación de los comandos:**
+- `getent`: obtiene entradas de bases de datos del sistema (passwd, group, etc.)
+- `passwd`: base de datos de usuarios
+- `|`: tubería (pipe) - pasa la salida del comando anterior al siguiente
+- `head`: muestra solo las primeras 10 líneas
 
 **Salida esperada:**
 ```
@@ -891,6 +1021,9 @@ news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
 ```bash
 # Ver solo usuarios reales (UID >= 1000)
 getent passwd | awk -F: '$3 >= 1000 {print $1, $3, $6}'
+# awk: herramienta para procesar texto columna por columna
+# -F: especifica el delimitador de campos (:)
+# $3 >= 1000: condición - tercera columna (UID) mayor o igual a 1000
 
 # Ver información del usuario actual
 whoami                # Nombre de usuario
@@ -934,6 +1067,12 @@ finger root           # Si está instalado
 getent group | grep "sudo"
 ```
 
+**Explicación de los comandos:**
+- `getent group`: obtiene todos los grupos del sistema
+- `grep "sudo"`: filtra líneas que contengan la palabra "sudo"
+  - `grep` = Global Regular Expression Print (buscar patrones en texto)
+  - Es una herramienta fundamental para filtrar información en Linux
+
 **Salida esperada:**
 ```
 sudo:x:27:
@@ -958,6 +1097,8 @@ getent group | awk -F: '$3 < 1000 {print $1, $3}'
 # Ver miembros de un grupo específico
 getent group sudo
 grep "^sudo:" /etc/group
+# grep "^sudo:": busca líneas que EMPIECEN (^) con "sudo:"
+# ^ = inicio de línea en expresiones regulares
 
 # Ver todos los grupos de un usuario
 groups usuario
@@ -990,7 +1131,9 @@ useradd -m alumno && passwd alumno
 - `useradd`: comando para crear usuarios
 - `-m`: crea el directorio home (`/home/alumno`)
 - `alumno`: nombre del nuevo usuario
-- `&&`: ejecuta el siguiente comando solo si el primero fue exitoso
+- `&&`: operador lógico AND - ejecuta el siguiente comando **solo** si el primero fue exitoso
+  - Si `useradd` falla, `passwd` no se ejecuta
+  - Útil para encadenar comandos que dependen uno del otro
 - `passwd alumno`: establece la contraseña del usuario
 
 **Salida esperada:**
@@ -1156,6 +1299,8 @@ find /etc -group sudo 2>/dev/null
 
 # Ver qué puede hacer el grupo sudo
 cat /etc/sudoers | grep -A 5 "^%sudo"
+# grep -A 5: muestra la línea encontrada + 5 líneas siguientes (After)
+# ^%sudo: líneas que empiecen con %sudo
 
 # Salida esperada:
 # %sudo   ALL=(ALL:ALL) ALL
@@ -1175,7 +1320,9 @@ su - alumno
 **Explicación:**
 - `su`: switch user (cambiar usuario)
 - `-`: login shell completo (carga variables de entorno del usuario)
-- Sin `-` solo cambias usuario pero mantienes el entorno actual
+  - **Con `-`**: simula un login completo (como si te conectaras desde cero)
+  - **Sin `-`**: solo cambia usuario pero mantiene el entorno actual
+- **Diferencia práctica**: Con `-` cargas el PATH, aliases y configuración del usuario destino
 
 **Salida esperada:**
 ```
@@ -1356,6 +1503,91 @@ journalctl _COMM=sudo | tail -20
 - Deshabilita login de root via SSH: `PermitRootLogin no` en `/etc/ssh/sshd_config`
 - Usa claves SSH en lugar de contraseñas para mayor seguridad
 
+**Ejercicio opcional: Configuración de usuario desarrollador**
+
+Configura un usuario dedicado para desarrollo con permisos apropiados:
+
+1. Crea un grupo para desarrolladores:
+```bash
+groupadd developers
+```
+
+2. Crea un usuario desarrollador:
+```bash
+useradd -m -s /bin/bash -G sudo,developers devuser
+passwd devuser
+```
+
+3. Configura sudo sin contraseña para desarrolladores (opcional, con precaución):
+```bash
+echo "%developers ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/developers
+chmod 440 /etc/sudoers.d/developers
+```
+
+4. Cambia al usuario desarrollador:
+```bash
+su - devuser
+```
+
+5. Configura el entorno del desarrollador:
+```bash
+# Instala herramientas básicas
+sudo apt update
+sudo apt install -y git curl wget python3 python3-pip
+
+# Configura Git
+git config --global user.name "Desarrollador"
+git config --global user.email "dev@example.com"
+
+# Crea estructura de directorios
+mkdir -p ~/proyectos ~/scripts ~/backups
+
+# Configura aliases útiles en ~/.bashrc
+echo "alias ll='ls -lha'" >> ~/.bashrc
+echo "alias gs='git status'" >> ~/.bashrc
+echo "alias ga='git add'" >> ~/.bashrc
+echo "alias gc='git commit'" >> ~/.bashrc
+echo "alias gp='git push'" >> ~/.bashrc
+
+# Recarga la configuración
+source ~/.bashrc
+```
+
+6. Crea un script de backup simple:
+```bash
+nano ~/scripts/backup_proyectos.sh
+```
+
+Contenido:
+```bash
+#!/bin/bash
+# Script de backup para proyectos
+
+BACKUP_DIR="$HOME/backups"
+SOURCE_DIR="$HOME/proyectos"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+mkdir -p "$BACKUP_DIR"
+
+tar -czf "$BACKUP_DIR/proyectos_$TIMESTAMP.tar.gz" -C "$HOME" proyectos
+
+echo "Backup creado: $BACKUP_DIR/proyectos_$TIMESTAMP.tar.gz"
+echo "Tamaño: $(du -h "$BACKUP_DIR/proyectos_$TIMESTAMP.tar.gz" | cut -f1)"
+```
+
+7. Haz ejecutable y prueba:
+```bash
+chmod +x ~/scripts/backup_proyectos.sh
+~/scripts/backup_proyectos.sh
+```
+
+8. Verifica permisos y propiedad:
+```bash
+ls -la ~/scripts/
+ls -la ~/proyectos/
+id  # Verifica grupos
+```
+
 **Comandos de práctica adicionales recomendados:**
 
 ```bash
@@ -1395,355 +1627,9 @@ type comando                # Tipo de comando (builtin, alias, etc.)
 
 ---
 
-## Apéndice: Comandos para macOS y zsh
-
-Si trabajas en macOS o usas zsh como tu shell, aquí hay algunas diferencias y comandos específicos importantes.
-
-### Diferencias principales entre Linux y macOS
-
-**1. Sistema de paquetes:**
-```bash
-# En Linux (Debian/Ubuntu):
-apt install paquete
-
-# En macOS necesitas Homebrew:
-brew install paquete
-
-# Instalar Homebrew (si no lo tienes):
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Comandos útiles de Homebrew:
-brew search nombre          # Buscar paquetes
-brew info paquete          # Información del paquete
-brew list                  # Paquetes instalados
-brew update                # Actualizar Homebrew
-brew upgrade               # Actualizar paquetes
-brew cleanup               # Limpiar versiones antiguas
-brew doctor                # Diagnosticar problemas
-```
-
-**2. Comandos específicos de macOS:**
-```bash
-# Información del sistema
-system_profiler SPSoftwareDataType    # Versión de macOS
-sw_vers                                # Versión resumida
-
-# Salida esperada de sw_vers:
-# ProductName:    macOS
-# ProductVersion: 14.1.1
-# BuildVersion:   23B81
-
-# Gestión de aplicaciones
-open -a "Safari"                      # Abrir aplicación
-open .                                # Abrir Finder en directorio actual
-open archivo.pdf                      # Abrir con app predeterminada
-
-# Portapapeles
-pbcopy < archivo.txt                  # Copiar contenido al portapapeles
-echo "texto" | pbcopy                 # Copiar texto
-pbpaste                               # Pegar desde portapapeles
-pbpaste > archivo.txt                 # Guardar portapapeles en archivo
-
-# Red
-networksetup -listallhardwareports    # Listar interfaces de red
-networksetup -getinfo Wi-Fi           # Info de interfaz Wi-Fi
-scutil --dns                          # Configuración DNS
-
-# Spotlight (búsqueda del sistema)
-mdfind "nombre archivo"               # Buscar archivos
-mdfind -name archivo                  # Buscar por nombre exacto
-mdls archivo                          # Metadatos del archivo
-
-# Notificaciones
-osascript -e 'display notification "Mensaje" with title "Título"'
-
-# Configuración
-defaults read                         # Ver todas las preferencias
-defaults read com.apple.dock          # Preferencias del Dock
-defaults write com.apple.dock autohide -bool true    # Ocultar Dock automáticamente
-killall Dock                          # Reiniciar Dock
-```
-
-**3. Diferencias en comandos estándar:**
-```bash
-# Linux usa GNU coreutils, macOS usa BSD coreutils
-
-# Ejemplo con 'ls' - color por defecto:
-# Linux:
-ls --color=auto
-
-# macOS:
-ls -G
-
-# Crear alias en zsh para compatibilidad:
-alias ls='ls -G'
-
-# Ejemplo con 'sed' - edición in-place:
-# Linux:
-sed -i 's/viejo/nuevo/g' archivo.txt
-
-# macOS (requiere argumento vacío después de -i):
-sed -i '' 's/viejo/nuevo/g' archivo.txt
-
-# Instalar GNU coreutils en macOS:
-brew install coreutils
-# Los comandos GNU tendrán prefijo 'g': gls, gsed, gawk, etc.
-gls --color=auto    # Ahora funciona como en Linux
-```
-
-### Características específicas de zsh
-
-**1. Configuración de zsh:**
-```bash
-# Archivos de configuración (en orden de carga):
-~/.zshenv          # Siempre se ejecuta
-~/.zprofile        # Login shell
-~/.zshrc           # Shell interactivo (el más usado)
-~/.zlogin          # Login shell (después de .zshrc)
-~/.zlogout         # Al cerrar sesión
-
-# Ver el shell actual
-echo $SHELL        # /bin/zsh
-
-# Versión de zsh
-zsh --version      # zsh 5.9 (x86_64-apple-darwin23.0)
-
-# Framework Oh My Zsh (muy popular):
-# Instalar Oh My Zsh:
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Editar configuración:
-nano ~/.zshrc      # o vim, code, etc.
-
-# Recargar configuración:
-source ~/.zshrc
-# o simplemente:
-. ~/.zshrc
-```
-
-**2. Autocompletado mejorado en zsh:**
-```bash
-# Zsh tiene autocompletado más inteligente que bash
-
-# Activar autocompletado:
-autoload -Uz compinit && compinit
-
-# Autocompletado con menú navegable:
-setopt menucomplete
-
-# Corrección de comandos:
-setopt correct
-setopt correctall
-
-# Navegar historial con flechas (búsqueda incremental):
-bindkey '^[[A' history-beginning-search-backward
-bindkey '^[[B' history-beginning-search-forward
-
-# Ejemplo de uso:
-# Escribe: git co<TAB>
-# Zsh sugiere: commit, checkout, config, etc.
-```
-
-**3. Expansiones y globbing avanzado:**
-```bash
-# Expansiones más potentes que bash
-
-# Listar solo directorios:
-ls -d *(/)
-
-# Listar solo archivos:
-ls *(.)
-
-# Archivos modificados en las últimas 24 horas:
-ls *(mh-24)
-
-# Archivos mayores a 10MB:
-ls *(Lm+10)
-
-# Recursivo mejorado:
-ls **/*.txt        # Todos los .txt recursivamente
-
-# Excluir patrón:
-ls ^*.txt          # Todo excepto .txt
-
-# Rangos numéricos:
-echo file{1..5}.txt     # file1.txt file2.txt file3.txt file4.txt file5.txt
-```
-
-**4. Plugins útiles de Oh My Zsh:**
-```bash
-# Editar ~/.zshrc y añadir a la línea plugins:
-plugins=(
-  git                    # Aliases para git
-  docker                 # Autocompletado de docker
-  kubectl                # Autocompletado de kubectl
-  sudo                   # Presiona ESC dos veces para añadir sudo
-  history                # Aliases para historial
-  colored-man-pages      # Páginas man con colores
-  zsh-autosuggestions    # Sugerencias mientras escribes
-  zsh-syntax-highlighting # Resalta comandos válidos
-)
-
-# Instalar plugins adicionales (ejemplo):
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
-# Temas populares de Oh My Zsh:
-# Editar ZSH_THEME en ~/.zshrc:
-ZSH_THEME="robbyrussell"   # Por defecto
-ZSH_THEME="agnoster"       # Popular con powerline
-ZSH_THEME="powerlevel10k/powerlevel10k"  # Muy personalizable
-```
-
-**5. Aliases útiles para añadir a ~/.zshrc:**
-```bash
-# Navegación
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias ~='cd ~'
-alias -- -='cd -'
-
-# Listados mejorados
-alias l='ls -lah'
-alias ll='ls -lh'
-alias la='ls -lAh'
-alias lt='ls -ltrh'        # Por fecha
-alias lS='ls -lSrh'        # Por tamaño
-
-# Git shortcuts
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gl='git log --oneline --graph --decorate'
-
-# Utilidades
-alias h='history'
-alias j='jobs -l'
-alias path='echo $PATH | tr ":" "\n"'
-alias now='date +"%T"'
-alias today='date +"%Y-%m-%d"'
-
-# Seguridad
-alias rm='rm -i'           # Confirmar antes de borrar
-alias cp='cp -i'           # Confirmar antes de sobreescribir
-alias mv='mv -i'           # Confirmar antes de sobreescribir
-
-# macOS específico
-alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder'
-alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder'
-alias cleanup='find . -name "*.DS_Store" -type f -delete'
-
-# Recargar configuración
-alias reload='source ~/.zshrc'
-```
-
-**6. Funciones útiles para zsh:**
-```bash
-# Añadir a ~/.zshrc:
-
-# Crear y entrar a directorio
-mkcd() {
-  mkdir -p "$1" && cd "$1"
-}
-
-# Extraer cualquier tipo de archivo comprimido
-extract() {
-  if [ -f $1 ]; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1     ;;
-      *.tar.gz)    tar xzf $1     ;;
-      *.bz2)       bunzip2 $1     ;;
-      *.rar)       unrar e $1     ;;
-      *.gz)        gunzip $1      ;;
-      *.tar)       tar xf $1      ;;
-      *.tbz2)      tar xjf $1     ;;
-      *.tgz)       tar xzf $1     ;;
-      *.zip)       unzip $1       ;;
-      *.Z)         uncompress $1  ;;
-      *.7z)        7z x $1        ;;
-      *)           echo "'$1' no se puede extraer" ;;
-    esac
-  else
-    echo "'$1' no es un archivo válido"
-  fi
-}
-
-# Buscar en historial
-h() {
-  history | grep "$1"
-}
-
-# Crear backup de archivo
-backup() {
-  cp "$1"{,.backup-$(date +%Y%m%d-%H%M%S)}
-}
-```
-
-### Migración de bash a zsh
-
-Si vienes de bash, estos conceptos te ayudarán:
-
-```bash
-# La mayoría de scripts bash funcionan en zsh, pero:
-
-# 1. Arrays (diferente sintaxis):
-# Bash:
-array=(a b c)
-echo ${array[0]}        # a
-
-# Zsh:
-array=(a b c)
-echo ${array[1]}        # a (¡índice empieza en 1!)
-
-# 2. Variables:
-# Bash y Zsh similares:
-variable="valor"
-echo $variable
-
-# 3. Funciones:
-# Bash y Zsh similares:
-mi_funcion() {
-  echo "Hola desde función"
-}
-
-# 4. Compatibilidad:
-# Para ejecutar script bash en zsh:
-#!/usr/bin/env bash
-# o
-emulate bash
-```
-
-### Tips finales para macOS/zsh:
-
-💡 **Mejores prácticas:**
-- Usa `brew` para instalar herramientas de desarrollo
-- Instala `iterm2` como alternativa superior a Terminal.app
-- Configura Oh My Zsh para productividad inmediata
-- Aprende los atajos del teclado de macOS (⌘, ⌥, ⌃)
-- Usa `tmux` o screen para multiplexación de terminal
-- Configura claves SSH para GitHub/GitLab/BitBucket
-
-💡 **Herramientas esenciales para desarrolladores en macOS:**
-```bash
-brew install git
-brew install wget
-brew install curl
-brew install tree
-brew install htop
-brew install jq              # Procesador JSON
-brew install fzf             # Búsqueda difusa en línea de comandos
-brew install ripgrep         # grep más rápido
-brew install bat             # cat con sintaxis highlight
-brew install exa             # ls moderno
-brew install tldr            # man simplificado
-```
-
----
-
 > **Checklist al cerrar la sesión (5 min):**
 > - Kernel y distro identificados.
 > - Gestor de paquetes utilizado al menos una vez.
 > - Shell reconocido y comandos básicos practicados.
 > - Creación y gestión de usuarios documentada para ejercicios posteriores.
-> - Si usas macOS/zsh, configuración básica establecida.
+> - Entorno de desarrollo configurado (ejercicios opcionales).
