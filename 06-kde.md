@@ -115,7 +115,7 @@ Nota: ejecicios realizado con `kubuntu-16.04.6-desktop-amd64`
 |---|---|---|
 | 6.10.A | **Konsole**: Ctrl+Shift+T (nueva pestaña) → Ctrl+Shift+L (split vertical) → En panel izq: `htop` → En panel der: `ls -l /etc` | Terminal con tabs y splits. Máxima productividad |
 | 6.10.B | **KWrite vs KEdit**: Abrir `original.txt` en ambos y comparar | KEdit = notepad simple. KWrite = editor con syntax highlighting y números de línea |
-| 6.10.C | **KDE Help Center**: Menú > Ayuda → Buscar "Dolphin" | Documentación unificada del sistema |
+| 6.10.C | **KDE Help Center**: `Alt + Espacio` > "Ayuda"  | Documentación unificada del sistema |
 | 6.10.D | **KFind**: Menú > Utilidades → Buscar en `/etc` → Patrón `*.conf` → Modificado últimos 7 días → Buscar | Búsqueda avanzada con filtros de fecha/tamaño/contenido |
 
 ## 6.11 System Settings (Configuración)
@@ -130,11 +130,13 @@ Ir a Equipo --> Preferencias del Sistema
 
 ## 6.12 KMenuEdit (Personalizar menú de apps)
 
+Estos tres ejercicios ejecutan una calculadora que se ubicará en "Aplicaciones".
+
 | ID | Acción | Resultado |
 |---|---|---|
 | 6.12.A | Clic derecho en Kickoff → "Editar Aplicaciones" → Panel izq: clic derecho en "Utilidades" → "Nuevo elemento" → Nombre: "Calculadora CLI" | Nueva entrada en blanco creada |
-| 6.12.B | Campo "Comando": `konsole -e bc -l` → Guardar | Entrada configurada para ejecutar calculadora en terminal |
-| 6.12.C | Cerrar editor → K-Menu → Utilidades → "Calculadora CLI" | Abre Konsole con `bc` ejecutándose |
+| 6.12.B | En pestaña "General" y el campo "Comando" (o "Orden"): `konsole -e bc -l` → Guardar | Entrada configurada para ejecutar calculadora en terminal |
+| 6.12.C | Cerrar editor → K-Menu → Utilidades → "Calculadora CLI" | Abre Konsole con `bc` ejecutándose. Probar una suma, por ejemplo: 5 + 2 y dar Enter |
 
 ## 6.13 Configuración avanzada del sistema
 
