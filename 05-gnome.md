@@ -95,6 +95,7 @@ Ir a Actividades → "Configuración"
 | 5.7.A | Configuración → Apariencia → Estilo oscuro | Tema oscuro global, menos opciones que KDE |
 | 5.7.B | Configuración → Multitarea → Hot Corners → Activar | Esquinas activas para overview (similar a macOS) |
 | 5.7.C | Configuración → Región e Idioma → Formatos | Cambios de idioma/localización |
+| 5.7.D | Configuración → Multitarea → Workspaces → Número dinámico | Workspaces virtuales: Ctrl+Alt+Up/Down para cambiar, Super+Shift+PageUp/Down para mover ventanas |
 
 ## GNOME vs KDE: Diferencias clave
 

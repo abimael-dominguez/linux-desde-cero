@@ -1,8 +1,8 @@
 # 2. Un Enfoque a Linux
 
-Este capítulo profundiza en cómo Linux gestiona la entrada y salida (I/O) del sistema: terminales, archivos, dispositivos, procesos y red. La meta es que comprendas el modelo "todo es un archivo" y practiques comandos que inspeccionan, redirigen y monitorizan I/O.
+Este capítulo profundiza en cómo Linux gestiona **la entrada y salida (I/O) del sistema**: terminales, archivos, dispositivos, procesos y red. La meta es que comprendas el modelo "todo es un archivo" y practiques comandos que inspeccionan, redirigen y monitorizan I/O.
 
-## 2.1 Fundamentos de Entrada/Salida
+## 2.1 Fundamentos de Entrada/Salida del sistema
 
 ### Concepto clave: todo es un archivo
 - Dispositivos (`/dev/sda`, `/dev/null`), sockets, pipes, terminales (`/dev/tty`), y hasta procesos (`/proc/<pid>`) se exponen como archivos.
