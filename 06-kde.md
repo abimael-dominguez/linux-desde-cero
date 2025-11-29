@@ -88,12 +88,16 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 
 ## 6.8 Propiedades y permisos
 
+**Nota:** Usaremos una carpeta y archivo de prueba que crearemos para evitar modificar carpetas del sistema.
+
 | ID | Comando/Acción | Resultado |
 |---|---|---|
-| 6.8.A | Clic derecho en `Documentos` → Propiedades → Ver pestañas General, Permisos, Metadatos | Muestra tamaño, fecha, permisos de acceso |
-| 6.8.B | Pestaña Permisos → Sección "Otros" → "Puede ver y modificar" → Aplicar | Equivalente GUI de `chmod` |
-| 6.8.C | `chmod o+w ~/Documentos` | Da permiso de escritura a "others". Cambio visible en GUI |
-| 6.8.D | `sudo chown root:root ~/Documentos` | Cambia owner a root. Verificar en Dolphin > Propiedades |
+| 6.8.A | `mkdir -p ./CursoKDE/permisos_test && touch ./CursoKDE/permisos_test/archivo_test.txt` | Crea directorio y archivo de prueba para experimentar |
+| 6.8.B | Clic derecho en `permisos_test` → Propiedades → Ver pestañas General, Permisos, Metadatos | Muestra tamaño, fecha, permisos de acceso del directorio |
+| 6.8.C | Pestaña Permisos → Sección "Otros" → "Puede ver y modificar" → Aplicar | Equivalente GUI de `chmod` para dar permisos |
+| 6.8.D | `chmod o+w ./CursoKDE/permisos_test` | Da permiso de escritura a "others". Cambio visible en GUI |
+| 6.8.E | `sudo chown root:root ./CursoKDE/permisos_test` | Cambia owner a root. Verificar en Dolphin > Propiedades |
+| 6.8.F | `ls -l ./CursoKDE/` | Verifica permisos y owner en terminal (ej: `drwxrwxr-x 2 root root ...`) |
 
 ## 6.9 Apps esenciales de KDE
 
