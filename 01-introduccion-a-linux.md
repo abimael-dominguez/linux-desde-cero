@@ -305,23 +305,192 @@ Setting up net-tools (1.60+git20181103.0eebece-1ubuntu5) ...
 - Desempaqueta e instala el paquete
 
 **Comandos útiles de búsqueda:**
-```bash
-# Búsqueda más específica
-apt search network | grep -i tool
 
+```bash
+# Búsqueda más específica con filtrado
+apt search network | grep -i tool
+```
+
+**Explicación detallada:**
+- `apt search network`: busca paquetes relacionados con "network" en nombre y descripción
+- `|` (pipe): pasa la salida del comando anterior al siguiente
+- `grep -i tool`: filtra líneas que contengan "tool" (case-insensitive)
+  - `-i`: ignora mayúsculas/minúsculas (insensitive)
+  - Sin `-i` solo encontraría "tool", con `-i` encuentra "tool", "Tool", "TOOL"
+
+**Ejemplo de salida:**
+```
+gnome-nettool/jammy 42.0-1 amd64
+  network information tool for GNOME
+net-tools/jammy 1.60+git20181103.0eebece-1ubuntu5 amd64
+  NET-3 networking toolkit
+```
+
+---
+
+```bash
 # Buscar paquetes que contienen un archivo específico (requiere apt-file)
 apt install apt-file
 apt-file update
 apt-file search ifconfig
+```
 
+**Explicación paso a paso:**
+
+1. `apt install apt-file`: instala la herramienta de búsqueda de archivos
+   - **¿Para qué sirve?** Buscar qué paquete proporciona un archivo específico
+   - **Caso de uso:** "Necesito el comando `ifconfig` pero no está instalado, ¿qué paquete lo tiene?"
+
+2. `apt-file update`: actualiza la base de datos de contenidos de paquetes
+   - **Importante:** Debes ejecutar esto primero para descargar el índice
+   - Similar a `apt update` pero para contenidos de archivos
+
+3. `apt-file search ifconfig`: busca qué paquetes contienen "ifconfig"
+
+**Salida esperada:**
+```
+net-tools: /sbin/ifconfig
+net-tools: /usr/share/man/man8/ifconfig.8.gz
+```
+
+**Interpretación:**
+- El paquete `net-tools` proporciona el comando `/sbin/ifconfig`
+- También incluye su manual en `/usr/share/man/man8/ifconfig.8.gz`
+
+**Más ejemplos útiles:**
+```bash
+# Buscar qué paquete proporciona el comando python3
+apt-file search /usr/bin/python3
+
+# Buscar archivos de configuración de nginx
+apt-file search nginx.conf
+
+# Buscar librerías compartidas
+apt-file search libssl.so
+```
+
+---
+
+```bash
 # Listar paquetes disponibles con patrón
 apt list 'net-*'
+```
 
+**Explicación:**
+- `apt list`: lista paquetes (instalados y disponibles)
+- `'net-*'`: patrón con comodín (wildcard)
+  - `*` = cualquier secuencia de caracteres
+  - **Importante:** Usa comillas para evitar que bash expanda el `*`
+  - Encuentra: `net-tools`, `netcat`, `network-manager`, etc.
+
+**Salida esperada:**
+```
+Listing...
+net-tools/jammy 1.60+git20181103.0eebece-1ubuntu5 amd64
+netbase/jammy 6.3 all [installed]
+netcat-openbsd/jammy 1.218-4ubuntu1 amd64
+netplan.io/jammy-updates 0.105-0ubuntu2~22.04.3 amd64
+```
+
+**Más patrones útiles:**
+```bash
+# Todos los paquetes de Python
+apt list 'python3-*'
+
+# Todos los paquetes de desarrollo
+apt list '*-dev'
+
+# Paquetes que empiezan con lib y terminan en -dev
+apt list 'lib*-dev'
+
+# Ver solo paquetes instalados con patrón
+apt list --installed 'python3-*'
+
+# Ver solo paquetes actualizables
+apt list --upgradable
+```
+
+---
+
+```bash
 # Ver dependencias de un paquete
 apt depends net-tools
+```
 
-# Ver qué paquetes dependen de este
+**Explicación:**
+- Muestra qué necesita el paquete para funcionar
+- **Útil para:** Entender las dependencias antes de instalar
+
+**Salida esperada:**
+```
+net-tools
+  Depends: libc6 (>= 2.34)
+  Depends: libselinux1 (>= 3.1~)
+```
+
+**Interpretación:**
+- `net-tools` NECESITA `libc6` versión 2.34 o superior
+- También necesita `libselinux1` versión 3.1 o superior
+- Si instalas `net-tools`, estos paquetes se instalarán automáticamente
+
+**Variantes útiles:**
+```bash
+# Ver dependencias de forma recursiva
+apt-cache depends --recurse net-tools | head -20
+
+# Ver dependencias de forma gráfica (si tienes debtree)
+apt install debtree
+debtree net-tools | dot -T png -o net-tools-deps.png
+
+# Ver solo dependencias directas importantes
+apt-cache depends net-tools --no-recommends --no-suggests
+```
+
+---
+
+```bash
+# Ver qué paquetes dependen de este (dependencias inversas)
 apt rdepends net-tools
+```
+
+**Explicación:**
+- Muestra qué otros paquetes NECESITAN este paquete
+- **Útil para:** Saber qué se romperá si desinstala este paquete
+
+**Salida esperada:**
+```
+net-tools
+Reverse Depends:
+  |ifupdown
+  |ubuntu-minimal
+  network-manager
+```
+
+**Interpretación:**
+- `ifupdown` depende de `net-tools`
+- `ubuntu-minimal` (paquete del sistema base) lo necesita
+- Si desinstalas `net-tools`, estos paquetes pueden dejar de funcionar
+
+**Más comandos de análisis de dependencias:**
+
+```bash
+# Ver por qué un paquete está instalado
+apt-cache rdepends --installed net-tools
+
+# Ver cadena completa de dependencias inversas
+apt-cache rdepends --recurse --installed net-tools | head -30
+
+# Verificar integridad de dependencias del sistema
+apt check
+
+# Ver paquetes huérfanos (instalados pero sin dependencias)
+deborphan
+
+# Simular instalación sin hacerla (ver qué se instalaría)
+apt install -s paquete
+
+# Ver tamaño de instalación de un paquete y sus dependencias
+apt install --dry-run -o Debug::pkgProblemResolver=yes paquete
 ```
 
 **💡 Tip:** Usa `apt search` para búsquedas amplias y `apt-cache search` para búsquedas más rápidas en caché.
