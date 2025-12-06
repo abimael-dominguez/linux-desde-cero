@@ -190,6 +190,62 @@ Resultado esperado: `paquete.bin: ELF 64-bit LSB executable`
 
 Gestionar permisos y propiedad.
 
+Una calculadora octal es tu mejor amiga para entender chmod.
+
+En el mundo de Linux, los permisos no se calculan con matemáticas complejas, sino con una suma muy simple basada en el sistema octal (base 8). Tu calculadora te servirá para sumar los "puntos" que vale cada permiso.
+
+Aquí tienes la guía definitiva para usar tu calculadora con chmod.
+
+1. La Tabla de Puntos (El Código Secreto)
+Imagina que cada permiso tiene un precio o un valor en puntos. Solo hay 3 números que debes memorizar:
+
+| Valor | Permiso | Letra | Significado |
+|---|---|---|---|
+| 4 | Lectura | r (Read) | Ver el archivo (abrir el libro). |
+| 2 | Escritura | w (Write) | Modificar el archivo (arrancar o escribir hojas). |
+| 1 | Ejecución | x (Execute) | Correr el programa (si es un script o app). |
+| 0 | Nada | - | Prohibido el paso. |
+
+2. Cómo usar tu calculadora
+Para saber qué número poner en el chmod, solo tienes que sumar lo que quieres permitir.
+ * Quiero leer y escribir: 4 + 2 = 6
+ * Quiero leer y ejecutar: 4 + 1 = 5
+ * Quiero todo (Full access): 4 + 2 + 1 = 7
+ * Solo quiero leer: 4 + 0 + 0 = 4
+¡Por eso el número máximo es 7! (Es un sistema octal porque los dígitos van del 0 al 7).
+
+3. Los Tres Dígitos del chmod
+Cuando ves un comando como chmod 755 archivo.txt, en realidad son tres sumas separadas una al lado de la otra.
+Tu calculadora octal te ayuda a desglosar esto:
+ * Primer dígito (El Dueño/Tú): ¿Qué permisos tienes tú?
+ * Segundo dígito (El Grupo): ¿Qué permisos tienen tus colegas de equipo?
+ * Tercer dígito (El Resto del Mundo): ¿Qué permiso tiene cualquier extraño?
+
+Ejemplo: El famoso 755
+
+Desglosemos qué significa usando tu suma:
+ * 7 (Tú): 4+2+1 -> Tienes control total (Lees, Escribes, Ejecutas).
+ * 5 (Grupo): 4+1 -> Ellos pueden Leer y Ejecutar, pero no Escribir (el 2 no está en la suma).
+ * 5 (Otros): 4+1 -> Los extraños igual: miran pero no tocan.
+
+4. Advertencia de Seguridad
+Seguro verás en internet gente recomendando chmod 777.
+ * ¿Qué significa? 4+2+1 para TI, para el GRUPO y para TODOS.
+ * Traducción: Dejas la puerta de tu casa abierta, sin llave, y con un cartel que dice "Entren y hagan lo que quieran". ¡Evítalo a menos que sea estrictamente necesario!
+
+Resumen para tu calculadora
+
+No necesitas hacer multiplicaciones ni divisiones.
+
+Tu calculadora octal te sirve para verificar: "Si sumo Lectura (4) + Escritura (2), ¿el resultado es 6?".
+
+¿Quieres hacer una prueba rápida?
+Dime qué permisos le darías a un archivo que es top secret: Solo tú puedes leerlo y escribirlo, y nadie más (ni grupo ni otros) puede ver nada. ¿Qué número (código de 3 dígitos) usarías?
+
+- Respuesta: 600
+
+### Resumen:
+
 Explicación de permisos (octal y simbólico):
 
 - Lectura (`r`=4), escritura (`w`=2), ejecución (`x`=1). Octal combina por posición: propietario/grupo/otros.
