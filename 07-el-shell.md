@@ -2,84 +2,367 @@
 
 ## 7.1 Introducción
 
-<!-- Comandos de terminal aquí -->
+El shell es la interfaz de línea de comandos para interactuar con Linux. En la industria se usa para automatización (scripts), administración de servidores, despliegues y análisis de logs.
+
+- Comprobar tu shell actual: `echo $SHELL`
+- Cambiar temporalmente: `bash` o `zsh`
+- Ver shells disponibles: `cat /etc/shells`
+
+Resultado esperado:
+- `echo $SHELL` -> `/bin/bash` o `/bin/zsh`
 
 ## 7.2 Algunos comandos sencillos de LINUX
 
-<!-- Comandos de terminal aquí -->
+Comandos básicos útiles en cualquier entorno.
+
+- Fecha y hora: `date`
+	- Uso: Timestamps en scripts y auditoría.
+	- Recomendación: `date +"%F %T"` para formato estándar ISO.
+	- Comprobación: Comparar con reloj del sistema.
+	- Resultado esperado: `2025-12-05 14:30:00`
+
+- Usuarios conectados: `who`
+	- Uso: Ver sesiones en servidores multiusuario.
+	- Recomendación: `who | wc -l` para contar sesiones.
+	- Comprobación: Ver TTYs activos.
+	- Resultado esperado: `user tty0 2025-12-05 14:30`
+
+- Tiempo encendido: `uptime`
+	- Uso: Salud del servidor y carga.
+	- Recomendación: Vigilar `load average`.
+	- Comprobación: Cruzar con logs de reinicio.
+	- Resultado esperado: `14:30 up 5 days, 2 users, load average: 0.05, 0.10, 0.08`
 
 ## 7.3 Directorio personal
 
-<!-- Comandos de terminal aquí -->
+Tu directorio home es tu espacio de trabajo.
+
+- Ir al home: `cd ~` o `cd`
+- Ver ruta actual: `pwd`
+- Usar variable: `echo $HOME`
+
+Casos de uso: configuración de herramientas, claves SSH.
+Comprobación: `pwd` debe mostrar tu home.
+Resultado esperado: `/home/usuario` o `/Users/usuario`
 
 ## 7.4 Listado del contenido de directorios: comando ls
 
-<!-- Comandos de terminal aquí -->
+Lista archivos y directorios con opciones clave.
+
+- Formato largo y ocultos: `ls -lah`
+- Ordenar por fecha: `ls -lt`
+- Filtrar por patrón: `ls -l *.log`
+
+Casos de uso: inspección de releases, permisos, tamaños.
+Recomendación: usar `-h` para tamaños legibles.
+Comprobación: validar permisos en primera columna.
+Resultado esperado: `-rw-r--r-- 1 user user 1.2K Dec  5 14:30 app.log`
 
 ## 7.5 Creación de subdirectorios. Comando mkdir
 
-<!-- Comandos de terminal aquí -->
+Crear estructuras de proyecto.
+
+- Crear anidados: `mkdir -p proyecto/src/tests`
+- Verificar creación: `ls -d proyecto/src`
+
+Casos de uso: scaffolding de repos, pipelines.
+Recomendación: siempre `-p` en scripts.
+Resultado esperado: `proyecto/src`
 
 ## 7.6 Borrado de subdirectorios. Comando rmdir
 
-<!-- Comandos de terminal aquí -->
+Eliminar directorios vacíos.
+
+- Borrar vacío: `rmdir carpeta_vacia`
+- Comprobar vacío: `ls -A carpeta_vacia` (sin salida)
+
+Recomendación: usar `rm -r` si contiene archivos y estás seguro.
+Resultado esperado: `rmdir: failed to remove 'carpeta_vacia': No such file or directory` si ya no existe.
 
 ## 7.7 Cambio de directorio. Comando cd
 
-<!-- Comandos de terminal aquí -->
+Navegar por el sistema de archivos.
+
+- Subir nivel: `cd ..`
+- Volver anterior: `cd -`
+- Ir absoluto: `cd /var/log`
+
+Casos de uso: revisar logs, configuraciones.
+Comprobación: `pwd` tras moverte.
+Resultado esperado: ruta actual cambia, e.g., `/var/log`
 
 ## 7.8 Ruta actual. Comando pwd
 
-<!-- Comandos de terminal aquí -->
+Mostrar la ruta actual.
+
+- Ver ruta: `pwd`
+
+Casos de uso: evitar operaciones en rutas equivocadas.
+Recomendación: usar en scripts antes de acciones destructivas.
+Resultado esperado: `/home/usuario/proyecto`
 
 ## 7.9 Acceso a unidades de disco
 
-<!-- Comandos de terminal aquí -->
+Montar y acceder a dispositivos.
+
+- Listar discos: `lsblk` (Linux) o `diskutil list` (macOS)
+- Montar (Linux): `sudo mount /dev/sdb1 /mnt`
+- Ver uso: `df -h`
+
+Casos de uso: adjuntar volúmenes de datos, backups.
+Comprobación: `ls /mnt` muestra archivos.
+Resultado esperado: `Filesystem Size Used Avail Use% Mounted on ... /mnt`
 
 ## 7.10 Copia de ficheros. Comando cp
 
-<!-- Comandos de terminal aquí -->
+Copiar archivos y directorios.
+
+- Copia simple: `cp origen.txt destino.txt`
+- Preservar atributos: `cp -a dir1 dir2`
+- Recursivo: `cp -r carpeta destino/`
+
+Casos de uso: respaldos de configuración, duplicar assets.
+Recomendación: `-i` para evitar sobrescribir.
+Comprobación: `ls destino.txt` existe.
+Resultado esperado: `destino.txt` copiado.
 
 ## 7.11 Traslado y cambio de nombre de ficheros. Comando mv
 
-<!-- Comandos de terminal aquí -->
+Mover o renombrar.
+
+- Renombrar: `mv archivo.log archivo-2025-12-05.log`
+- Mover: `mv build/* releases/`
+
+Casos de uso: versionado de logs, reorganizar builds.
+Recomendación: `-i` para evitar sobrescrituras.
+Comprobación: `ls` en origen y destino.
+Resultado esperado: archivos ubicados/renombrados correctamente.
 
 ## 7.12 Enlaces a ficheros. Comando ln
 
-<!-- Comandos de terminal aquí -->
+Crear enlaces simbólicos y duros.
+
+- Enlace simbólico: `ln -s /opt/app/config.yml ~/.config/app.yml`
+- Enlace duro: `ln archivo.dat enlace.dat`
+
+Casos de uso: apuntar a versiones, dotfiles.
+Recomendación: preferir simbólicos para flexibilidad.
+Comprobación: `ls -l` muestra `->` en simbólicos.
+Resultado esperado: `app.yml -> /opt/app/config.yml`
 
 ## 7.13 Borrado de ficheros. Comando rm
 
-<!-- Comandos de terminal aquí -->
+Eliminar archivos y árboles.
+
+- Borrar archivo: `rm archivo.tmp`
+- Recursivo y forzado: `rm -rf carpeta_tmp/`
+
+Casos de uso: limpiar temporales, artefactos.
+Recomendación: extrema cautela con `rm -rf` (nunca con rutas expansivas como `/`).
+Comprobación: `ls` no debe mostrar el archivo.
+Resultado esperado: archivo/directorio eliminado.
 
 ## 7.14 Características de un fichero. Comando file
 
-<!-- Comandos de terminal aquí -->
+Detectar tipo de contenido real.
+
+- Analizar: `file paquete.bin`
+
+Casos de uso: validar uploads, binarios, scripts.
+Comprobación: coincide con lo esperado.
+Resultado esperado: `paquete.bin: ELF 64-bit LSB executable`
 
 ## 7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp
 
-<!-- Comandos de terminal aquí -->
+Gestionar permisos y propiedad.
+
+Explicación de permisos (octal y simbólico):
+
+- Lectura (`r`=4), escritura (`w`=2), ejecución (`x`=1). Octal combina por posición: propietario/grupo/otros.
+- Ejemplo `chmod 750 script.sh` equivale a `u=rwx,g=rx,o=---`.
+
+Tabla descriptiva rápida:
+
+- Permiso: `r` — Descripción: leer contenido — Afecta: archivos y directorios (listar).
+- Permiso: `w` — Descripción: modificar — Afecta: escribir archivo; crear/borrar en directorio.
+- Permiso: `x` — Descripción: ejecutar — Afecta: ejecutar binario/script; entrar a directorio.
+- Modo: `u,g,o` — Usuario, grupo, otros.
+- Símbolos: `+` añade, `-` quita, `=` asigna exacto.
+
+Comandos comunes y casos de uso:
+
+- Cambiar permisos (octal): `chmod 640 README.md`
+	- Caso: restringir lectura a grupo, negar a otros.
+	- Comprobación: `ls -l README.md`
+	- Resultado esperado: `-rw-r-----`
+
+- Cambiar permisos (simbólico): `chmod u+x scripts/deploy.sh`
+	- Caso: permitir ejecución al propietario.
+	- Comprobación: `ls -l scripts/deploy.sh`
+	- Resultado esperado: `-rwx------` o similar, según estado previo.
+
+- Cambiar dueño y grupo: `sudo chown root:dev /opt/app/config.yml`
+	- Caso: propiedad correcta para servicios.
+	- Comprobación: `ls -l /opt/app/config.yml`
+	- Resultado esperado: dueño `root`, grupo `dev`.
+
+- Cambiar grupo: `sudo chgrp dev /opt/app/config.yml`
+	- Caso: ajustar acceso compartido.
+	- Comprobación: `ls -l /opt/app/config.yml`
+	- Resultado esperado: grupo `dev` aplicado.
+
+Tabla descriptiva (resumen de comandos):
+
+- Comando: `chmod` — Acción: permisos — Ejemplos: `chmod 755 archivo`, `chmod g-w,o-r archivo` — Resultado: actualización de bits de permiso.
+- Comando: `chown` — Acción: dueño/grupo — Ejemplos: `chown user archivo`, `chown user:group archivo` — Resultado: cambio de propietario.
+- Comando: `chgrp` — Acción: grupo — Ejemplos: `chgrp dev archivo` — Resultado: cambio de grupo.
 
 ## 7.16 Espacio ocupado en el disco comandos DU y DF
 
-<!-- Comandos de terminal aquí -->
+Medir uso y disponibilidad.
+
+- Uso por directorio: `du -h -d 1 /var/log`
+- Espacio libre: `df -h`
+
+Casos de uso: monitoreo de disco, evitar incidentes.
+Comprobación: comparar suma de `du` con `df`.
+Resultado esperado: tamaños legibles por directorio y total disponible.
 
 ## 7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR
 
-<!-- Comandos de terminal aquí -->
+Ver contenido de archivos.
+
+- Sin formato: `cat README.md`
+- Con paginado/encabezado (impresión): `pr -h "Reporte" archivo.txt`
+
+Casos de uso: revisión rápida de configs/logs.
+Recomendación: usar `cat` en pipelines.
+Comprobación: contenido visible en terminal.
+Resultado esperado: líneas del archivo impresas.
 
 ## 7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS
 
-<!-- Comandos de terminal aquí -->
+Navegar archivos largos.
+
+- Paginado: `less /var/log/syslog`
+- Búsqueda: dentro de `less` usar `/error`.
+
+Casos de uso: análisis de logs extensos.
+Recomendación: preferir `less` a `more`.
+Comprobación: moverse con flechas y encontrar patrones.
+Resultado esperado: visualización página a página.
 
 ## 7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP
 
-<!-- Comandos de terminal aquí -->
+Buscar patrones en textos.
+
+Tabla descriptiva rápida:
+
+- Comando: `grep` — Patrones básicos (BRE) — Ejemplo: `grep -n ERROR archivo.log`
+- Comando: `egrep` o `grep -E` — Patrones extendidos (ERE) — Ejemplo: `grep -E "(ERROR|FAIL)" archivo.log`
+- Comando: `fgrep` o `grep -F` — Búsqueda literal — Ejemplo: `grep -F "[INFO]" archivo.log`
+
+Opciones útiles:
+- `-n` (número de línea), `-i` (insensible a mayúsculas), `-r` (recursivo), `--color=auto` (resaltar), `-H` (mostrar nombre archivo).
+
+Ejemplos usando este repositorio (`*.md`):
+
+- Buscar “Linux” en todos los temas: `grep -nH "Linux" *.md`
+	- Caso: verificar menciones en documentación.
+	- Resultado esperado: líneas con `Linux` y archivos como `README.md:1: Temario de Linux`.
+
+- Buscar títulos de sección “El Shell” en todo: `grep -nH "El Shell" *.md`
+	- Caso: localizar sección rápidamente.
+	- Resultado esperado: coincidencias en `README.md` y `07-el-shell.md`.
+
+- Recursivo por carpetas (si las hubiera): `grep -rnH "Permisos" .`
+	- Caso: auditar documentación de permisos.
+	- Resultado esperado: rutas y líneas con “Permisos”.
+
+- Literal exacto con corchetes: `grep -F "[INFO]" app.log`
+	- Caso: logs con etiquetas.
+	- Resultado esperado: líneas con `[INFO]` sin interpretar regex.
+
+- Regex extendido con alternación: `grep -E "(GNOME|KDE)" README.md`
+	- Caso: buscar tecnologías de entornos gráficos.
+	- Resultado esperado: líneas que contienen GNOME o KDE.
+
+Ejercicios prácticos (usa los archivos del repo):
+
+- Contar cuántas veces aparece “Introducción” en todos los `.md`: `grep -o "Introducción" *.md | wc -l`
+	- Comprobación: número total impreso.
+	- Resultado esperado: un entero, por ejemplo `5`.
+
+- Listar archivos que mencionan “permisos” ignorando mayúsculas: `grep -li "permisos" *.md`
+	- Comprobación: nombres de archivos mostrados.
+	- Resultado esperado: `03-estructura...`, `07-el-shell.md`, etc.
+
+- Mostrar líneas y archivo donde aparece “GREP”: `grep -nH "GREP" 07-el-shell.md`
+	- Comprobación: ver el número de línea.
+	- Resultado esperado: coincidencias en la sección 7.19.
+
+- Extraer encabezados (líneas que empiezan con `#`) del README: `grep -n "^#" README.md`
+	- Comprobación: todas las cabeceras con número de línea.
+	- Resultado esperado: líneas que comienzan con `#`.
 
 ## 7.20 Comandos TAR y GZIP
 
-<!-- Comandos de terminal aquí -->
+Empaquetar y comprimir.
+
+Tabla descriptiva rápida:
+
+- Comando: `tar` — Empaquetar múltiples archivos en un único tarball.
+- Comando: `gzip` — Comprimir un archivo (incluido un tarball) usando DEFLATE.
+
+Opciones comunes de `tar`:
+- `-c` crear, `-x` extraer, `-t` listar, `-z` gzip, `-v` verbose, `-f` archivo, `-C` directorio destino.
+
+Ejemplos prácticos:
+
+- Crear un paquete del repositorio actual: `tar -czf linux-desde-cero_$(date +%F).tar.gz *.md`
+	- Caso: snapshot de documentación.
+	- Comprobación: `tar -tzf linux-desde-cero_$(date +%F).tar.gz | head`
+	- Resultado esperado: lista de `.md` dentro del tar.gz.
+
+- Listar contenido detallado: `tar -tvzf linux-desde-cero_2025-12-05.tar.gz`
+	- Caso: inspeccionar permisos y fechas dentro del tar.
+	- Resultado esperado: líneas con permisos/tamaño/fecha/nombre.
+
+- Extraer a carpeta específica: `mkdir -p dist && tar -xzf linux-desde-cero_2025-12-05.tar.gz -C dist`
+	- Comprobación: `ls dist`
+	- Resultado esperado: archivos `.md` presentes en `dist`.
+
+- Comprimir un archivo suelto con gzip: `gzip README.md`
+	- Caso: reducir tamaño para transferencia.
+	- Comprobación: `ls README.md.gz`
+	- Resultado esperado: `README.md.gz` creado.
+
+- Descomprimir: `gunzip README.md.gz`
+	- Comprobación: `ls README.md`
+	- Resultado esperado: archivo restaurado.
+
+- Ver tamaño antes/después: `ls -lh README.md README.md.gz`
+	- Resultado esperado: tamaños distintos (gz más pequeño).
+
+Ejercicios:
+
+- Empaqueta todos los temas y verifica: `tar -czf temas.tar.gz 0*.md 1*.md`
+	- Comprobación: `tar -tzf temas.tar.gz | wc -l`
+	- Resultado esperado: conteo de archivos incluidos.
+
+- Crea un tar sin compresión y luego comprímelo: `tar -cf docs.tar *.md && gzip docs.tar`
+	- Comprobación: `ls docs.tar.gz`
+	- Resultado esperado: `docs.tar.gz` existente.
 
 ## 7.21 Comandos de impresion lpr
 
-<!-- Comandos de terminal aquí -->
+Enviar trabajos a impresión.
+
+- Imprimir: `lpr documento.pdf`
+- Ver cola: `lpq`
+- Cancelar: `lprm <job_id>`
+
+Casos de uso: oficinas, reportes.
+Recomendación: verificar impresora con `lpstat -p`.
+Comprobación: `lpq` muestra el trabajo en cola.
+Resultado esperado: trabajo en cola y salida impresa.
