@@ -113,6 +113,20 @@ Casos de uso: adjuntar volúmenes de datos, backups.
 Comprobación: `ls /mnt` muestra archivos.
 Resultado esperado: `Filesystem Size Used Avail Use% Mounted on ... /mnt`
 
+Buenas prácticas:
+
+En Linux ha dos lugares "estandar" para montar cosas:
+
+- /media
+    - Generalmente lo usa el sistema para cosas automáticas (USBs, CDs)
+- /mnt
+    - Es la carpeta clásica de montajes manuales.
+    - Ejemplos:
+        - /mnt/respaldos
+        - /mnt/fotos
+        - /mnt/disco_externo
+
+
 ## 7.10 Copia de ficheros. Comando cp
 
 Copiar archivos y directorios.
