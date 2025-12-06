@@ -1147,6 +1147,7 @@ Linux implementa un sistema de seguridad basado en **usuarios** (identificados p
 
 ```bash
 getent passwd | head
+getent passwd
 ```
 
 **Explicación de los comandos:**
@@ -1376,6 +1377,12 @@ usermod -d /home/nuevo_home -m alumno
 
 # Cambiar el nombre de usuario
 usermod -l nuevo_nombre viejo_nombre
+  - Revisar el nuevo nombre de usuario que cambió (el /home prevalece):
+    - getent passwd
+    - Regresar al estado anterior:
+      - sudo usermod -l alumno nuevo_nombre
+      - getent passwd alumno
+          - Así debe quedar: `alumno:x:1001:1001::/home/alumno:/bin/bash` 
 
 # Cambiar el comentario/descripción
 usermod -c "Alumno del Curso de Linux" alumno
