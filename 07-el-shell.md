@@ -292,6 +292,9 @@ Tabla descriptiva (resumen de comandos):
 Medir uso y disponibilidad.
 
 - Uso por directorio: `du -h -d 1 /var/log`
+    - Verificar el espacio ocupado por cada usuario
+        - `du -h -d 1 /home/`
+        
 - Espacio libre: `df -h`
 
 Casos de uso: monitoreo de disco, evitar incidentes.
