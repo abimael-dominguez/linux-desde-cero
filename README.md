@@ -146,3 +146,26 @@ El curso tiene una duración total de 20 horas, dividido en 4 sesiones de 5 hora
   - Tema 11: SCP Copias Remotas - práctica: compilación (make), expresiones regulares, comandos de red, scp (ejercicios en AWS EC2)
   - Ejercicios integrales y revisión
   - Revisión final, troubleshooting y Q&A
+
+## Simular sistema con kernel Linux en macOS (Multipass)
+
+Multipass permite crear VMs de Ubuntu ligeras en macOS para practicar Linux.
+
+- Crear y arrancar una VM:
+  - `multipass launch --name mi-linux`
+  - `multipass start mi-linux`
+  - `multipass list`
+  - `multipass shell mi-linux`
+  - Resultado esperado: `Listo: te deja dentro de la VM. Cuando termines, \`exit\` para volver a tu Mac.`
+
+- Reset (reiniciar todas las VMs):
+  - `multipass restart --all`
+
+- Borrar la instancia y empezar limpio:
+  - (Opcional) Apagar si está corriendo: `multipass stop mi-linux`
+  - Borrar instancia (conserva la imagen): `multipass delete mi-linux`
+  - Limpiar discos huérfanos: `multipass purge`
+  - Crear una nueva: `multipass launch --name mi-linux`
+  - Resultado esperado: `Listo: tendrás una VM nueva en blanco.`
+
+Nota: si querías conservar algo, haz backup antes (`multipass mount` para copiar o `scp`/`rsync`).
