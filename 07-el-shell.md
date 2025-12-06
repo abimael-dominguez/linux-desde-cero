@@ -294,7 +294,7 @@ Medir uso y disponibilidad.
 - Uso por directorio: `du -h -d 1 /var/log`
     - Verificar el espacio ocupado por cada usuario
         - `du -h -d 1 /home/`
-        
+
 - Espacio libre: `df -h`
 
 Casos de uso: monitoreo de disco, evitar incidentes.
@@ -327,12 +327,27 @@ Resultado esperado: visualización página a página.
 
 ## 7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP
 
-Buscar patrones en textos.
+Buscar patrones en textos. `grep` significa Global Regular Expressions Print y  en términos simples funciona como un filtro.
 
 Tabla descriptiva rápida:
 
 - Comando: `grep` — Patrones básicos (BRE) — Ejemplo: `grep -n ERROR archivo.log`
 - Comando: `egrep` o `grep -E` — Patrones extendidos (ERE) — Ejemplo: `grep -E "(ERROR|FAIL)" archivo.log`
+    - Equivale a ejecutar grep -E. Su función principal es permitir el uso de Expresiones Regulares Extendidas sin necesidad de "escapar" caracteres especiales ( como  +, ?, |, etc.), lo que hace que los comandos sean más legibles.
+
+- Ejemplos:
+    - Encontrar líneas que comiencen con una o más letras mayúsculas seguidas de dos puntos (:), ejemplo: "NOMBRE: Juan".
+        - `egrep "^[A-Z]+:" README.md ` (si no funciona quitar ^)
+    - Validación de formato de URLs
+        - Imagina que quieres buscar URLs en un archivo, pero algunas son http y otras https. Quieres capturar ambas con un solo patrón.
+            - `egrep "https?://www\.google\.com" enlaces.txt`
+                - |: O lógico 
+                - +: Significa que el anterior se repite 1 o más veces.
+                - ?: Significa que el anterior se repite 0 o 1 vez (opcional)
+                - .: Cualquier caracter
+                - ^: Inicio de línea
+                - $: Fin de la línea
+        
 - Comando: `fgrep` o `grep -F` — Búsqueda literal — Ejemplo: `grep -F "[INFO]" archivo.log`
 
 Opciones útiles:
