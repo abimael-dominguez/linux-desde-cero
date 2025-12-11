@@ -203,6 +203,10 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Números pares separados en pares.txt" 
 } 2> errores.log
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Proceso completado" >> process.log
+
+# Ejemplo en una sóla línea. Separar usando tee para duplicar el stream
+# printf "%s\n" {1..100} | tee all.txt | tee >(grep -E '[13579]$' > impares.txt) >(grep -E '[02468]$' > pares.txt) > /dev/null
+
 ```
 
 #### Explicación de Descriptores Estándar
