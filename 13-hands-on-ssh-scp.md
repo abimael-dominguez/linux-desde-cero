@@ -161,13 +161,13 @@ scp [opciones] origen destino
 ### Ejemplo: Copiar un archivo al servidor remoto
 
 ```bash
-scp calestone-code.tgz user@server:~/
+scp my-code.tgz user@server:~/
 ```
 
 **Salida esperada:**
 
 ```
-calestone-code.tgz                              100% 1024KB  10.2MB/s   00:00
+my-code.tgz                              100% 1024KB  10.2MB/s   00:00
 ```
 
 ### Copiar directorios
