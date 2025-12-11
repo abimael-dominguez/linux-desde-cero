@@ -170,6 +170,16 @@ scp my-code.tgz user@server:~/
 my-code.tgz                              100% 1024KB  10.2MB/s   00:00
 ```
 
+### Ejemplo: Copiar un archivo al servidor remoto usando una clave privada específica
+
+```bash
+scp -i /path/to/private/key.pem <archivo a enviar>.txt user@remote-server:~/
+```
+
+**Nota:** Reemplaza `/path/to/private/key.pem` con la ruta a tu clave privada, `<archivo a enviar>.txt` con el nombre del archivo a copiar, `user@remote-server` con el usuario y host remoto, y `~/` con el directorio destino.
+
+La opción `-i` especifica el archivo de clave privada a usar para la autenticación SSH. Esto es útil cuando tienes múltiples claves o cuando la clave no está en la ubicación predeterminada (`~/.ssh/id_rsa`). Asegúrate de que el archivo de clave tenga permisos restrictivos (ej. `chmod 600 key.pem`) para seguridad.
+
 ### Copiar directorios
 
 Para copiar directorios, usa la opción `-r`:
