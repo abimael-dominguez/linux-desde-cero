@@ -1,0 +1,4 @@
+2025-12-13 13:59:13,001 ERROR [MainThread] Fallo de conexión: No se pudo establecer la conexión con la base de datos 'prod_db'. Timeout alcanzado.
+2025-12-13 13:59:13,155 ERROR [Worker-5] Excepción no manejada: 'NullPointerException' al procesar el registro de usuario ID: 456.
+2025-12-13 13:59:13,870 ERROR [JobScheduler] Tarea crítica 'GenerateReports' falló después de 3 reintentos. Código de error: 500.
+2025-12-13 13:59:14,022 ERROR [APIHandler] Error de validación de esquema en la solicitud POST para /api/v1/data. Falta el campo 'required_field'.

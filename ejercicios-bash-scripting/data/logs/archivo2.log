@@ -1,0 +1,6 @@
+2025-12-13 13:59:14,500 INFO  [MainThread] Iniciando la aplicación. Versión 2.1.0.
+2025-12-13 13:59:14,689 INFO  [Worker-1] Procesando lote de 1000 transacciones. Lote ID: TXN_20251213-001.
+2025-12-13 13:59:14,990 ERROR [DBConnector] Fallo al ejecutar la consulta SQL: 'SELECT * FROM users WHERE status='active''. Causa: Permiso denegado.
+2025-12-13 13:59:15,101 INFO  [JobScheduler] La tarea 'CleanUpCache' se ha completado exitosamente en 0.52 segundos.
+2025-12-13 13:59:15,350 ERROR [FileHandler] No se pudo escribir en el archivo de configuración '/etc/app/config.json'. El sistema de archivos está lleno.
+2025-12-13 13:59:15,400 INFO  [Worker-1] Lote de transacciones TXN_20251213-001 procesado. 998 exitosas, 2 fallidas.
