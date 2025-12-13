@@ -2,6 +2,29 @@
 
 Este capítulo profundiza en cómo Linux gestiona **la entrada y salida (I/O) del sistema**: terminales, archivos, dispositivos, procesos y red. La meta es que comprendas el modelo "todo es un archivo" y practiques comandos que inspeccionan, redirigen y monitorizan I/O.
 
+## Índice
+
+- [2. Un Enfoque a Linux](#2-un-enfoque-a-linux)
+  - [2.1 Fundamentos de Entrada/Salida del sistema](#21-fundamentos-de-entradasalida-del-sistema)
+    - [Concepto clave: todo es un archivo](#concepto-clave-todo-es-un-archivo)
+    - [Descriptores estándar](#descriptores-estándar)
+    - [Operadores de redirección y pipes](#operadores-de-redirección-y-pipes)
+    - [Redirección desde y hacia dispositivos](#redirección-desde-y-hacia-dispositivos)
+  - [2.2 TTY, PTY y terminales](#22-tty-pty-y-terminales)
+    - [Identificar tu terminal](#identificar-tu-terminal)
+    - [Variables de entorno relacionadas](#variables-de-entorno-relacionadas)
+  - [2.3 Pipes, filtros y composición](#23-pipes-filtros-y-composición)
+  - [2.4 Entrada/Salida en archivos y texto](#24-entradasalida-en-archivos-y-texto)
+    - [Lectura, escritura y visualización](#lectura-escritura-y-visualización)
+    - [Búsqueda y reemplazo](#búsqueda-y-reemplazo)
+  - [2.5 I/O de procesos: redirecciones avanzadas](#25-io-de-procesos-redirecciones-avanzadas)
+    - [Operadores útiles](#operadores-útiles)
+  - [2.6 Ejercicios prácticos guiados](#26-ejercicios-prácticos-guiados)
+    - [Ejercicio 1: Redirecciones y pipes](#ejercicio-1-redirecciones-y-pipes)
+    - [Ejercicio 2: Inspección básica de procesos](#ejercicio-2-inspección-básica-de-procesos)
+  - [2.7 Tips y buenas prácticas](#27-tips-y-buenas-prácticas)
+  - [2.8 Referencias rápidas](#28-referencias-rápidas)
+
 ## 2.1 Fundamentos de Entrada/Salida del sistema
 
 ### Concepto clave: todo es un archivo

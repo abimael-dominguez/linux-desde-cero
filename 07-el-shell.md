@@ -1,5 +1,29 @@
 # 7. El Shell
 
+## Índice
+
+- [7. El Shell](#7-el-shell)
+  - [7.1 Introducción](#71-introducción)
+  - [7.2 Algunos comandos sencillos de LINUX](#72-algunos-comandos-sencillos-de-linux)
+  - [7.3 Directorio personal](#73-directorio-personal)
+  - [7.4 Listado del contenido de directorios: comando ls](#74-listado-del-contenido-de-directorios-comando-ls)
+  - [7.5 Creación de subdirectorios. Comando mkdir](#75-creación-de-subdirectorios-comando-mkdir)
+  - [7.6 Borrado de subdirectorios. Comando rmdir](#76-borrado-de-subdirectorios-comando-rmdir)
+  - [7.7 Cambio de directorio. Comando cd](#77-cambio-de-directorio-comando-cd)
+  - [7.8 Ruta actual. Comando pwd](#78-ruta-actual-comando-pwd)
+  - [7.9 Acceso a unidades de disco](#79-acceso-a-unidades-de-disco)
+  - [7.10 Copia de ficheros. Comando cp](#710-copia-de-ficheros-comando-cp)
+  - [7.11 Traslado y cambio de nombre de ficheros. Comando mv](#711-traslado-y-cambio-de-nombre-de-ficheros-comando-mv)
+  - [7.12 Enlaces a ficheros. Comando ln](#712-enlaces-a-ficheros-comando-ln)
+  - [7.13 Borrado de ficheros. Comando rm](#713-borrado-de-ficheros-comando-rm)
+  - [7.14 Características de un fichero. Comando file](#714-características-de-un-fichero-comando-file)
+  - [7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp](#715-cambio-de-modo-de-los-ficheros-comandos-chmod-chown-y-chgrp)
+    - [Resumen:](#resumen)
+  - [7.16 Espacio ocupado en el disco comandos DU y DF](#716-espacio-ocupado-en-el-disco-comandos-du-y-df)
+  - [7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR](#717-visualización-sin-formato-de-un-fichero-comando-cat-y-con-formato-comando-pr)
+  - [7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS](#718-visualización-de-ficheros-pantalla-a-pantalla-comandos-more-y-less)
+  - [7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP](#719-busqueda-en-ficheros-comandos-grep-fgrep-y-egrep)
+
 ## 7.1 Introducción
 
 El shell es la interfaz de línea de comandos para interactuar con Linux. En la industria se usa para automatización (scripts), administración de servidores, despliegues y análisis de logs.

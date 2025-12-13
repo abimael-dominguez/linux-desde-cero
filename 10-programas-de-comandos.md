@@ -1,4 +1,5 @@
 # 10. Programas de comandos
+También conocido como Bash Scripting. Ver [12-hands-on-bash-scripting.md](12-hands-on-bash-scripting.md)
 
 ## 10.1 Introducción de comentarios
 

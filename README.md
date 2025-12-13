@@ -5,102 +5,100 @@ Repositorio de documentación del curso 'Linux desde Cero'. Cubre introducción 
 ## Tabla de Contenidos
 
 ### 1. [Introducción a Linux](01-introduccion-a-linux.md)
-- 1.1 ¿Qué es Linux?
-- 1.2 ¿Qué son las distribuciones?
-- 1.3 Entorno de trabajo: EL SHELL Y X WINDOW
-- 1.4 Usuarios y grupos
+- [1.1 ¿Qué es Linux?](01-introduccion-a-linux.md#11-qué-es-linux)
+- [1.2 ¿Qué son las distribuciones?](01-introduccion-a-linux.md#12-qué-son-las-distribuciones)
+- [1.3 Entorno de trabajo: EL SHELL Y X WINDOW](01-introduccion-a-linux.md#13-entorno-de-trabajo-el-shell-y-x-window)
+- [1.4 Usuarios y grupos](01-introduccion-a-linux.md#14-usuarios-y-grupos)
 
 ### 2. [Un Enfoque a Linux](02-un-enfoque-a-linux.md)
-- 2.1 Entrada y salida del sistema
+- [2.1 Fundamentos de Entrada/Salida del sistema](02-un-enfoque-a-linux.md#21-fundamentos-de-entradasalida-del-sistema)
 
 ### 3. [Estructura del sistema de archivos de Linux](03-estructura-del-sistema-de-archivos-de-linux.md)
-- 3.1 Archivos: tipos
-- 3.2 Enlaces
-- 3.3 El camino o path
-- 3.4 Estructura del sistema de archivos de Linux
-- 3.5 Acceso a los diferentes sistemas de archivos
-- 3.6 Permisos
+- [3.1 Archivos: tipos](03-estructura-del-sistema-de-archivos-de-linux.md#31-archivos-tipos)
+- [3.2 Enlaces](03-estructura-del-sistema-de-archivos-de-linux.md#32-enlaces)
+- [3.3 El camino o path](03-estructura-del-sistema-de-archivos-de-linux.md#33-el-camino-o-path)
+- [3.4 Estructura del sistema de archivos de Linux](03-estructura-del-sistema-de-archivos-de-linux.md#34-estructura-del-sistema-de-archivos-de-linux)
+- [3.5 Acceso a los diferentes sistemas de archivos](03-estructura-del-sistema-de-archivos-de-linux.md#35-acceso-a-los-diferentes-sistemas-de-archivos)
+- [3.6 Permisos](03-estructura-del-sistema-de-archivos-de-linux.md#36-permisos)
 
 ### 4. [X WINDOW](04-x-window.md)
-- 4.1 X WINDOW
+- [4.1 X WINDOW](04-x-window.md#41-x-window)
 
 ### 5. [GNOME](05-gnome.md)
-- 5.1 Iniciación a GNOME
-- 5.2 Aplicaciones auxiliares de GNOME
-- 5.3 File manager
-- 5.4 GNOME Search Tool
-- 5.5 Color Xterm, GNOME Terminal y Regular Xterm
-- 5.6 Multimedia
-- 5.7 Configuración de GNOME
+- [5.1 Iniciación a GNOME](05-gnome.md#51-iniciación-a-gnome)
+- [5.2 Aplicaciones auxiliares de GNOME](05-gnome.md#52-aplicaciones-auxiliares-de-gnome)
+- [5.3 File manager](05-gnome.md#53-file-manager-nautilus)
+- [5.4 GNOME Search Tool](05-gnome.md#54-gnome-search-tool)
+- [5.5 Color Xterm, GNOME Terminal y Regular Xterm](05-gnome.md#55-color-xterm-gnome-terminal-y-regular-xterm)
+- [5.6 Multimedia](05-gnome.md#56-multimedia)
+- [5.7 Configuración de GNOME](05-gnome.md#57-configuración-de-gnome)
 
 ### 6. [KDE](06-kde.md)
-- 6.1 Partes de la pantalla
-- 6.2 Administración de archivos KFM
-- 6.3 Navegar por la estructura de directorios y ver el contenido de los ficheros
-- 6.4 Crear un nuevo directorio
-- 6.5 Copiar, Borrar y Mover un documento o directorio
-- 6.6 Enlaces KDE
-- 6.7 Asociar un nuevo tipo de archivo
-- 6.8 Propiedades de un fichero o directorio
-- 6.9 Aplicaciones Auxiliares de KDE
-- 6.10 konsole, kedit, kwrite, kdehelp, Kfind
-- 6.11 Configuración de KDE
-- 6.12 Editor de menús
-- 6.13 KDE Control Center
-- 6.14 Añadir aplicaciones al panel
+- [6.1 Partes de la pantalla](06-kde.md#61-partes-de-la-pantalla)
+- [6.2 Dolphin File Manager](06-kde.md#62-dolphin-file-manager)
+- [6.3 Navegación y visualización de archivos](06-kde.md#63-navegación-y-visualización-de-archivos)
+- [6.4 Crear directorios](06-kde.md#64-crear-directorios)
+- [6.5 Operaciones con archivos: copiar, mover, borrar](06-kde.md#65-operaciones-con-archivos-copiar-mover-borrar)
+- [6.6 Links (Simbólicos y Hard Links)](06-kde.md#66-links-simbólicos-y-hard-links)
+- [6.7 Asociación de tipos de archivo (MIME types)](06-kde.md#67-asociación-de-tipos-de-archivo-mime-types)
+- [6.8 Propiedades y permisos](06-kde.md#68-propiedades-y-permisos)
+- [6.9 Apps esenciales de KDE](06-kde.md#69-apps-esenciales-de-kde)
+- [6.10 Herramientas de productividad](06-kde.md#610-herramientas-de-productividad)
+- [6.11 System Settings (Configuración)](06-kde.md#611-system-settings-configuración)
+- [6.12 KMenuEdit (Personalizar menú de apps)](06-kde.md#612-kmenuedit-personalizar-menú-de-apps)
+- [6.13 Configuración avanzada del sistema](06-kde.md#613-configuración-avanzada-del-sistema)
+- [6.14 Personalizar el Panel](06-kde.md#614-personalizar-el-panel)
 
 ### 7. [El Shell](07-el-shell.md)
-- 7.1 Introducción
-- 7.2 Algunos comandos sencillos de LINUX
-- 7.3 Directorio personal
-- 7.4 Listado del contenido de directorios: comando ls
-- 7.5 Creación de subdirectorios. Comando mkdir
-- 7.6 Borrado de subdirectorios. Comando rmdir
-- 7.7 Cambio de directorio. Comando cd
-- 7.8 Ruta actual. Comando pwd
-- 7.9 Acceso a unidades de disco
-- 7.10 Copia de ficheros. Comando cp
-- 7.11 Traslado y cambio de nombre de ficheros. Comando mv
-- 7.12 Enlaces a ficheros. Comando ln
-- 7.13 Borrado de ficheros. Comando rm
-- 7.14 Características de un fichero. Comando file
-- 7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp
-- 7.16 Espacio ocupado en el disco comandos DU y DF
-- 7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR
-- 7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS
-- 7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP
-- 7.20 Comandos TAR y GZIP
-- 7.21 Comandos de impresion lpr
+- [7.1 Introducción](07-el-shell.md#71-introducción)
+- [7.2 Algunos comandos sencillos de LINUX](07-el-shell.md#72-algunos-comandos-sencillos-de-linux)
+- [7.3 Directorio personal](07-el-shell.md#73-directorio-personal)
+- [7.4 Listado del contenido de directorios: comando ls](07-el-shell.md#74-listado-del-contenido-de-directorios-comando-ls)
+- [7.5 Creación de subdirectorios. Comando mkdir](07-el-shell.md#75-creación-de-subdirectorios-comando-mkdir)
+- [7.6 Borrado de subdirectorios. Comando rmdir](07-el-shell.md#76-borrado-de-subdirectorios-comando-rmdir)
+- [7.7 Cambio de directorio. Comando cd](07-el-shell.md#77-cambio-de-directorio-comando-cd)
+- [7.8 Ruta actual. Comando pwd](07-el-shell.md#78-ruta-actual-comando-pwd)
+- [7.9 Acceso a unidades de disco](07-el-shell.md#79-acceso-a-unidades-de-disco)
+- [7.10 Copia de ficheros. Comando cp](07-el-shell.md#710-copia-de-ficheros-comando-cp)
+- [7.11 Traslado y cambio de nombre de ficheros. Comando mv](07-el-shell.md#711-traslado-y-cambio-de-nombre-de-ficheros-comando-mv)
+- [7.12 Enlaces a ficheros. Comando ln](07-el-shell.md#712-enlaces-a-ficheros-comando-ln)
+- [7.13 Borrado de ficheros. Comando rm](07-el-shell.md#713-borrado-de-ficheros-comando-rm)
+- [7.14 Características de un fichero. Comando file](07-el-shell.md#714-características-de-un-fichero-comando-file)
+- [7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp](07-el-shell.md#715-cambio-de-modo-de-los-ficheros-comandos-chmod-chown-y-chgrp)
+- [7.16 Espacio ocupado en el disco comandos DU y DF](07-el-shell.md#716-espacio-ocupado-en-el-disco-comandos-du-y-df)
+- [7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR](07-el-shell.md#717-visualización-sin-formato-de-un-fichero-comando-cat-y-con-formato-comando-pr)
+- [7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS](07-el-shell.md#718-visualización-de-ficheros-pantalla-a-pantalla-comandos-more-y-less)
+- [7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP](07-el-shell.md#719-busqueda-en-ficheros-comandos-grep-fgrep-y-egrep)
 
 ### 8. [Redirecciones y tuberías](08-redirecciones-y-tuberias.md)
-- 8.1 Redirecciones
-- 8.2 Tuberías
-- 8.3 Bifurcación o T (comando TEE)
-- 8.4 Redirecciones de la salida de errores
+- [8.1 Redirecciones](08-redirecciones-y-tuberias.md#81-redirecciones)
+- [8.2 Tuberías](08-redirecciones-y-tuberias.md#82-tuberías)
+- [8.3 Bifurcación o T (comando TEE)](08-redirecciones-y-tuberias.md#83-bifurcación-o-t-comando-tee)
+- [8.4 Redirecciones de la salida de errores](08-redirecciones-y-tuberias.md#84-redirecciones-de-la-salida-de-errores)
 
 ### 9. [Ejecución de programas](09-ejecucion-de-programas.md)
-- 9.1 Ejecución en el fondo &, KILL, NICE y NOHUP
-- 9.2 Comando TIME
-- 9.3 Comando TOP
+- [9.1 Ejecución en el fondo (background) &, KILL, NICE y NOHUP](09-ejecucion-de-programas.md#91-ejecución-en-el-fondo-background--kill-nice-y-nohup)
+- [9.2 Comando TIME](09-ejecucion-de-programas.md#92-comando-time)
+- [9.3 Comando TOP](09-ejecucion-de-programas.md#93-comando-top)
 
 ### 10. [Programas de comandos](10-programas-de-comandos.md)
-- 10.1 Introducción de comentarios
-- 10.2 Variables del SHELL
-- 10.3 Comando ECHO
-- 10.4 Parámetros de los ficheros de comandos
+- [10.1 Introducción de comentarios](10-programas-de-comandos.md#101-introducción-de-comentarios)
+- [10.2 Variables del SHELL](10-programas-de-comandos.md#102-variables-del-shell)
+- [10.3 Comando ECHO](10-programas-de-comandos.md#103-comando-echo)
+- [10.4 Parámetros de los ficheros de comandos](10-programas-de-comandos.md#104-parámetros-de-los-ficheros-de-comandos)
 
 ### 11. [SCP Copias Remotas](11-scp-copias-remotas.md)
-- 11.1 Compilado de programas en LINUX
-- 11.2 Compilación y Linkado
-- 11.3 Comando MAKE
-- 11.4 Búsqueda avanzada en ficheros. Expresiones Regulares
-- 11.5 Caracteres especiales
-- 11.6 Expresiones regulares de un solo carácter
-- 11.7 Expresiones regulares generales
-- 11.8 Comandos utiles para trabajar en Red
-- 11.9 Protocolos de Internet (IP)
-- 11.10 Denominación simbólica de Sistemas de Internet
-- 11.11 Comandos TELNET y FTP
+- [11.1 Compilado de programas en LINUX](11-scp-copias-remotas.md#111-compilado-de-programas-en-linux)
+- [11.2 Compilación y Linkado](11-scp-copias-remotas.md#112-compilación-y-linkado)
+- [11.3 Comando MAKE](11-scp-copias-remotas.md#113-comando-make)
+- [11.4 Búsqueda avanzada en ficheros. Expresiones Regulares](11-scp-copias-remotas.md#114-búsqueda-avanzada-en-ficheros-expresiones-regulares)
+- [11.5 Caracteres especiales](11-scp-copias-remotas.md#115-caracteres-especiales)
+- [11.6 Expresiones regulares de un solo carácter](11-scp-copias-remotas.md#116-expresiones-regulares-de-un-solo-carácter)
+- [11.7 Expresiones regulares generales](11-scp-copias-remotas.md#117-expresiones-regulares-generales)
+- [11.8 Comandos utiles para trabajar en Red](11-scp-copias-remotas.md#118-comandos-utiles-para-trabajar-en-red)
+- [11.9 Protocolos de Internet (IP)](11-scp-copias-remotas.md#119-protocolos-de-internet-ip)
+- [11.10 Denominación simbólica de Sistemas de Internet](11-scp-copias-remotas.md#1110-denominación-simbólica-de-sistemas-de-internet)
+- [11.11 Comandos TELNET y FTP](11-scp-copias-remotas.md#1111-comandos-telnet-y-ftp)
 
 
 ## Distribución de Tiempo

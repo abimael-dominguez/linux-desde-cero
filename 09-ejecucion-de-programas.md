@@ -2,6 +2,26 @@
 
 En este capítulo exploraremos la ejecución de programas en Linux: monitoreo de procesos con `ps` y `top`, ejecución en segundo plano, gestión de recursos con `free`, prioridades con `nice` y `renice`, señales con `kill`, y más. Ejemplos prácticos incluidos para optimizar el rendimiento del sistema.
 
+## Índice
+
+- [9. Ejecución de programas](#9-ejecución-de-programas)
+  - [Introducción](#introducción)
+  - [Monitoreo de procesos con `ps`](#monitoreo-de-procesos-con-ps)
+  - [Monitoreo en tiempo real con `top`](#monitoreo-en-tiempo-real-con-top)
+  - [Matar procesos](#matar-procesos)
+  - [Ver recursos disponibles con `free`](#ver-recursos-disponibles-con-free)
+  - [9.1 Ejecución en el fondo (background) &, KILL, NICE y NOHUP](#91-ejecución-en-el-fondo-background--kill-nice-y-nohup)
+    - [Ejecutar en background con &](#ejecutar-en-background-con-)
+    - [Diferencia entre Ctrl + Z y :q](#diferencia-entre-ctrl--z-y-q)
+    - [KILL](#kill)
+    - [Prioridades de ejecución](#prioridades-de-ejecución)
+      - [NICE](#nice)
+      - [RENICE](#renice)
+    - [NOHUP](#nohup)
+  - [9.2 Comando TIME](#92-comando-time)
+  - [9.3 Comando TOP](#93-comando-top)
+  - [Conclusión y ejercicios](#conclusión-y-ejercicios)
+
 ## Introducción
 Los procesos son instancias en ejecución de programas con espacio de memoria propio. Aprenderemos a listar, monitorear y controlar procesos para una administración eficiente.
 

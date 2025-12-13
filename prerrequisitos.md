@@ -2,6 +2,29 @@
 
 Este documento contiene los prerrequisitos que deben instalar y configurar los alumnos antes del inicio del curso. El objetivo es poder probar comandos de Linux en diferentes sistemas operativos utilizando Docker y AWS.
 
+## Índice
+
+- [Prerrequisitos para el Curso de Linux](#prerrequisitos-para-el-curso-de-linux)
+  - [1. Instalación de Docker](#1-instalación-de-docker)
+    - [Instalación en Windows (10 y 11)](#instalación-en-windows-10-y-11)
+    - [Instalación en Linux (Ubuntu)](#instalación-en-linux-ubuntu)
+    - [Instalación en macOS (Solo si algún alumno usa Mac)](#instalación-en-macos-solo-si-algún-alumno-usa-mac)
+    - [Comandos básicos para validar entorno Docker](#comandos-básicos-para-validar-entorno-docker)
+  - [2. Creación de Cuenta AWS](#2-creación-de-cuenta-aws)
+  - [3. Instalación y Configuración de AWS CLI](#3-instalación-y-configuración-de-aws-cli)
+    - [Windows (PowerShell)](#windows-powershell)
+    - [Linux (x86_64)](#linux-x8664)
+    - [Configurar credenciales](#configurar-credenciales)
+    - [Verificar conexión API](#verificar-conexión-api)
+  - [4. Inicialización de Terminal en Instancias AWS](#4-inicialización-de-terminal-en-instancias-aws)
+    - [Crear una Instancia EC2](#crear-una-instancia-ec2)
+    - [(Opcional) Listar instancias vía AWS CLI](#opcional-listar-instancias-vía-aws-cli)
+    - [Conectar a la Instancia vía SSH](#conectar-a-la-instancia-vía-ssh)
+    - [Pruebas en Diferentes Distribuciones](#pruebas-en-diferentes-distribuciones)
+    - [Limpieza de recursos (AWS CLI ejemplar)](#limpieza-de-recursos-aws-cli-ejemplar)
+  - [5. Resumen Rápido de Verificación Antes del Curso](#5-resumen-rápido-de-verificación-antes-del-curso)
+  - [6. Checklist de Problemas Comunes](#6-checklist-de-problemas-comunes)
+
 ## 1. Instalación de Docker
 
 Docker nos permitirá ejecutar contenedores Linux en cualquier sistema operativo, facilitando la práctica de comandos Linux. Asegúrate de poder ejecutar un contenedor de prueba antes del curso.

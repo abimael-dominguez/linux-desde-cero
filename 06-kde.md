@@ -4,6 +4,25 @@ Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y verem
 
 Nota: ejecicios realizado con `kubuntu-16.04.6-desktop-amd64`
 
+## Índice
+
+- [6. KDE Plasma Desktop](#6-kde-plasma-desktop)
+  - [6.1 Partes de la pantalla](#61-partes-de-la-pantalla)
+  - [6.2 Dolphin File Manager](#62-dolphin-file-manager)
+  - [6.3 Navegación y visualización de archivos](#63-navegación-y-visualización-de-archivos)
+  - [6.4 Crear directorios](#64-crear-directorios)
+  - [6.5 Operaciones con archivos: copiar, mover, borrar](#65-operaciones-con-archivos-copiar-mover-borrar)
+  - [6.6 Links (Simbólicos y Hard Links)](#66-links-simbólicos-y-hard-links)
+  - [6.7 Asociación de tipos de archivo (MIME types)](#67-asociación-de-tipos-de-archivo-mime-types)
+  - [6.8 Propiedades y permisos](#68-propiedades-y-permisos)
+  - [6.9 Apps esenciales de KDE](#69-apps-esenciales-de-kde)
+  - [6.10 Herramientas de productividad](#610-herramientas-de-productividad)
+  - [6.11 System Settings (Configuración)](#611-system-settings-configuración)
+  - [6.12 KMenuEdit (Personalizar menú de apps)](#612-kmenuedit-personalizar-menú-de-apps)
+  - [6.13 Configuración avanzada del sistema](#613-configuración-avanzada-del-sistema)
+  - [6.14 Personalizar el Panel](#614-personalizar-el-panel)
+  - [KDE vs GNOME: Diferencias clave](#kde-vs-gnome-diferencias-clave)
+
 ## 6.1 Partes de la pantalla
 
 | ID | Ejercicio | Resultado |

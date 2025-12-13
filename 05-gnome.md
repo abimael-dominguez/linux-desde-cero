@@ -4,6 +4,18 @@ Ejercicios prácticos hands-on para dominar GNOME. Compararemos GUI vs CLI y ver
 
 Nota: ejercicios realizados con Ubuntu 24.04.3 LTS - Noble Numbat (GNOME por defecto).
 
+## Índice
+
+- [5. GNOME](#5-gnome)
+  - [5.1 Iniciación a GNOME](#51-iniciación-a-gnome)
+  - [5.2 Aplicaciones auxiliares de GNOME](#52-aplicaciones-auxiliares-de-gnome)
+  - [5.3 File manager (Nautilus)](#53-file-manager-nautilus)
+  - [5.4 GNOME Search Tool](#54-gnome-search-tool)
+  - [5.5 Color Xterm, GNOME Terminal y Regular Xterm](#55-color-xterm-gnome-terminal-y-regular-xterm)
+  - [5.6 Multimedia](#56-multimedia)
+  - [5.7 Configuración de GNOME](#57-configuración-de-gnome)
+  - [GNOME vs KDE: Diferencias clave](#gnome-vs-kde-diferencias-clave)
+
 ## 5.1 Iniciación a GNOME
 
 | ID | Ejercicio | Resultado |

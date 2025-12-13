@@ -2,6 +2,22 @@
 
 Este capítulo cubre la estructura básica del sistema de archivos en Linux, enfocándose en conceptos esenciales para desarrolladores: tipos de archivos, enlaces, rutas y permisos. Se incluye una visión general de los directorios raíz para facilitar la navegación y el desarrollo de proyectos.
 
+## Índice
+
+- [3. Estructura del sistema de archivos de Linux](#3-estructura-del-sistema-de-archivos-de-linux)
+  - [3.1 Archivos: tipos](#31-archivos-tipos)
+    - [Actividad práctica](#actividad-práctica)
+  - [3.2 Enlaces](#32-enlaces)
+    - [Actividad práctica](#actividad-práctica-1)
+  - [3.3 El camino o path](#33-el-camino-o-path)
+    - [Actividad práctica](#actividad-práctica-2)
+  - [3.4 Estructura del sistema de archivos de Linux](#34-estructura-del-sistema-de-archivos-de-linux)
+    - [Actividad práctica](#actividad-práctica-3)
+  - [3.5 Acceso a los diferentes sistemas de archivos](#35-acceso-a-los-diferentes-sistemas-de-archivos)
+    - [Actividad práctica](#actividad-práctica-4)
+  - [3.6 Permisos](#36-permisos)
+    - [Actividad práctica](#actividad-práctica-5)
+
 ## 3.1 Archivos: tipos
 
 En Linux, todo se trata como archivos, pero existen diferentes tipos según su función:
