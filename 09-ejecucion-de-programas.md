@@ -107,8 +107,8 @@ Para ejecutar programas sin bloquear la terminal:
 
 Ejemplo:
 ```
-$ vim archivo.txt  # Ejecuta vim
-# Presiona Ctrl + Z
+$ vim archivo.txt  # Ejecuta vim (o para mandae directo a background `vim archivo.txt &`)
+# Presiona Ctrl + Z (si estás dentro de vim)
 [1]+  Stopped                 vim archivo.txt
 $ %1  # Reanuda en foreground
 $ bg  # Reanuda en background
@@ -163,6 +163,50 @@ $ sudo renice 10 -p 5096  # Baja prioridad
 $ sudo renice 5 -u usuario -p 5096  # Especificando usuario
 ```
 
+### Ejercicio práctico: Gestionar procesos con kill, nice y renice
+1. Crea un script simple para darle un nombre identificable al proceso:
+   ```
+   $ nano mi_proceso.sh
+   #!/bin/bash
+   echo "Proceso en ejecución..."
+   sleep 300  # Espera 300 segundos (5 minutos) para simular un proceso largo
+   ```
+   ```
+   $ chmod +x mi_proceso.sh
+   ```
+
+2. Inicia el proceso con baja prioridad usando `nice`:
+   ```
+   $ nice -n 10 ./mi_proceso.sh &
+   $ jobs  # Nota el job number
+   ```
+
+3. Verifica su prioridad en `top` (columna NI) o con `ps`:
+   ```
+   $ ps -o pid,ni,cmd | grep mi_proceso
+   $ top -p <PID>
+   ```
+
+4. Cambia la prioridad del proceso en ejecución con `renice`:
+   ```
+   $ sudo renice -5 -p <PID>
+   $ top -p <PID> # Verifica el cambio con top
+   $ ps -o pid,ni,cmd | grep mi_proceso  # Verifica el cambio
+   ```
+
+5. Termina el proceso suavemente con `kill`:
+   ```
+   $ kill <PID>
+   $ ps -o pid,ni,cmd | grep mi_proceso  # Debería desaparecer
+   ```
+
+6. Si no responde, fuerza la terminación:
+   ```
+   $ kill -9 <PID>
+   ```
+
+7. Experimenta con diferentes valores de nice y señales de kill para entender su impacto en el sistema.
+
 
 ## NOHUP
 Ejecuta comandos inmunes a señales de hangup (cierre de sesión). Útil para procesos largos.
@@ -172,6 +216,48 @@ Ejemplo:
 $ nohup long-command &
 # Salida se guarda en nohup.out
 ```
+
+### Ejercicio práctico: Ejecutar un proceso largo con nohup
+1. Crea un script simple que simule un proceso largo:
+   ```
+   $ nano script_largo.sh
+   #!/bin/bash
+   echo "Iniciando proceso largo..."
+   for i in {1..10}; do
+       echo "Iteración $i - $(date)"
+       sleep 60  # Espera 1 minuto por iteración
+   done
+   echo "Proceso completado."
+   ```
+
+2. Haz el script ejecutable y ejecútalo con `nohup`:
+   ```
+   $ chmod +x script_largo.sh
+   $ nohup ./script_largo.sh &
+   ```
+
+3. Verifica que esté corriendo en background:
+   ```
+   $ jobs
+   $ ps aux | grep script_largo
+   ```
+
+4. Cierra la sesión (o abre una nueva terminal) y verifica que el proceso sigue corriendo:
+   ```
+   $ ps aux | grep script_largo
+   ```
+
+5. Revisa la salida en `nohup.out`:
+   ```
+   $ tail -f nohup.out
+   ```
+
+6. Una vez completado, elimina el archivo de salida si deseas:
+   ```
+   $ rm nohup.out
+   ```
+
+Este ejercicio demuestra cómo `nohup` permite que procesos continúen ejecutándose incluso después de cerrar la sesión, guardando la salida en un archivo.
 
 ## 9.2 Comando TIME
 Mide el tiempo de ejecución de un comando (usuario, sistema, real).
@@ -183,6 +269,34 @@ real    0m5.001s
 user    0m0.000s
 sys     0m0.000s
 ```
+
+### Ejercicio práctico: Medir tiempos de ejecución
+1. Mide el tiempo de un comando simple:
+   ```
+   $ time ls -la /etc
+   ```
+
+2. Crea un script CPU-intensivo y mide su tiempo:
+   ```
+   $ nano cpu_intensivo.sh
+   #!/bin/bash
+   for i in {1..100000}; do
+       echo $i > /dev/null
+   done
+   ```
+   ```
+   $ chmod +x cpu_intensivo.sh
+   $ time ./cpu_intensivo.sh
+   ```
+
+3. Mide el tiempo de una operación I/O (copia de archivos):
+   ```
+   $ time cp -r /etc /tmp/etc_backup
+   ```
+
+4. Compara los tiempos: Observa cómo `real` (tiempo total) difiere de `user` (CPU en modo usuario) y `sys` (CPU en modo sistema). En tareas CPU-intensivas, `user` será alto; en tareas I/O, `real` será mucho mayor que `user + sys`.
+
+5. Experimenta con `time` en combinación con otros comandos, como `find` o `grep` en archivos grandes, para ver el impacto en el rendimiento.
 
 ## 9.3 Comando TOP
 Ya cubierto arriba, pero adicional: Presiona `q` para salir, `h` para ayuda.

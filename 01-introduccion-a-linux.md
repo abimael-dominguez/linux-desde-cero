@@ -31,6 +31,7 @@ Este módulo se cubre el **Sábado 1 de 9:00 a 11:00**. Se combina mínima teor�
       - [3. Crear usuario de laboratorio](#3-crear-usuario-de-laboratorio)
       - [4. Alterar pertenencia a grupos](#4-alterar-pertenencia-a-grupos)
       - [5. Probar cambio de usuario y permisos](#5-probar-cambio-de-usuario-y-permisos)
+  - [1.5 Usuarios y grupos (resumido)](#15-usuarios-y-grupos-resumido)
 
 ## 1.1 ¿Qué es Linux?
 
@@ -1830,6 +1831,73 @@ which comando               # Ruta del ejecutable
 whereis comando             # Binario, código fuente y manual
 type comando                # Tipo de comando (builtin, alias, etc.)
 ```
+
+## 1.5 Usuarios y Grupos (resumido)
+
+Ahora, veamos algunos de los comandos básicos utilizados para crear y gestionar cuentas de usuario en Linux. El primer comando que veremos es el comando `useradd`. Este es el comando utilizado por los administradores del sistema para crear un nuevo usuario local en el sistema, como el usuario para Juan. La forma más sencilla de hacer esto es usar el comando `useradd`, seguido del nombre del usuario como argumento.
+
+```bash
+useradd juan
+```
+
+En este caso, se ha creado un nuevo usuario llamado Juan con un UID y GID generados por el sistema. Establecerá el directorio home para Juan bajo el directorio `/home` y por defecto usará `/bin/sh` como shell predeterminado. Para establecer la contraseña para Juan, usa el comando `passwd`, seguido del nombre del usuario.
+
+```bash
+passwd juan
+```
+
+Ten en cuenta que ambos comandos, `useradd` y `passwd`, necesitan ejecutarse como root. Una vez conectado al sistema, el usuario puede verificar su ID de usuario ejecutando el comando `whoami`. El usuario puede cambiar su propia contraseña desde el shell ejecutando el comando `passwd` sin argumentos.
+
+```bash
+whoami
+passwd
+```
+
+Lo que hemos visto hasta ahora en el ejemplo es usar `useradd` sin opciones. Aquí hay algunas de las opciones comunes utilizadas con este comando:
+
+- `-c`: para comentarios personalizados
+- `-d`: para especificar la ruta del directorio home
+- `-e`: para especificar la fecha de expiración de la cuenta
+- `-u` y `-g`: para especificar UID y GID personalizados respectivamente
+- `-G`: para añadir el usuario que se está creando a múltiples grupos secundarios
+
+Aquí hay un ejemplo donde el usuario Juan se está creando con algunas de estas opciones adicionales.
+
+```bash
+useradd -c "Usuario de ejemplo" -d /home/juan -g 1009 -G developers juan
+```
+
+Una vez que el usuario ha sido creado, podemos validar que los campos personalizados se hayan establecido usando el comando `id` con el nombre del usuario como argumento.
+
+```bash
+id juan
+```
+
+Aquí, podemos ver que Juan ha sido creado con el GID personalizado de 1009, lo que establece su grupo primario como el grupo llamado Developers. Puedes verificar que los comentarios personalizados se hayan creado inspeccionando el archivo `/etc/passwd` y verificando los campos para la cuenta de usuario de Juan.
+
+```bash
+grep juan /etc/passwd
+```
+
+Ahora veamos la eliminación de usuarios y la gestión de grupos. Para eliminar una cuenta de usuario, ejecuta el comando `userdel` con el nombre del usuario.
+
+```bash
+userdel juan
+```
+
+Para añadir un nuevo grupo de Linux, podemos usar el comando `groupadd`. Con `-g`, podemos especificar un GID personalizado para el grupo.
+
+```bash
+groupadd -g 1010 developers
+```
+
+Finalmente, usa el comando `groupdel` seguido del nombre del grupo para eliminarlo.
+
+```bash
+groupdel developers
+```
+
+Ahora, dirígete a los laboratorios prácticos y practica trabajando con la gestión de cuentas de usuario en Linux.
 
 ---
 
