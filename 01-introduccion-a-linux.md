@@ -2,6 +2,36 @@
 
 Este módulo se cubre el **Sábado 1 de 9:00 a 11:00**. Se combina mínima teoría con práctica inmediata dentro de contenedores Docker o máquinas virtuales, preparando el terreno para el resto del curso.
 
+## Índice
+
+- [1. Introducción a Linux](#1-introducción-a-linux)
+  - [1.1 ¿Qué es Linux?](#11-qué-es-linux)
+    - [Objetivos rápidos](#objetivos-rápidos)
+    - [Actividad práctica (15 min)](#actividad-práctica-15-min)
+      - [1. Crear o entrar a un contenedor base](#1-crear-o-entrar-a-un-contenedor-base)
+      - [2. Consultar versión del kernel y la distribución](#2-consultar-versión-del-kernel-y-la-distribución)
+      - [3. Investigar módulos del kernel cargados](#3-investigar-módulos-del-kernel-cargados)
+  - [1.2 ¿Qué son las distribuciones?](#12-qué-son-las-distribuciones)
+    - [Comparativa exprés](#comparativa-exprés)
+    - [Actividad práctica (20 min)](#actividad-práctica-20-min)
+      - [1. Listar paquetes instalados y contarlos](#1-listar-paquetes-instalados-y-contarlos)
+      - [2. Buscar herramientas de red](#2-buscar-herramientas-de-red)
+      - [3. Gestores de paquetes en diferentes distribuciones](#3-gestores-de-paquetes-en-diferentes-distribuciones)
+  - [1.3 Entorno de trabajo: EL SHELL Y X WINDOW](#13-entorno-de-trabajo-el-shell-y-x-window)
+    - [Flujo sugerido (25 min)](#flujo-sugerido-25-min)
+      - [1. Identificar shell actual](#1-identificar-shell-actual)
+      - [2. Practicar navegación básica](#2-practicar-navegación-básica)
+      - [3. Variables de entorno para X Window](#3-variables-de-entorno-para-x-window)
+      - [4. Variables de entorno para X Window (Opcional para desarrolladores)](#4-variables-de-entorno-para-x-window-opcional-para-desarrolladores)
+  - [1.4 Usuarios y grupos](#14-usuarios-y-grupos)
+    - [Conceptos clave](#conceptos-clave)
+    - [Taller práctico (30 min)](#taller-práctico-30-min)
+      - [1. Revisar cuentas de usuario definidas](#1-revisar-cuentas-de-usuario-definidas)
+      - [2. Revisar grupos del sistema](#2-revisar-grupos-del-sistema)
+      - [3. Crear usuario de laboratorio](#3-crear-usuario-de-laboratorio)
+      - [4. Alterar pertenencia a grupos](#4-alterar-pertenencia-a-grupos)
+      - [5. Probar cambio de usuario y permisos](#5-probar-cambio-de-usuario-y-permisos)
+
 ## 1.1 ¿Qué es Linux?
 
 Linux es un núcleo (kernel) libre y de código abierto que, combinado con utilidades GNU y otros proyectos, forma sistemas operativos completos. Sus pilares son estabilidad, seguridad y flexibilidad para servidores, dispositivos embebidos y escritorios.
