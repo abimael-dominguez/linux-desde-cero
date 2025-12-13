@@ -1,0 +1,2 @@
+Error: procesamiento incompleto
+ls: cannot access '/archivo_falso': No such file or directory

@@ -9,9 +9,9 @@
 *~
 
 # Logs
-*.log
-logs/
-*.out
+# *.log
+# logs/
+# *.out
 
 # Directorios temporales
 /tmp/
