@@ -93,7 +93,7 @@ apt-get install -y openssh-server
 1. **Establece una contraseña para root:**
    ```bash
    passwd
-   # Elige una contraseña segura (ejemplo: 1234)
+   # Elige una contraseña segura (ejemplo: admin)
    ```
 
 2. **Edita `/etc/ssh/sshd_config` para permitir acceso por contraseña y root:**
@@ -189,3 +189,149 @@ scp /ruta/al/archivo.txt root@<IP_DEL_SERVIDOR>:/ruta/destino/
 ---
 
 ¡Listo! Así tienes una práctica SCP/SSH 100% portable y sin depender del sistema operativo del host.
+
+---
+
+## Ejercicios extra: FTP y Telnet
+
+
+### 1. FTP: Transferencia de archivos
+**Si tienes problemas de permisos o cambios de usuario, reinicia el servicio FTP:**
+```bash
+service vsftpd restart
+```
+
+**Crea un archivo como usuario admin (no como root):**
+```bash
+su - admin
+echo "Contenido de prueba" > /home/admin/archivo_admin.txt
+exit
+```
+
+FTP (File Transfer Protocol) es un protocolo clásico para transferir archivos, pero no cifra la información. Aún se encuentra en sistemas antiguos.
+
+**Instala el servidor FTP en el contenedor servidor:**
+```bash
+apt-get install -y ftp vsftpd
+service vsftpd start
+```
+
+**Importante:** Por seguridad, vsftpd no permite acceso FTP con el usuario root por defecto.
+
+**Crea un usuario normal para FTP (ejemplo: admin):**
+```bash
+adduser admin
+# Elige una contraseña (ejemplo: admin)
+```
+
+**Conéctate desde el cliente:**
+```bash
+ftp <IP_DEL_SERVIDOR>
+```
+Cuando te pida usuario y contraseña, usa el usuario normal (ejemplo: admin) y su contraseña.
+
+Comandos útiles dentro de la sesión FTP:
+- `ls` — lista archivos
+- `get archivo.txt` — descarga archivo
+- `put archivo.txt` — sube archivo
+- `bye` — salir
+
+> Nota: El usuario y contraseña suelen ser los del sistema (ejemplo: admin y su contraseña). FTP no cifra datos ni credenciales.
+> No uses root para FTP, usa siempre un usuario normal.
+
+---
+
+### Ejercicios básicos de FTP: subir y descargar archivos
+
+> Si tienes problemas de permisos, asegúrate de que el archivo fue creado por el usuario admin y que el servicio FTP fue reiniciado tras cualquier cambio de usuario o permisos.
+
+
+#### Subir un archivo al servidor FTP
+
+Sube el archivo al directorio actual del usuario en el servidor, o especifica la ruta destino:
+```
+put /ruta/origen/archivo.txt [ruta/destino/archivo.txt]
+```
+Ejemplo solo origen:
+```
+put /tmp/archivo.txt
+```
+Ejemplo origen y destino:
+```
+put /tmp/archivo.txt archivo_remoto.txt
+put /tmp/archivo.txt /home/admin/archivo_remoto.txt
+```
+
+
+#### Descargar (bajar) un archivo del servidor FTP
+
+Descarga el archivo del servidor a una ruta local específica (en una sola línea):
+```
+get archivo_remoto ruta_local/archivo_local
+```
+Ejemplo:
+```
+get /home/admin/archivo_admin.txt /tmp/archivo_admin.txt
+```
+
+#### Notas sobre la sintaxis de FTP
+
+- Los comandos `put` y `get` usan la sintaxis:
+  ```
+  put archivo_local [archivo_remoto]
+  get archivo_remoto [archivo_local]
+  ```
+- El comando `ls` dentro de FTP **muestra archivos en el servidor remoto**.
+- Para ver archivos en tu máquina local, sal de FTP y usa `ls` en la terminal, o usa `!ls` si tu cliente FTP lo permite.
+
+---
+
+### 2. Telnet: Acceso remoto a puertos
+
+Telnet permite conectarse a un puerto TCP de un servidor. Es útil para pruebas, pero no cifra nada.
+
+**Ejemplo: Conectarse al puerto SSH del servidor:**
+```bash
+telnet <IP_DEL_SERVIDOR> 22
+```
+Verás la respuesta del servicio SSH (banner). Puedes probar otros puertos si tienes servicios corriendo.
+
+**Comando básico:**
+- `telnet <host> <puerto>`
+
+> Nota: Telnet no debe usarse para acceso remoto real, solo para pruebas o diagnóstico de puertos.
+
+---
+
+### Ejercicio práctico de Telnet
+
+1. Conéctate al puerto SSH del servidor (22):
+   ```
+   telnet <IP_DEL_SERVIDOR> 22
+   ```
+   Deberías ver un mensaje como:
+   ```
+   Trying <IP_DEL_SERVIDOR>...
+   Connected to <IP_DEL_SERVIDOR>.
+   Escape character is '^]'.
+   SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.10
+   ```
+   Esto indica que el puerto está abierto y el servicio SSH responde.
+
+2. Puedes probar otros puertos (por ejemplo, 21 para FTP):
+   ```
+   telnet <IP_DEL_SERVIDOR> 21
+   ```
+   Si el servicio está activo, verás el banner de FTP.
+
+3. Para salir de telnet, presiona:
+   ```
+   Ctrl + ]
+   quit
+   ```
+
+**Notas sobre Telnet:**
+- Telnet solo sirve para probar si un puerto está abierto y responde.
+- No cifra la información, no se recomienda para acceso real.
+
+---
