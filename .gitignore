@@ -53,3 +53,6 @@ a.out
 *.zip
 *.tar.gz
 *.iso
+
+# my videogame files
+src/11-scp-copias-remotas/pacman-game/pacman_game
