@@ -1,0 +1,6 @@
+Precio: $100
+Archivo: data[1].csv
+Regex: a.c
+Pregunta: ?
+Alternativa: foo|bar
+Ruta: C:\Users\devops

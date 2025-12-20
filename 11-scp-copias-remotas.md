@@ -339,45 +339,73 @@ chmod +x ejercicios-bash-scripting/filtra_logs.sh
 ## 11.5 Caracteres especiales
 
 
-Los caracteres especiales en regex permiten construir patrones potentes. Algunos de los más usados:
+Los caracteres especiales son aquellos que tienen un significado especial en regex y deben escaparse con una barra invertida (\) si quieres buscarlos literalmente. Ejemplos: $, ., *, +, ?, [, ], (, ), |, ^, \\.
 
-| Carácter | Significado | Ejemplo | Coincide con | Explicación detallada |
-|:--------:|:-----------:|:--------|:-------------|:----------------------|
-| .        | Cualquier carácter | a.c | abc, a1c, a-c | El punto equivale a cualquier letra, número o símbolo, excepto salto de línea. Ejemplo: `a.c` encuentra "abc", "a1c", "a-c" porque el punto puede ser cualquier carácter entre la 'a' y la 'c'. Así, 'a.c' coincide con cualquier secuencia de tres caracteres donde el primero es 'a', el segundo puede ser cualquier cosa (b, 1, -, etc.), y el tercero es 'c'. |
-| ^        | Inicio de línea | ^Hola | Hola mundo (al inicio) | `^` solo funciona al inicio del patrón. Busca coincidencias solo al principio de la línea. |
-| $        | Fin de línea | mundo$ | Hola mundo (al final) | `$` solo funciona al final del patrón. Busca coincidencias solo al final de la línea. |
-| *        | 0 o más repeticiones | ab*c | ac, abc, abbc | `*` afecta al carácter anterior. Ejemplo: `ab*c` encuentra "ac", "abc", "abbc". |
-| +        | 1 o más repeticiones | ab+c | abc, abbc | `+` afecta al carácter anterior. Ejemplo: `ab+c` encuentra "abc", "abbc". |
-| ?        | 0 o 1 repetición | colou?r | color, colour | `?` afecta al carácter anterior. Ejemplo: `colou?r` encuentra "color" y "colour". |
-| []       | Clase de caracteres | gr[ae]y | gray, grey | `[ae]` significa "a o e". Ejemplo: `gr[ae]y` encuentra "gray" y "grey". |
-| [^]      | Negación | [^0-9] | a, b, c | El símbolo `^` dentro de corchetes significa "no". Ejemplo: `[^0-9]` encuentra cualquier cosa que no sea un número. |
-| |        | Alternancia | foo|bar | foo, bar | El símbolo `|` significa "o". Ejemplo: `foo|bar` encuentra "foo" o "bar". |
-| ()       | Agrupación | (ab)+ | ab, abab | Los paréntesis agrupan partes del patrón. Ejemplo: `(ab)+` encuentra "ab", "abab". |
+| Carácter | Ejemplo de escape | Coincide con | Explicación |
+|:--------:|:----------------:|:-------------|:------------|
+| `$`      | `\$`             | `$`          | Busca el símbolo de dólar, no el final de línea. |
+| `.`      | `\.`             | `.`          | Busca un punto, no cualquier carácter. |
+| `*`      | `\*`             | `*`          | Busca el asterisco, no repeticiones. |
+| `+`      | `\+`             | `+`          | Busca el signo más, no repeticiones. |
+| `?`      | `\?`             | `?`          | Busca el signo de interrogación, no opcionalidad. |
+| `[`      | `\[`             | `[`          | Busca el corchete de apertura. |
+| `]`      | `\]`             | `]`          | Busca el corchete de cierre. |
+| `(`      | `\(`             | `(`          | Busca el paréntesis de apertura. |
+| `)`      | `\)`             | `)`          | Busca el paréntesis de cierre. |
+| `^`      | `\^`             | `^`          | Busca el símbolo de inicio, no el inicio de línea. |
+| `\|`  | `\\|`                | `\|`             | Busca la barra vertical (pipe) como carácter literal, no como alternancia. Ejemplo: grep '\|' busca el símbolo | en el texto. |
+| `\`     | `\\`           | `\`         | Busca la barra invertida. |
 
-> **Para dummies:**
-> - El símbolo `*` nunca va solo, siempre después de algo. Ejemplo: `a*` busca "a" repetida cero o más veces.
-> - Si quieres buscar el propio asterisco, usa `\*`.
-
-> **Tip:** Para buscar un carácter especial literalmente, escápalo con `\`. Ejemplo: `\.` busca un punto.
-
-**Comando útil:**
-```bash
-grep -E '^[A-Z]+' data/dummy_logs.txt
-# Busca líneas que empiezan con mayúsculas
+**Ejemplo práctico:**
+Supón que tienes el archivo `data/specials.txt` con este contenido:
 ```
+Precio: $100
+Archivo: data[1].csv
+Regex: a.c
+Pregunta: ?
+Alternativa: foo|bar
+Ruta: C:\\Users\\devops
+```
+
+Buscar líneas con el símbolo de dólar:
+```bash
+grep '\$' data/specials.txt
+# Output: Precio: $100
+```
+Buscar líneas con corchetes:
+```bash
+grep '\[' data/specials.txt
+# Output: Archivo: data[1].csv
+```
+Buscar líneas con barra vertical:
+```bash
+grep '\|' data/specials.txt
+# Output: Alternativa: foo|bar
+```
+Buscar líneas con barra invertida:
+```bash
+grep '\\' data/specials.txt
+# Output: Ruta: C:\Users\devops
+```
+
 
 ## 11.6 Expresiones regulares de un solo carácter
 
 
-Las expresiones de un solo carácter permiten buscar letras, dígitos o símbolos específicos.
+Las expresiones de un solo carácter permiten buscar letras, dígitos o símbolos específicos usando corchetes, punto, etc.
 
-| Patrón | Significado | Ejemplo | Coincide con | Explicación detallada |
-|:------:|:-----------:|:--------|:-------------|:----------------------|
-| [abc]  | a, b o c    | [aeiou] | vocales | `[abc]` busca cualquiera de los caracteres listados. Ejemplo: `[aeiou]` busca cualquier vocal. |
-| [a-z]  | Letras minúsculas | [a-z] | a, b, ..., z | `[a-z]` busca cualquier letra minúscula. Puedes cambiar el rango, por ejemplo `[d-f]` busca d, e o f. |
-| [A-Z]  | Letras mayúsculas | [A-Z] | A, B, ..., Z | `[A-Z]` busca cualquier letra mayúscula. |
-| [0-9]  | Dígitos     | [0-9]   | 0, 1, ..., 9 | `[0-9]` busca cualquier dígito. |
-| [^a-z] | No minúsculas | [^a-z] | 1, A, #, etc. | `[^a-z]` busca cualquier cosa que NO sea minúscula. El `^` va justo después del `[`. |
+| Patrón   | Significado           | Ejemplo     | Coincide con         | Explicación |
+|:--------:|:---------------------:|:------------|:--------------------|:------------|
+| .        | Cualquier carácter    | a.c         | abc, a1c, a-c        | El punto equivale a cualquier carácter excepto salto de línea. Ejemplo: `a.c` encuentra "abc", "a1c", "a-c". |
+| [abc]    | a, b o c              | [aeiou]     | vocales              | `[aeiou]` busca cualquier vocal individual. |
+| [a-z]    | Letras minúsculas     | [a-z]       | a, b, ..., z         | `[a-z]` busca cualquier letra minúscula. |
+| [A-Z]    | Letras mayúsculas     | [A-Z]       | A, B, ..., Z         | `[A-Z]` busca cualquier letra mayúscula. |
+| [0-9]    | Dígitos               | [0-9]       | 0, 1, ..., 9         | `[0-9]` busca cualquier dígito. |
+| [^a-z]   | No minúsculas         | [^a-z]      | 1, A, #, etc.        | `[^a-z]` busca cualquier cosa que NO sea minúscula. El `^` va justo después del `[`. |
+| $        | Fin de línea          | error$      | ...error             | Coincide solo si el patrón está al final de la línea. |
+| ^        | Inicio de línea       | ^INFO       | INFO...              | Coincide solo si el patrón está al inicio de la línea. |
+| ?        | 0 o 1 repetición      | colou?r     | color, colour        | La letra o grupo antes de `?` puede estar o no. |
+| \|       | Alternancia (o)       | foo\|bar    | foo, bar             | Coincide con "foo" o "bar". |
 
 > **Para principiantes:**
 > - Dentro de `[ ]`, puedes poner letras, números o rangos. Ejemplo: `[A-Za-z0-9]` busca cualquier letra o número.
@@ -392,7 +420,7 @@ grep -E '[0-9]{2}:[0-9]{2}:[0-9]{2}' data/dummy_logs.txt
 ## 11.7 Expresiones regulares generales
 
 
-Aquí combinamos todo lo aprendido para búsquedas avanzadas.
+Aquí combinamos todo lo aprendido para búsquedas avanzadas y útiles en DevOps.
 
 **Ejemplo 1: Buscar líneas con errores de disco**
 ```bash
@@ -418,43 +446,27 @@ grep -v 'INFO' data/dummy_logs.txt
 # 2025-12-20 10:04:50 ERROR Network unreachable
 ```
 
----
-
-## Mini-proyecto: Script de búsqueda avanzada con regex
-
-Crea el archivo `ejercicios-bash-scripting/busqueda_avanzada.sh` con el siguiente contenido:
-
+**Ejemplo 4: Buscar líneas que terminan en "out"**
 ```bash
-#!/bin/bash
-# Script: busqueda_avanzada.sh
-# Uso: ./busqueda_avanzada.sh <archivo_log> <regex>
-
-if [[ $# -ne 2 ]]; then
-  echo "Uso: $0 <archivo_log> <regex>"
-  exit 1
-fi
-
-LOGFILE="$1"
-PATRON="$2"
-
-if [[ ! -f "$LOGFILE" ]]; then
-  echo "Archivo $LOGFILE no encontrado."
-  exit 2
-fi
-
-echo "Buscando patrón: $PATRON en $LOGFILE"
-grep -En "$PATRON" "$LOGFILE"
-```
-
-Hazlo ejecutable y pruébalo:
-```bash
-chmod +x ejercicios-bash-scripting/busqueda_avanzada.sh
-./ejercicios-bash-scripting/busqueda_avanzada.sh data/dummy_logs.txt 'ERROR|WARN'
+grep 'out$' data/dummy_logs.txt
 # Output:
-# 2:2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
-# 3:2025-12-20 10:02:30 WARN CPU temperature high
-# 5:2025-12-20 10:04:50 ERROR Network unreachable
+# 2025-12-20 10:03:45 INFO User maria logged out
 ```
+
+**Ejemplo 5: Contar líneas con "WARN" o "ERROR"**
+```bash
+grep -E 'WARN|ERROR' data/dummy_logs.txt | wc -l
+# Output: 3
+```
+
+**Ejemplo 6: Extraer solo los nombres de usuario**
+```bash
+grep -oE 'User [a-z]+' data/dummy_logs.txt | awk '{print $2}'
+# Output:
+# abimael
+# maria
+```
+
 
 ---
 
