@@ -203,19 +203,260 @@ Estas opciones previenen errores difíciles y fomentan buenas prácticas profesi
 
 ## 11.4 Búsqueda avanzada en ficheros. Expresiones Regulares
 
-<!-- Comandos de terminal aquí -->
+
+En esta sección aprenderás a buscar información en archivos usando expresiones regulares (regex) con herramientas como `grep`, `egrep`, y `awk`. Las expresiones regulares son esenciales para DevOps, ya que permiten filtrar logs, analizar datos y automatizar tareas.
+
+### ¿Qué es una expresión regular?
+Una expresión regular es un patrón que describe un conjunto de cadenas. Se usan para buscar, validar o extraer información de texto.
+
+### Cheat Sheet de Expresiones Regulares (Regex)
+
+| Símbolo/Patrón | Significado | Ejemplo | Coincide con | Explicación detallada |
+|:--------------:|:-----------:|:--------|:-------------|:----------------------|
+| .              | Cualquier carácter excepto salto de línea | a.c | abc, a1c, a-c | 'a.c' coincide con cualquier secuencia de tres caracteres donde el primero es 'a', el segundo puede ser cualquier cosa (b, 1, -, etc.), y el tercero es 'c'. |
+| ^              | Inicio de línea | ^Hola | Hola mundo (al inicio) | El símbolo `^` al inicio busca solo al principio de la línea. Ejemplo: `^Hola` solo encuentra "Hola" si está al inicio. |
+| $              | Fin de línea | mundo$ | Hola mundo (al final) | El símbolo `$` al final busca solo al final de la línea. Ejemplo: `mundo$` solo encuentra "mundo" si está al final. |
+| *              | 0 o más repeticiones | ab*c | ac, abc, abbc | El asterisco `*` significa "cero o más" del carácter anterior. Ejemplo: `ab*c` encuentra "ac", "abc", "abbc". Si pones `*` después de una letra, busca repeticiones de esa letra. |
+| +              | 1 o más repeticiones | ab+c | abc, abbc | El signo `+` significa "una o más" repeticiones del carácter anterior. Ejemplo: `ab+c` encuentra "abc", "abbc" pero no "ac". |
+| ?              | 0 o 1 repetición | colou?r | color, colour | El signo `?` significa "cero o una vez" del carácter anterior. Ejemplo: `colou?r` encuentra "color" y "colour". |
+| []             | Cualquier carácter dentro de los corchetes | gr[ae]y | gray, grey | Los corchetes `[ ]` permiten elegir entre varios caracteres. Ejemplo: `gr[ae]y` encuentra "gray" y "grey". |
+| [^]            | Cualquier carácter excepto los listados | [^0-9] | a, b, c | El símbolo `^` dentro de corchetes significa "no". Ejemplo: `[^0-9]` encuentra cualquier cosa que no sea un número. |
+| {n}            | Exactamente n repeticiones | a{3} | aaa | Las llaves `{n}` indican exactamente n repeticiones. Ejemplo: `a{3}` encuentra "aaa". |
+| {n,}           | Al menos n repeticiones | a{2,} | aa, aaa, aaaa | Las llaves `{n,}` indican al menos n repeticiones. Ejemplo: `a{2,}` encuentra "aa", "aaa", etc. |
+| {n,m}          | Entre n y m repeticiones | a{2,4} | aa, aaa, aaaa | Las llaves `{n,m}` indican entre n y m repeticiones. Ejemplo: `a{2,4}` encuentra "aa", "aaa", "aaaa". |
+| \\              | Escapa un carácter especial | \\$ | $ | La barra invertida `\\` sirve para buscar caracteres especiales literalmente. Ejemplo: `\\$` busca el símbolo de dólar. |
+| |              | Alternancia (o) | foo|bar | foo, bar | El símbolo `|` significa "o". Ejemplo: `foo|bar` encuentra "foo" o "bar". |
+| ()             | Agrupación | (ab)+ | ab, abab | Los paréntesis agrupan partes del patrón. Ejemplo: `(ab)+` encuentra "ab", "abab". |
+| \\d             | Dígito (solo egrep, perl, awk) | \\d+ | 123 | `\\d` representa cualquier dígito (0-9). Ejemplo: `\\d+` encuentra "123". No funciona en grep básico, sí en egrep/awk/perl. |
+| \\w             | Alfanumérico | \\w+ | abc123 | `\\w` representa letras, números o guion bajo. Ejemplo: `\\w+` encuentra "abc123". |
+| \\s             | Espacio en blanco | \\s+ |   (espacios) | `\\s` representa cualquier espacio, tabulación, salto de línea. Ejemplo: `\\s+` encuentra espacios. |
+
+> **Para principiantes:**
+> - El símbolo `*` siempre afecta al carácter o grupo que está justo antes. Ejemplo: en `ab*`, el `*` afecta solo a la `b`.
+> - Si quieres que el `*` afecte a varias letras, usa paréntesis: `(ab)*`.
+> - Si pones `*` al inicio de un patrón, no tiene sentido: siempre va después de algo.
+> - Lo mismo aplica para `+`, `?`, `{n}`: siempre van después del carácter o grupo que quieres repetir.
+
+> **Valida tus regex online:** [regex101.com](https://regex101.com/) (elige el flavor "ECMAScript" o "POSIX" para bash/grep)
+
+---
+
+## Ejercicios prácticos y explicados
+
+Usaremos un archivo de ejemplo `data/dummy_logs.txt`:
+
+```text
+2025-12-20 10:00:01 INFO User abimael logged in
+2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+2025-12-20 10:02:30 WARN CPU temperature high
+2025-12-20 10:03:45 INFO User maria logged out
+2025-12-20 10:04:50 ERROR Network unreachable
+```
+
+### 1. Buscar líneas que contienen "ERROR"
+
+```bash
+grep 'ERROR' data/dummy_logs.txt
+# Output esperado:
+# 2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+# 2025-12-20 10:04:50 ERROR Network unreachable
+```
+
+### 2. Buscar líneas que empiezan con fecha (4 dígitos)
+
+```bash
+grep -E '^[0-9]{4}-' data/dummy_logs.txt
+# Output: Todas las líneas (todas empiezan con fecha)
+```
+
+### 3. Buscar líneas con usuario (INFO seguido de User y un nombre)
+
+```bash
+grep -E 'INFO User [a-z]+' data/dummy_logs.txt
+# Output:
+# 2025-12-20 10:00:01 INFO User abimael logged in
+# 2025-12-20 10:03:45 INFO User maria logged out
+```
+
+### 4. Buscar líneas que terminan en "out"
+
+```bash
+grep 'out$' data/dummy_logs.txt
+# Output:
+# 2025-12-20 10:03:45 INFO User maria logged out
+```
+
+### 5. Contar líneas con "WARN" o "ERROR"
+
+```bash
+grep -E 'WARN|ERROR' data/dummy_logs.txt | wc -l
+# Output: 3
+```
+
+### 6. Extraer solo los nombres de usuario
+
+```bash
+grep -oE 'User [a-z]+' data/dummy_logs.txt | awk '{print $2}'
+# Output:
+# abimael
+# maria
+```
+
+---
+
+## 11.4.1 Ejercicio largo: Filtrar logs y generar reporte
+
+Crea un script `ejercicios-bash-scripting/filtra_logs.sh` que:
+1. Reciba como argumento un archivo de logs.
+2. Cuente cuántos errores, advertencias e infos hay.
+3. Extraiga los usuarios únicos.
+4. Genere un resumen en pantalla.
+
+```bash
+#!/bin/bash
+LOGFILE="$1"
+if [[ ! -f "$LOGFILE" ]]; then
+  echo "Uso: $0 <archivo_log>"
+  exit 1
+fi
+echo "Resumen de $LOGFILE:"
+echo "----------------------"
+echo "Errores:   $(grep -c 'ERROR' "$LOGFILE")"
+echo "Warnings:  $(grep -c 'WARN' "$LOGFILE")"
+echo "Infos:     $(grep -c 'INFO' "$LOGFILE")"
+echo "Usuarios únicos:"
+grep -oE 'User [a-z]+' "$LOGFILE" | awk '{print $2}' | sort | uniq
+```
+
+Hazlo ejecutable:
+```bash
+chmod +x ejercicios-bash-scripting/filtra_logs.sh
+./ejercicios-bash-scripting/filtra_logs.sh data/dummy_logs.txt
+```
+
+---
 
 ## 11.5 Caracteres especiales
 
-<!-- Comandos de terminal aquí -->
+
+Los caracteres especiales en regex permiten construir patrones potentes. Algunos de los más usados:
+
+| Carácter | Significado | Ejemplo | Coincide con | Explicación detallada |
+|:--------:|:-----------:|:--------|:-------------|:----------------------|
+| .        | Cualquier carácter | a.c | abc, a1c, a-c | El punto equivale a cualquier letra, número o símbolo, excepto salto de línea. Ejemplo: `a.c` encuentra "abc", "a1c", "a-c" porque el punto puede ser cualquier carácter entre la 'a' y la 'c'. Así, 'a.c' coincide con cualquier secuencia de tres caracteres donde el primero es 'a', el segundo puede ser cualquier cosa (b, 1, -, etc.), y el tercero es 'c'. |
+| ^        | Inicio de línea | ^Hola | Hola mundo (al inicio) | `^` solo funciona al inicio del patrón. Busca coincidencias solo al principio de la línea. |
+| $        | Fin de línea | mundo$ | Hola mundo (al final) | `$` solo funciona al final del patrón. Busca coincidencias solo al final de la línea. |
+| *        | 0 o más repeticiones | ab*c | ac, abc, abbc | `*` afecta al carácter anterior. Ejemplo: `ab*c` encuentra "ac", "abc", "abbc". |
+| +        | 1 o más repeticiones | ab+c | abc, abbc | `+` afecta al carácter anterior. Ejemplo: `ab+c` encuentra "abc", "abbc". |
+| ?        | 0 o 1 repetición | colou?r | color, colour | `?` afecta al carácter anterior. Ejemplo: `colou?r` encuentra "color" y "colour". |
+| []       | Clase de caracteres | gr[ae]y | gray, grey | `[ae]` significa "a o e". Ejemplo: `gr[ae]y` encuentra "gray" y "grey". |
+| [^]      | Negación | [^0-9] | a, b, c | El símbolo `^` dentro de corchetes significa "no". Ejemplo: `[^0-9]` encuentra cualquier cosa que no sea un número. |
+| |        | Alternancia | foo|bar | foo, bar | El símbolo `|` significa "o". Ejemplo: `foo|bar` encuentra "foo" o "bar". |
+| ()       | Agrupación | (ab)+ | ab, abab | Los paréntesis agrupan partes del patrón. Ejemplo: `(ab)+` encuentra "ab", "abab". |
+
+> **Para dummies:**
+> - El símbolo `*` nunca va solo, siempre después de algo. Ejemplo: `a*` busca "a" repetida cero o más veces.
+> - Si quieres buscar el propio asterisco, usa `\*`.
+
+> **Tip:** Para buscar un carácter especial literalmente, escápalo con `\`. Ejemplo: `\.` busca un punto.
+
+**Comando útil:**
+```bash
+grep -E '^[A-Z]+' data/dummy_logs.txt
+# Busca líneas que empiezan con mayúsculas
+```
 
 ## 11.6 Expresiones regulares de un solo carácter
 
-<!-- Comandos de terminal aquí -->
+
+Las expresiones de un solo carácter permiten buscar letras, dígitos o símbolos específicos.
+
+| Patrón | Significado | Ejemplo | Coincide con | Explicación detallada |
+|:------:|:-----------:|:--------|:-------------|:----------------------|
+| [abc]  | a, b o c    | [aeiou] | vocales | `[abc]` busca cualquiera de los caracteres listados. Ejemplo: `[aeiou]` busca cualquier vocal. |
+| [a-z]  | Letras minúsculas | [a-z] | a, b, ..., z | `[a-z]` busca cualquier letra minúscula. Puedes cambiar el rango, por ejemplo `[d-f]` busca d, e o f. |
+| [A-Z]  | Letras mayúsculas | [A-Z] | A, B, ..., Z | `[A-Z]` busca cualquier letra mayúscula. |
+| [0-9]  | Dígitos     | [0-9]   | 0, 1, ..., 9 | `[0-9]` busca cualquier dígito. |
+| [^a-z] | No minúsculas | [^a-z] | 1, A, #, etc. | `[^a-z]` busca cualquier cosa que NO sea minúscula. El `^` va justo después del `[`. |
+
+> **Para principiantes:**
+> - Dentro de `[ ]`, puedes poner letras, números o rangos. Ejemplo: `[A-Za-z0-9]` busca cualquier letra o número.
+> - El `^` de negación solo funciona si va inmediatamente después del `[`. Si lo pones en otro lugar, busca el carácter `^`.
+
+**Ejemplo:**
+```bash
+grep -E '[0-9]{2}:[0-9]{2}:[0-9]{2}' data/dummy_logs.txt
+# Busca líneas con hora en formato HH:MM:SS
+```
 
 ## 11.7 Expresiones regulares generales
 
-<!-- Comandos de terminal aquí -->
+
+Aquí combinamos todo lo aprendido para búsquedas avanzadas.
+
+**Ejemplo 1: Buscar líneas con errores de disco**
+```bash
+grep -E 'ERROR.*Disk' data/dummy_logs.txt
+# Output:
+# 2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+```
+
+**Ejemplo 2: Buscar líneas con usuario y acción (login/logout)**
+```bash
+grep -E 'User [a-z]+ logged (in|out)' data/dummy_logs.txt
+# Output:
+# 2025-12-20 10:00:01 INFO User abimael logged in
+# 2025-12-20 10:03:45 INFO User maria logged out
+```
+
+**Ejemplo 3: Buscar líneas que NO contienen "INFO"**
+```bash
+grep -v 'INFO' data/dummy_logs.txt
+# Output:
+# 2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+# 2025-12-20 10:02:30 WARN CPU temperature high
+# 2025-12-20 10:04:50 ERROR Network unreachable
+```
+
+---
+
+## Mini-proyecto: Script de búsqueda avanzada con regex
+
+Crea el archivo `ejercicios-bash-scripting/busqueda_avanzada.sh` con el siguiente contenido:
+
+```bash
+#!/bin/bash
+# Script: busqueda_avanzada.sh
+# Uso: ./busqueda_avanzada.sh <archivo_log> <regex>
+
+if [[ $# -ne 2 ]]; then
+  echo "Uso: $0 <archivo_log> <regex>"
+  exit 1
+fi
+
+LOGFILE="$1"
+PATRON="$2"
+
+if [[ ! -f "$LOGFILE" ]]; then
+  echo "Archivo $LOGFILE no encontrado."
+  exit 2
+fi
+
+echo "Buscando patrón: $PATRON en $LOGFILE"
+grep -En "$PATRON" "$LOGFILE"
+```
+
+Hazlo ejecutable y pruébalo:
+```bash
+chmod +x ejercicios-bash-scripting/busqueda_avanzada.sh
+./ejercicios-bash-scripting/busqueda_avanzada.sh data/dummy_logs.txt 'ERROR|WARN'
+# Output:
+# 2:2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+# 3:2025-12-20 10:02:30 WARN CPU temperature high
+# 5:2025-12-20 10:04:50 ERROR Network unreachable
+```
+
+---
 
 ## 11.8 Comandos utiles para trabajar en Red
 
