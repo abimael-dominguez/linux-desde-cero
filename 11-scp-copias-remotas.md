@@ -353,7 +353,7 @@ Los caracteres especiales son aquellos que tienen un significado especial en reg
 | `(`      | `\(`             | `(`          | Busca el paréntesis de apertura. |
 | `)`      | `\)`             | `)`          | Busca el paréntesis de cierre. |
 | `^`      | `\^`             | `^`          | Busca el símbolo de inicio, no el inicio de línea. |
-| `\|`  | `\\|`                | `\|`             | Busca la barra vertical (pipe) como carácter literal, no como alternancia. Ejemplo: grep '\|' busca el símbolo | en el texto. |
+| `\|`  | `\\|`                | `\|`             | Busca la barra vertical (pipe) como carácter literal, no como alternancia. Ejemplo: egrep '\|' busca el símbolo | en el texto. |
 | `\`     | `\\`           | `\`         | Busca la barra invertida. |
 
 **Ejemplo práctico:**
@@ -379,7 +379,7 @@ grep '\[' data/specials.txt
 ```
 Buscar líneas con barra vertical:
 ```bash
-grep '\|' data/specials.txt
+egrep '\|' data/specials.txt
 # Output: Alternativa: foo|bar
 ```
 Buscar líneas con barra invertida:
