@@ -225,7 +225,7 @@ Una expresión regular es un patrón que describe un conjunto de cadenas. Se usa
 | {n,}           | Al menos n repeticiones | a{2,} | aa, aaa, aaaa | Las llaves `{n,}` indican al menos n repeticiones. Ejemplo: `a{2,}` encuentra "aa", "aaa", etc. |
 | {n,m}          | Entre n y m repeticiones | a{2,4} | aa, aaa, aaaa | Las llaves `{n,m}` indican entre n y m repeticiones. Ejemplo: `a{2,4}` encuentra "aa", "aaa", "aaaa". |
 | \\              | Escapa un carácter especial | \\$ | $ | La barra invertida `\\` sirve para buscar caracteres especiales literalmente. Ejemplo: `\\$` busca el símbolo de dólar. |
-| |              | Alternancia (o) | foo|bar | foo, bar | El símbolo `|` significa "o". Ejemplo: `foo|bar` encuentra "foo" o "bar". |
+| \|             | Alternancia (o) | `foo\|bar` | foo, bar | El símbolo \| significa "o". El patrón `foo\|bar` coincide con "foo" o "bar". |
 | ()             | Agrupación | (ab)+ | ab, abab | Los paréntesis agrupan partes del patrón. Ejemplo: `(ab)+` encuentra "ab", "abab". |
 | \\d             | Dígito (solo egrep, perl, awk) | \\d+ | 123 | `\\d` representa cualquier dígito (0-9). Ejemplo: `\\d+` encuentra "123". No funciona en grep básico, sí en egrep/awk/perl. |
 | \\w             | Alfanumérico | \\w+ | abc123 | `\\w` representa letras, números o guion bajo. Ejemplo: `\\w+` encuentra "abc123". |
