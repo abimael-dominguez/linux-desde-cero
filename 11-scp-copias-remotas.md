@@ -472,16 +472,143 @@ grep -oE 'User [a-z]+' data/dummy_logs.txt | awk '{print $2}'
 
 ## 11.8 Comandos utiles para trabajar en Red
 
-<!-- Comandos de terminal aquí -->
+Los siguientes comandos son esenciales para diagnosticar y trabajar en redes desde Linux:
+
+| Comando         | Uso principal                        | Ejemplo                          | Explicación breve |
+|-----------------|--------------------------------------|----------------------------------|-------------------|
+| `ping`          | Verifica conectividad con un host     | `ping 8.8.8.8`                   | Envía paquetes ICMP para comprobar si un host responde. Ctrl+C para detener. |
+| `ifconfig`      | Muestra configuración de red          | `ifconfig`                       | Muestra interfaces y direcciones IP locales. |
+| `ip a`          | Muestra interfaces y direcciones IP   | `ip a`                           | Alternativa moderna a ifconfig. |
+| `netstat -tuln` | Puertos abiertos y servicios          | `netstat -tuln`                  | Lista puertos TCP/UDP en escucha. |
+| `ss -tuln`      | Igual que netstat, más moderno        | `ss -tuln`                       | Muestra sockets abiertos. |
+| `traceroute`    | Ruta de paquetes a un host            | `traceroute google.com`          | Muestra el camino que siguen los paquetes. |
+| `nslookup`      | Consulta DNS                         | `nslookup google.com`            | Traduce nombres de dominio a IP y viceversa. |
+| `hostname`      | Muestra/define el nombre del sistema  | `hostname`                       | Muestra el nombre del equipo. |
+| `curl`          | Descarga datos de la web              | `curl https://example.com`       | Descarga contenido de una URL. |
+| `wget`          | Descarga archivos                     | `wget https://example.com/file`  | Descarga archivos por HTTP/FTP. |
+
+> **Nota:** Algunos comandos pueden requerir instalación previa:
+> - `sudo apt install net-tools traceroute dnsutils curl wget`
 
 ## 11.9 Protocolos de Internet (IP)
 
-<!-- Comandos de terminal aquí -->
+Los protocolos más usados en redes Linux:
+
+- **IP (Internet Protocol):** Identifica dispositivos en la red. Ejemplo: `192.168.1.10`.
+- **TCP (Transmission Control Protocol):** Conexión fiable (web, ssh, ftp). Ejemplo: puertos 22 (SSH), 80 (HTTP).
+- **UDP (User Datagram Protocol):** Conexión rápida, sin garantía (streaming, DNS). Ejemplo: puerto 53 (DNS).
+
+Comandos útiles:
+
+```bash
+ip addr         # Ver IPs locales
+netstat -an     # Ver conexiones activas
+ss -tunap       # Ver conexiones y procesos
+```
 
 ## 11.10 Denominación simbólica de Sistemas de Internet
 
-<!-- Comandos de terminal aquí -->
+El sistema de nombres de dominio (DNS) traduce nombres a IP:
+
+- **Dominio:** Nombre simbólico (ej: google.com).
+- **DNS:** Sistema que resuelve nombres a IP.
+
+Comandos:
+
+```bash
+nslookup google.com   # Consulta la IP de un dominio
+dig google.com        # Consulta detallada (requiere instalación: sudo apt install dnsutils)
+host google.com       # Consulta simple
+```
+
+Puedes editar `/etc/hosts` para asignar nombres locales a IPs manualmente.
 
 ## 11.11 Comandos TELNET y FTP
 
-<!-- Comandos de terminal aquí -->
+**TELNET** y **FTP** son protocolos clásicos para acceso remoto y transferencia de archivos (menos seguros que SSH/SCP).
+
+**TELNET:**
+```bash
+telnet <host> <puerto>   # Ejemplo: telnet towel.blinkenlights.nl 23
+```
+> Instala con: `sudo apt install telnet`
+
+**FTP:**
+```bash
+ftp <host>               # Inicia sesión FTP
+ftp> ls                  # Lista archivos
+ftp> get archivo.txt     # Descarga archivo
+ftp> put archivo.txt     # Sube archivo
+ftp> bye                 # Salir
+```
+> Instala con: `sudo apt install ftp`
+
+**Alternativa moderna:** Usa `sftp` (más seguro, cifrado):
+```bash
+sftp usuario@host
+```
+
+**SCP (Secure Copy):**
+Permite copiar archivos de forma segura entre equipos por SSH.
+
+```bash
+# Copiar archivo local a remoto:
+scp archivo.txt usuario@host:/ruta/destino/
+# Copiar archivo remoto a local:
+scp usuario@host:/ruta/archivo.txt ./
+```
+
+> Instala con: `sudo apt install openssh-client`
+
+**Nota:** Para practicar SCP/SFTP necesitas dos equipos o una VM con SSH habilitado.
+
+---
+
+## Mini-práctica: Diagnóstico y transferencia de archivos en red
+
+1. **Prepara el entorno:**
+   - Instala herramientas necesarias:
+     ```bash
+     sudo apt update
+     sudo apt install net-tools traceroute dnsutils curl wget telnet ftp openssh-client
+     ```
+   - Si quieres practicar SCP/SFTP, asegúrate de tener acceso SSH a otro equipo o VM.
+
+2. **Crea el script de práctica:**
+
+Guarda esto como `src/11-scp-copias-remotas/red_practica.sh`:
+
+```bash
+#!/bin/bash
+echo "== Diagnóstico de red =="
+ping -c 2 8.8.8.8
+echo
+echo "== Interfaces de red =="
+ip a
+echo
+echo "== Consulta DNS =="
+nslookup google.com
+echo
+echo "== Descarga de archivo de prueba =="
+wget -q --show-progress https://www.example.com/index.html -O /tmp/index.html
+ls -lh /tmp/index.html
+echo
+echo "== (Opcional) Copia SCP (requiere SSH) =="
+echo "scp /tmp/index.html usuario@host:/tmp/  # Edita usuario y host para probar"
+```
+
+Hazlo ejecutable y pruébalo:
+
+```bash
+chmod +x src/11-scp-copias-remotas/red_practica.sh
+./src/11-scp-copias-remotas/red_practica.sh
+```
+
+> **Explicación:**
+> - `ping`: prueba conectividad.
+> - `ip a`: muestra interfaces y direcciones IP.
+> - `nslookup`: consulta DNS.
+> - `wget`: descarga un archivo de internet.
+> - `scp`: copia segura (requiere SSH en destino).
+
+¡Listo! Así practicas los comandos clave de red en Linux.
