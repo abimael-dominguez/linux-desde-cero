@@ -1,5 +1,13 @@
 2025-12-20 10:00:01 INFO User abimael logged in
 2025-12-20 10:01:15 ERROR Disk full on /dev/sda1
+2025-12-20 10:01:15 ERROR Disk    full on /dev/sda1
 2025-12-20 10:02:30 WARN CPU temperature high
 2025-12-20 10:03:45 INFO User maria logged out
 2025-12-20 10:04:50 ERROR Network unreachable
+2025-12-20 10:00:01 INFO User abimael logged in
+2025-12-20 10:00:01 INFO User juan logged in.
+2025-12-20 10:00:01 INFO User juan logged in
+2025-12-20 10:00:01 INFO User juan logged in *
+2025-12-20 10:00:01 INFO User juan logged in ?
+2025-12-20 10:00:01 INFO User juan logged in
+2025-12-20 10:00:01 INFO User Juan logged in - sueldo: $100,000
