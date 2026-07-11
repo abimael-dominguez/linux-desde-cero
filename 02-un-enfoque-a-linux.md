@@ -1,265 +1,192 @@
-# 2. Un Enfoque a Linux
+# 2. Entrada y salida del sistema
 
-Este capítulo profundiza en cómo Linux gestiona **la entrada y salida (I/O) del sistema**: terminales, archivos, dispositivos, procesos y red. La meta es que comprendas el modelo "todo es un archivo" y practiques comandos que inspeccionan, redirigen y monitorizan I/O.
+## Objetivos
 
-## Índice
+- Reconocer entrada estándar, salida estándar y salida de error.
+- Relacionar un proceso con su terminal.
+- Comprender por qué los comandos pequeños pueden componerse.
 
-- [2. Un Enfoque a Linux](#2-un-enfoque-a-linux)
-  - [2.1 Fundamentos de Entrada/Salida del sistema](#21-fundamentos-de-entradasalida-del-sistema)
-    - [Concepto clave: todo es un archivo](#concepto-clave-todo-es-un-archivo)
-    - [Descriptores estándar](#descriptores-estándar)
-    - [Operadores de redirección y pipes](#operadores-de-redirección-y-pipes)
-    - [Redirección desde y hacia dispositivos](#redirección-desde-y-hacia-dispositivos)
-  - [2.2 TTY, PTY y terminales](#22-tty-pty-y-terminales)
-    - [Identificar tu terminal](#identificar-tu-terminal)
-    - [Variables de entorno relacionadas](#variables-de-entorno-relacionadas)
-  - [2.3 Pipes, filtros y composición](#23-pipes-filtros-y-composición)
-  - [2.4 Entrada/Salida en archivos y texto](#24-entradasalida-en-archivos-y-texto)
-    - [Lectura, escritura y visualización](#lectura-escritura-y-visualización)
-    - [Búsqueda y reemplazo](#búsqueda-y-reemplazo)
-  - [2.5 I/O de procesos: redirecciones avanzadas](#25-io-de-procesos-redirecciones-avanzadas)
-    - [Operadores útiles](#operadores-útiles)
-  - [2.6 Ejercicios prácticos guiados](#26-ejercicios-prácticos-guiados)
-    - [Ejercicio 1: Redirecciones y pipes](#ejercicio-1-redirecciones-y-pipes)
-    - [Ejercicio 2: Inspección básica de procesos](#ejercicio-2-inspección-básica-de-procesos)
-  - [2.7 Tips y buenas prácticas](#27-tips-y-buenas-prácticas)
-  - [2.8 Referencias rápidas](#28-referencias-rápidas)
+## Antes de empezar
 
-## 2.1 Fundamentos de Entrada/Salida del sistema
-
-### Concepto clave: todo es un archivo
-- Dispositivos (`/dev/sda`, `/dev/null`), sockets, pipes, terminales (`/dev/tty`), y hasta procesos (`/proc/<pid>`) se exponen como archivos.
-- Esto habilita redirecciones, lectura/escritura uniforme, y scripting poderoso.
-
-### Descriptores estándar
-- `stdin` (entrada estándar) = descriptor 0
-- `stdout` (salida estándar) = descriptor 1
-- `stderr` (salida de error) = descriptor 2
-
-### Operadores de redirección y pipes
-- `>`: Redirige `stdout` a un archivo, sobrescribiéndolo (ej: `comando > archivo.txt`).
-- `>>`: Redirige `stdout` a un archivo, añadiendo al final (ej: `comando >> archivo.txt`).
-- `2>`: Redirige `stderr` a un archivo (ej: `comando 2> errores.txt`).
-- `|`: Pipe, envía `stdout` de un comando como `stdin` a otro (ej: `comando1 | comando2`).
-- `tee`: Lee de `stdin`, escribe a `stdout` y a un archivo (ej: `comando | tee archivo.txt`). Piensa en `tee` como una T: toma la entrada, la guarda en un archivo y la envía al siguiente comando en el pipe.
+Ejecuta los ejemplos desde la raíz del curso. Este capítulo sólo creará archivos dentro de `laboratorio/salida`:
 
 ```bash
-# Enviar salida a archivo y errores a otro
-comando > salida.txt 2> errores.txt
-
-# Unir errores a salida
-comando > todo.txt 2>&1
-
-# Añadir (append) en lugar de sobrescribir
-comando >> historial.log 2>> errores.log
+cd ~/linux-desde-cero
+mkdir -p laboratorio/salida
 ```
 
-**Salida esperada y explicación:**
-- `salida.txt`: salida normal (mensajes esperados).
-- `errores.txt`: mensajes de error.
-- `todo.txt`: mezcla ambos flujos; útil para auditoría.
+`laboratorio` es una carpeta de práctica dentro del repositorio; no es una parte especial de Linux. Puedes eliminarla y volverla a crear sin afectar `data/` ni los capítulos.
 
-### Redirección desde y hacia dispositivos
+Los operadores completos se practican en [08-redirecciones-y-tuberias.md](08-redirecciones-y-tuberias.md). Este capítulo establece el modelo mental.
+
+## 2.1 Entrada y salida
+
+Al iniciar un proceso, Linux le proporciona tres descriptores:
+
+| Descriptor | Nombre | Uso |
+|---:|---|---|
+| 0 | `stdin` | Entrada de datos. |
+| 1 | `stdout` | Resultado normal. |
+| 2 | `stderr` | Diagnósticos y errores. |
+
+```text
+teclado/archivo → stdin → proceso → stdout → terminal/archivo
+                              └→ stderr → terminal/archivo
+```
+
+### Ejemplo resuelto
+
+Los nombres `modelo-A` y `modelo-B` son texto de ejemplo. `/etc/hosts` es un archivo real del sistema y `/ruta/inexistente` es una ruta deliberadamente falsa para provocar un mensaje en `stderr`.
+
 ```bash
-# Enviar salida a la nada (descartar)
-ls -la > /dev/null
-
-# Generar archivo vacío desde /dev/null
-cat /dev/null > archivo_vacio.txt
-
-# Escribir en el terminal actual
-echo "Hola" > /dev/tty
+printf '%s\n' "modelo-A" "modelo-B"
+ls /etc/hosts
+ls /ruta/inexistente
 ```
 
-**Explicación:**
-- `/dev/null` descarta todo; leerlo produce EOF inmediato.
-- `/dev/tty` representa tu terminal actual; escribir ahí imprime directo al usuario.
+Salida representativa:
 
----
+```text
+modelo-A
+modelo-B
+/etc/hosts
+ls: cannot access '/ruta/inexistente': No such file or directory
+```
 
-## 2.2 TTY, PTY y terminales
+Los dos primeros comandos producen salida normal. El tercero escribe el diagnóstico en `stderr`; esto permite separar datos válidos de errores.
 
-### Identificar tu terminal
+## Terminales TTY y PTY
+
+- **TTY:** nombre histórico de una terminal.
+- **PTY:** pseudoterminal usado por SSH y emuladores gráficos.
+
+### Diferencia entre terminal y shell
+
+Una **terminal** es el medio de entrada y salida: recibe lo que escribes, muestra texto y proporciona funciones como tamaño de pantalla, colores y combinaciones de teclas. GNOME Terminal, Konsole y Windows Terminal son emuladores de terminal.
+
+Un **shell** es el programa que interpreta lo escrito dentro de esa terminal. Reconoce comandos, variables, pipes, redirecciones y scripts. Bash, Zsh, Fish y PowerShell son shells.
+
+```text
+teclado
+   ↓
+terminal o PTY  ↔  shell Bash  →  comandos como ls, grep o python
+   ↑                  ↓
+pantalla          interpreta |, >, $VARIABLE, etc.
+```
+
+Una terminal puede ejecutar distintos shells. Del mismo modo, un shell puede ejecutarse sin una ventana gráfica: por ejemplo, dentro de un script automatizado. En una conexión SSH normalmente ocurre esto:
+
+1. SSH crea una pseudoterminal remota o PTY.
+2. Dentro de esa PTY inicia el shell del usuario, por ejemplo Bash.
+3. Bash interpreta los comandos y la PTY devuelve la salida a tu terminal local.
+
+### Cómo identificar cada uno
+
 ```bash
 tty
+ps -p "$$" -o comm=
+echo "$SHELL"
+ps -o pid,ppid,tty,stat,comm -p "$$"
 ```
-**Salida esperada:** `/dev/pts/0` (o similar)
-- `pts` = pseudo-terminal (emuladores, SSH, Docker).
+
+Salida representativa:
+
+```text
+/dev/pts/0
+bash
+/bin/bash
+  PID  PPID TT       STAT COMMAND
+ 2481  2479 pts/0    Ss   bash
+```
+
+- `tty` muestra la terminal asociada: aquí es `/dev/pts/0`.
+- `ps -p "$$" -o comm=` muestra el shell que está ejecutándose ahora: `bash`.
+- `$SHELL` muestra el shell configurado como predeterminado para el usuario. Puede ser distinto del shell activo si abriste otro manualmente.
+
+Si `tty` responde `not a tty`, el comando se ejecutó sin terminal interactiva —por ejemplo, desde automatización o algunos entornos de ejecución—. El shell puede seguir existiendo aunque no tenga una TTY asociada.
+
+- `PID`: identificador del proceso.
+- `PPID`: proceso padre.
+- `TT`: terminal asociada.
+- `STAT`: estado del proceso.
+- `COMMAND`: programa ejecutado.
+
+## Todo es componible
+
+Muchas herramientas aceptan texto por entrada y producen texto por salida. Esto permite reutilizarlas:
 
 ```bash
-who
-w
+printf '%s\n' api worker api scheduler | sort | uniq -c
 ```
-**Explicación:**
-- `who` y `w` muestran usuarios conectados, sus TTYs, comandos activos y carga del sistema.
 
-### Variables de entorno relacionadas
-```bash
-echo $TERM   # Tipo de terminal (xterm-256color, linux)
-echo $COLORTERM
-echo $LANG
+Salida esperada:
+
+```text
+      2 api
+      1 scheduler
+      1 worker
 ```
-**Uso:** afectan capacidades gráficas, color y localización.
 
-**💡 Tip:** si ves caracteres raros, revisa `TERM` y configura `export TERM=xterm-256color`.
+- `sort` agrupa líneas iguales.
+- `uniq -c` cuenta elementos consecutivos; por eso se ordena primero.
+- Cada comando resuelve una parte y no necesita conocer al siguiente.
 
----
-
-## 2.3 Pipes, filtros y composición
-
-Los pipes (`|`) conectan la salida de un comando con la entrada de otro. Aprende a construir "cadenas" de procesamiento.
+## Dispositivos útiles
 
 ```bash
-# Listar procesos, filtrar por nombre y ordenar por memoria
-ps aux | grep -v grep | grep nginx | sort -k4 -nr | head
+printf 'mensaje visible\n' > /dev/tty
+printf 'mensaje descartado\n' > /dev/null
 ```
 
-**Salida esperada:** procesos `nginx` ordenados por %MEM.
+- `/dev/tty`: terminal del proceso.
+- `/dev/null`: descarta lo que recibe.
+- Los dispositivos se exponen mediante archivos especiales, pero no son archivos regulares.
 
-**Desglose:**
-- `ps aux`: lista todos los procesos.
-- `grep -v grep`: elimina la línea del propio grep.
-- `sort -k4 -nr`: columna 4 (MEM), numérico, descendente.
-- `head`: primeras líneas.
+## Práctica guiada resuelta
+
+Crearemos `componentes.txt` con cuatro líneas y luego contaremos cuántas veces aparece cada componente. No necesitas crear el archivo manualmente: el primer `printf` lo hace.
 
 ```bash
-# Encontrar archivos grandes y mostrarlos ordenados
-find /var/log -type f -size +50M 2>/dev/null | xargs -r du -h | sort -h | tail
+mkdir -p laboratorio/salida
+
+printf '%s\n' inference training inference serving > laboratorio/salida/componentes.txt
+sort laboratorio/salida/componentes.txt | uniq -c
+
+tty
+ps -o pid,ppid,tty,stat,comm -p "$$"
 ```
 
-**Explicación:**
-- `find`: busca >50MB.
-- `2>/dev/null`: oculta errores de permisos.
-- `xargs -r du -h`: calcula tamaño legible.
-- `sort -h`: orden human-readable.
-- `tail`: los más grandes.
+Resultado: se crea una entrada reproducible, se cuenta cada componente y se identifica el shell que ejecutó el pipeline.
 
-**💡 Tip:** usa `tee` para bifurcar la salida a archivo mientras sigues viéndola en pantalla.
-```bash
-journalctl -u ssh.service -n 100 | tee ssh-ultimos.log
-```
-
----
-
-## 2.4 Entrada/Salida en archivos y texto
-
-### Lectura, escritura y visualización
-```bash
-# Crear archivo de ejemplo
-printf "Linea 1\nLinea 2\nLinea 3\n" > demo.txt
-
-# Ver principio y final
-head -n 2 demo.txt
-tail -n 2 demo.txt
-
-# Mostrar con numeración y saltos de página
-nl -ba demo.txt | less
-
-# Concatenar múltiples archivos
-cat *.conf 2>/dev/null | wc -l
-```
-
-**Salida esperada:**
-- `head/tail`: primeras/últimas líneas.
-- `nl -ba`: numera todas las líneas (incluye vacías).
-- `wc -l`: cuenta líneas.
-
-### Búsqueda y reemplazo
-```bash
-# Buscar patrones en archivos
-grep -Rin "ERROR" /var/log 2>/dev/null | head
-
-# Reemplazo inline (GNU sed)
-sed -i 's/Linea/Linea corregida/g' demo.txt
-
-# En macOS (BSD sed):
-sed -i '' 's/Linea/Linea corregida/g' demo.txt
-```
-
-**💡 Tip:** valida con `grep` antes de un `sed -i` para evitar cambios no deseados.
-
----
-
-## 2.5 I/O de procesos: redirecciones avanzadas
-
-### Operadores útiles
-- `<<< "texto"`: Here-string. Pasa una cadena de texto directamente como entrada estándar (`stdin`) a un comando, sin necesidad de archivos temporales. Útil para probar comandos con texto fijo.
-- `<<EOF ... EOF`: Here-documento. Permite pasar bloques largos de texto (múltiples líneas) como `stdin` a un comando. Termina con la palabra clave (EOF). Ideal para crear archivos o scripts inline.
-- `>|`: Sobrescribe un archivo incluso si la opción `noclobber` de bash está activada (que normalmente previene sobrescribir archivos existentes).
+Comprueba los archivos:
 
 ```bash
-# Here-string: Busca "linux" en el texto dado, ignorando mayúsculas
-grep -i linux <<< "Aprendiendo Linux desde cero"
-# Salida: Linux (encuentra la palabra)
-
-# Here-doc: Crea un script bash con contenido multilínea
-cat <<'EOF' > script.sh
-#!/usr/bin/env bash
-set -euo pipefail
-echo "Hola desde script"
-EOF
-chmod +x script.sh
-# Ahora script.sh es un archivo ejecutable con el contenido del here-doc
+wc -l laboratorio/salida/componentes.txt
+cat laboratorio/salida/componentes.txt
 ```
 
-**Explicación:** Estos operadores simplifican la automatización en scripts, permitiendo insertar texto directamente sin crear archivos intermedios. El here-string es para texto corto; el here-doc para bloques largos. `>|` es útil cuando bash protege archivos por defecto.
+La primera salida debe indicar `4`, porque escribimos cuatro componentes.
 
----
+## Errores frecuentes
 
-## 2.6 Ejercicios prácticos guiados
+- Creer que todo texto visible pertenece a `stdout`.
+- Usar `uniq -c` sin ordenar cuando se quieren totales globales.
+- Confundir una terminal con el shell: la terminal transporta y muestra texto; el shell interpreta comandos dentro de ella.
 
-### Ejercicio 1: Redirecciones y pipes
-Objetivo: dominar `>`, `>>`, `2>`, `|`, `tee`.
+## Reto 2 — Flujo de componentes
 
-**Comando:**
-```bash
-printf "%s\n" {1..100} | tee numeros.txt | grep -E '^[13579]$|[13579]$' > impares.txt 2> errores.log
-wc -l numeros.txt impares.txt
-```
+[Ver respuesta](instructor/soluciones.md#respuesta-reto-2)
 
-**Explicación paso a paso:**
-- `printf "%s\n" {1..100}`: Genera los números del 1 al 100, uno por línea.
-- `| tee numeros.txt`: Envía la salida a `tee`, que la duplica: una copia va a `numeros.txt` y la otra continúa por el pipe.
-- `| grep -E '^[13579]$|[13579]$'`: Filtra líneas que empiecen o terminen con dígitos impares (1,3,5,7,9). El regex busca números de un dígito que sean impares.
-- `> impares.txt`: Redirige la salida filtrada (números impares) a `impares.txt`.
-- `2> errores.log`: Redirige cualquier error (stderr) a `errores.log`.
-- `wc -l numeros.txt impares.txt`: Cuenta las líneas en ambos archivos.
+Crea `laboratorio/reto2/servicios.txt` con al menos ocho nombres de servicios repetidos. Genera `laboratorio/reto2/resumen.txt` con el conteo de cada servicio, ordenado por nombre. Debes conservar ambos archivos.
 
-**Salida esperada:**
-- `numeros.txt`: 100 líneas (todos los números del 1 al 100).
-- `impares.txt`: 50 líneas (números impares: 1,3,5,...,99).
+### Criterios de comprobación
 
-**Aprendizaje:** Practica cómo combinar pipes para procesar datos en cadena, redirigir salidas y errores, y usar `tee` para bifurcar flujos.
+- No se cuenta manualmente.
+- Entrada y resumen están en archivos distintos.
+- La suma de los conteos coincide con el número de líneas de entrada.
 
-### Ejercicio 2: Inspección básica de procesos
-```bash
-sleep 10 &
-echo $! > pid.txt
-ps -p $(cat pid.txt)
-kill $(cat pid.txt)
-```
+## Checklist
 
-**Explicación paso a paso:**
-- `sleep 10 &`: Ejecuta el comando `sleep 10` en segundo plano (background), lo que pausa el proceso por 10 segundos sin bloquear la terminal.
-- `echo $! > pid.txt`: `$!` es la variable que contiene el PID del último proceso ejecutado en background. Se guarda en `pid.txt`.
-- `ps -p $(cat pid.txt)`: `ps -p` muestra información detallada del proceso con el PID leído de `pid.txt`. `$(cat pid.txt)` es sustitución de comando para obtener el PID.
-- `kill $(cat pid.txt)`: Envía una señal SIGTERM al proceso para terminarlo.
-
-**Salida esperada:**
-- `ps -p`: Muestra detalles como PID, TTY, tiempo de CPU, comando (sleep 10).
-- El proceso `sleep` se detiene antes de los 10 segundos.
-
-**Aprendizaje:** Entiende cómo manejar procesos en background, capturar PIDs y usar `ps` para inspeccionar procesos en ejecución.
-
----
-
-## 2.7 Tips y buenas prácticas
-- Usa `set -euo pipefail` en scripts para manejo robusto de errores.
-- Valida primero con `head`, `tail`, `wc -l` antes de procesar archivos grandes.
-- Redirige `stderr` por separado cuando depures (`2>debug.log`).
-- Documenta cambios de permisos al crear archivos.
-
----
-
-## 2.8 Referencias rápidas
-- `man bash`, `man tee`, `man grep`, `man sed`
+- [ ] Identifico los descriptores 0, 1 y 2.
+- [ ] Puedo explicar TTY frente a shell.
+- [ ] Comprendo por qué `sort | uniq -c` funciona.

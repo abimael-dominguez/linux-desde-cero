@@ -1,480 +1,300 @@
-# 7. El Shell
+# 7. El shell
 
-## Índice
+## Objetivos
 
-- [7. El Shell](#7-el-shell)
-  - [7.1 Introducción](#71-introducción)
-  - [7.2 Algunos comandos sencillos de LINUX](#72-algunos-comandos-sencillos-de-linux)
-  - [7.3 Directorio personal](#73-directorio-personal)
-  - [7.4 Listado del contenido de directorios: comando ls](#74-listado-del-contenido-de-directorios-comando-ls)
-  - [7.5 Creación de subdirectorios. Comando mkdir](#75-creación-de-subdirectorios-comando-mkdir)
-  - [7.6 Borrado de subdirectorios. Comando rmdir](#76-borrado-de-subdirectorios-comando-rmdir)
-  - [7.7 Cambio de directorio. Comando cd](#77-cambio-de-directorio-comando-cd)
-  - [7.8 Ruta actual. Comando pwd](#78-ruta-actual-comando-pwd)
-  - [7.9 Acceso a unidades de disco](#79-acceso-a-unidades-de-disco)
-  - [7.10 Copia de ficheros. Comando cp](#710-copia-de-ficheros-comando-cp)
-  - [7.11 Traslado y cambio de nombre de ficheros. Comando mv](#711-traslado-y-cambio-de-nombre-de-ficheros-comando-mv)
-  - [7.12 Enlaces a ficheros. Comando ln](#712-enlaces-a-ficheros-comando-ln)
-  - [7.13 Borrado de ficheros. Comando rm](#713-borrado-de-ficheros-comando-rm)
-  - [7.14 Características de un fichero. Comando file](#714-características-de-un-fichero-comando-file)
-  - [7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp](#715-cambio-de-modo-de-los-ficheros-comandos-chmod-chown-y-chgrp)
-    - [Resumen:](#resumen)
-  - [7.16 Espacio ocupado en el disco comandos DU y DF](#716-espacio-ocupado-en-el-disco-comandos-du-y-df)
-  - [7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR](#717-visualización-sin-formato-de-un-fichero-comando-cat-y-con-formato-comando-pr)
-  - [7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS](#718-visualización-de-ficheros-pantalla-a-pantalla-comandos-more-y-less)
-  - [7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP](#719-busqueda-en-ficheros-comandos-grep-fgrep-y-egrep)
+- Navegar y administrar archivos desde Bash.
+- Consultar ayuda y verificar el efecto de cada comando.
+- Buscar, medir, empaquetar y recuperar información.
+- Aplicar opciones de seguridad antes de borrar o sobrescribir.
 
-## 7.1 Introducción
+## Antes de empezar
 
-El shell es la interfaz de línea de comandos para interactuar con Linux. En la industria se usa para automatización (scripts), administración de servidores, despliegues y análisis de logs.
+Este capítulo forma una secuencia: cada apartado reutiliza archivos del anterior. Empieza desde la raíz del curso y prepara una copia limpia de los datos:
 
-- Comprobar tu shell actual: `echo $SHELL`
-- Cambiar temporalmente: `bash` o `zsh`
-- Ver shells disponibles: `cat /etc/shells`
+```bash
+cd ~/linux-desde-cero
+bash ejercicios-bash-scripting/preparar-lab.sh
+mkdir -p laboratorio/shell/{entrada,salida,backup}
+```
 
-Resultado esperado:
-- `echo $SHELL` -> `/bin/bash` o `/bin/zsh`
+Trabajaremos con `modelo.txt` como archivo original, `backup-modelo.txt` como copia y `modelo-validado.txt` como nombre nuevo. No uses archivos personales para estas prácticas.
 
-## 7.2 Algunos comandos sencillos de LINUX
+## 7.1–7.3 Shell, comandos y directorio personal
 
-Comandos básicos útiles en cualquier entorno.
+Bash interpreta palabras, expansiones, redirecciones y operadores. Un comando puede ser builtin del shell o un ejecutable externo.
 
-- Fecha y hora: `date`
-	- Uso: Timestamps en scripts y auditoría.
-	- Recomendación: `date +"%F %T"` para formato estándar ISO.
-	- Comprobación: Comparar con reloj del sistema.
-	- Resultado esperado: `2025-12-05 14:30:00`
+```bash
+type cd
+type ls
+echo "$HOME"
+cd
+pwd
+```
 
-- Usuarios conectados: `who`
-	- Uso: Ver sesiones en servidores multiusuario.
-	- Recomendación: `who | wc -l` para contar sesiones.
-	- Comprobación: Ver TTYs activos.
-	- Resultado esperado: `user tty0 2025-12-05 14:30`
+Salida representativa:
 
-- Tiempo encendido: `uptime`
-	- Uso: Salud del servidor y carga.
-	- Recomendación: Vigilar `load average`.
-	- Comprobación: Cruzar con logs de reinicio.
-	- Resultado esperado: `14:30 up 5 days, 2 users, load average: 0.05, 0.10, 0.08`
+```text
+cd is a shell builtin
+ls is /usr/bin/ls
+/home/ubuntu
+/home/ubuntu
+```
 
-## 7.3 Directorio personal
+`cd` debe cambiar el directorio del shell actual; por eso es builtin.
 
-Tu directorio home es tu espacio de trabajo.
+## 7.4 Listar: `ls`
 
-- Ir al home: `cd ~` o `cd`
-- Ver ruta actual: `pwd`
-- Usar variable: `echo $HOME`
+```bash
+ls -lah
+ls -lt laboratorio | head
+```
 
-Casos de uso: configuración de herramientas, claves SSH.
-Comprobación: `pwd` debe mostrar tu home.
-Resultado esperado: `/home/usuario` o `/Users/usuario`
+- `-l`: formato largo.
+- `-a`: incluye nombres que comienzan con `.`.
+- `-h`: tamaños legibles junto con `-l`.
+- `-t`: ordena por modificación.
 
-## 7.4 Listado del contenido de directorios: comando ls
+No analices `ls` en scripts complejos: nombres con espacios o saltos de línea requieren herramientas como `find`.
 
-Lista archivos y directorios con opciones clave.
+## 7.5–7.8 Directorios y navegación
 
-- Formato largo y ocultos: `ls -lah`
-- Ordenar por fecha: `ls -lt`
-- Filtrar por patrón: `ls -l *.log`
+```bash
+mkdir -p laboratorio/shell/{entrada,salida,backup}
+cd laboratorio/shell/entrada
+pwd
+cd -
+rmdir laboratorio/shell/backup
+```
 
-Casos de uso: inspección de releases, permisos, tamaños.
-Recomendación: usar `-h` para tamaños legibles.
-Comprobación: validar permisos en primera columna.
-Resultado esperado: `-rw-r--r-- 1 user user 1.2K Dec  5 14:30 app.log`
+Después de `cd laboratorio/shell/entrada`, `pwd` debe terminar en `/laboratorio/shell/entrada`. `cd -` vuelve a la raíz del curso desde la que comenzaste. `rmdir` elimina `backup` porque todavía está vacío; más adelante los respaldos se crearán con otros nombres.
 
-## 7.5 Creación de subdirectorios. Comando mkdir
+- `mkdir -p`: crea padres y tolera rutas existentes.
+- `rmdir`: elimina sólo directorios vacíos.
+- `cd -`: regresa a la ruta anterior.
+- `pwd`: muestra la ruta efectiva actual.
 
-Crear estructuras de proyecto.
+## 7.9 Unidades y montajes
 
-- Crear anidados: `mkdir -p proyecto/src/tests`
-- Verificar creación: `ls -d proyecto/src`
+Linux presenta los sistemas de archivos dentro de una sola jerarquía:
 
-Casos de uso: scaffolding de repos, pipelines.
-Recomendación: siempre `-p` en scripts.
-Resultado esperado: `proyecto/src`
+```bash
+lsblk -f
+findmnt /
+```
 
-## 7.6 Borrado de subdirectorios. Comando rmdir
+No accedas a “una unidad” por letra; identifica su punto de montaje.
 
-Eliminar directorios vacíos.
+## 7.10 Copiar: `cp`
 
-- Borrar vacío: `rmdir carpeta_vacia`
-- Comprobar vacío: `ls -A carpeta_vacia` (sin salida)
+Sintaxis general:
 
-Recomendación: usar `rm -r` si contiene archivos y estás seguro.
-Resultado esperado: `rmdir: failed to remove 'carpeta_vacia': No such file or directory` si ya no existe.
+```bash
+cp [opciones] <origen> <destino>
+```
 
-## 7.7 Cambio de directorio. Comando cd
+En el ejemplo resuelto, `modelo.txt` es el origen. El primer `printf` crea ese archivo; no necesitas crearlo antes.
 
-Navegar por el sistema de archivos.
+```bash
+printf 'accuracy=0.93\n' > laboratorio/shell/entrada/modelo.txt
+cp -v laboratorio/shell/entrada/modelo.txt laboratorio/shell/backup-modelo.txt
+cp -a laboratorio/shell/entrada laboratorio/shell/entrada-copia
+```
 
-- Subir nivel: `cd ..`
-- Volver anterior: `cd -`
-- Ir absoluto: `cd /var/log`
+- `-v`: informa operaciones.
+- `-a`: copia recursivamente preservando metadatos apropiados.
+- Para evitar sobrescritura accidental puede usarse `cp -i`.
 
-Casos de uso: revisar logs, configuraciones.
-Comprobación: `pwd` tras moverte.
-Resultado esperado: ruta actual cambia, e.g., `/var/log`
+## 7.11 Mover y renombrar: `mv`
 
-## 7.8 Ruta actual. Comando pwd
+Sintaxis general: `mv <origen> <destino>`. Aquí renombraremos la copia `backup-modelo.txt` como `modelo-validado.txt`; el archivo original `entrada/modelo.txt` permanece intacto.
 
-Mostrar la ruta actual.
+```bash
+mv -i laboratorio/shell/backup-modelo.txt laboratorio/shell/modelo-validado.txt
+```
 
-- Ver ruta: `pwd`
+Dentro del mismo sistema de archivos, renombrar suele ser inmediato. Entre sistemas puede implicar copiar y eliminar.
 
-Casos de uso: evitar operaciones en rutas equivocadas.
-Recomendación: usar en scripts antes de acciones destructivas.
-Resultado esperado: `/home/usuario/proyecto`
+## 7.12 Enlaces: `ln`
 
-## 7.9 Acceso a unidades de disco
+El objetivo se escribe como `entrada/modelo.txt` porque el enlace estará dentro de `laboratorio/shell`. Esa ruta se interpreta desde la ubicación del enlace, no desde tu terminal.
 
-Montar y acceder a dispositivos.
+```bash
+ln -s entrada/modelo.txt laboratorio/shell/modelo-actual
+readlink laboratorio/shell/modelo-actual
+```
 
-- Listar discos: `lsblk` (Linux) o `diskutil list` (macOS)
-- Montar (Linux): `sudo mount /dev/sdb1 /mnt`
-- Ver uso: `df -h`
+`-s` crea un enlace simbólico; `readlink` muestra su objetivo almacenado.
 
-Casos de uso: adjuntar volúmenes de datos, backups.
-Comprobación: `ls /mnt` muestra archivos.
-Resultado esperado: `Filesystem Size Used Avail Use% Mounted on ... /mnt`
+## 7.13 Borrar: `rm`
 
-Buenas prácticas:
+```bash
+rm -i laboratorio/shell/modelo-validado.txt
+rm -rI laboratorio/shell/entrada-copia
+```
 
-En Linux ha dos lugares "estandar" para montar cosas:
+- `-i`: pregunta por cada archivo.
+- `-r`: recorre directorios.
+- `-I`: una confirmación para una eliminación recursiva o numerosa.
 
-- /media
-    - Generalmente lo usa el sistema para cosas automáticas (USBs, CDs)
-- /mnt
-    - Es la carpeta clásica de montajes manuales.
-    - Ejemplos:
-        - /mnt/respaldos
-        - /mnt/fotos
-        - /mnt/disco_externo
+Antes de un `rm -r`, ejecuta `ls` sobre la misma ruta. No uses `-f` como solución automática.
 
+Ambos comandos pedirán confirmación. Responde `y` sólo después de comprobar que las rutas comienzan con `laboratorio/shell/`.
 
-## 7.10 Copia de ficheros. Comando cp
+## 7.14 Identificar: `file` y `stat`
 
-Copiar archivos y directorios.
+```bash
+file laboratorio/shell/entrada/modelo.txt
+stat -c '%F | %s bytes | %a | %n' laboratorio/shell/entrada/modelo.txt
+```
 
-- Copia simple: `cp origen.txt destino.txt`
-- Preservar atributos: `cp -a dir1 dir2`
-- Recursivo: `cp -r carpeta destino/`
+Salida representativa:
 
-Casos de uso: respaldos de configuración, duplicar assets.
-Recomendación: `-i` para evitar sobrescribir.
-Comprobación: `ls destino.txt` existe.
-Resultado esperado: `destino.txt` copiado.
+```text
+ASCII text
+regular file | 14 bytes | 644 | laboratorio/shell/entrada/modelo.txt
+```
 
-## 7.11 Traslado y cambio de nombre de ficheros. Comando mv
+- `%F`: tipo.
+- `%s`: bytes.
+- `%a`: modo octal.
+- `%n`: nombre.
 
-Mover o renombrar.
+## 7.15 Permisos y propiedad
 
-- Renombrar: `mv archivo.log archivo-2025-12-05.log`
-- Mover: `mv build/* releases/`
+```bash
+chmod 640 laboratorio/shell/entrada/modelo.txt
+chgrp "$(id -gn)" laboratorio/shell/entrada/modelo.txt
+sudo chown "$USER":"$(id -gn)" laboratorio/shell/entrada/modelo.txt
+```
 
-Casos de uso: versionado de logs, reorganizar builds.
-Recomendación: `-i` para evitar sobrescrituras.
-Comprobación: `ls` en origen y destino.
-Resultado esperado: archivos ubicados/renombrados correctamente.
+- `chmod`: modo.
+- `chgrp`: grupo.
+- `chown`: dueño y opcionalmente grupo.
 
-## 7.12 Enlaces a ficheros. Comando ln
+`$USER` y `$(id -gn)` se resuelven automáticamente. Si el usuario y grupo son `ubuntu`, el último comando equivale a `sudo chown ubuntu:ubuntu ...`.
 
-Crear enlaces simbólicos y duros.
+## 7.16 Espacio: `du` y `df`
 
-- Enlace simbólico: `ln -s /opt/app/config.yml ~/.config/app.yml`
-- Enlace duro: `ln archivo.dat enlace.dat`
+```bash
+du -sh laboratorio data
+du -h --max-depth=1 data | sort -h
+df -hT .
+```
 
-Casos de uso: apuntar a versiones, dotfiles.
-Recomendación: preferir simbólicos para flexibilidad.
-Comprobación: `ls -l` muestra `->` en simbólicos.
-Resultado esperado: `app.yml -> /opt/app/config.yml`
+- `du`: suma bloques usados por archivos visibles desde una ruta.
+- `df`: informa capacidad del sistema de archivos.
+- `-s`: total resumido.
+- `--max-depth=1`: desglose inmediato.
 
-## 7.13 Borrado de ficheros. Comando rm
+Los totales pueden diferir por archivos eliminados aún abiertos, metadatos y espacio reservado.
 
-Eliminar archivos y árboles.
+## 7.17–7.18 Visualizar: `cat`, `head`, `tail`, `less` y `pr`
 
-- Borrar archivo: `rm archivo.tmp`
-- Recursivo y forzado: `rm -rf carpeta_tmp/`
+```bash
+cat data/dummy_logs.txt
+head -n 3 data/dummy_logs.txt
+tail -n 2 data/dummy_logs.txt
+less data/dummy_logs.txt
+```
 
-Casos de uso: limpiar temporales, artefactos.
-Recomendación: extrema cautela con `rm -rf` (nunca con rutas expansivas como `/`).
-Comprobación: `ls` no debe mostrar el archivo.
-Resultado esperado: archivo/directorio eliminado.
+- `cat`: salida completa; ideal para archivos pequeños o pipelines.
+- `head`/`tail`: primeras/últimas líneas.
+- `less`: navegación y búsqueda interactiva con `/patrón`; sal con `q`.
+- `more` y `pr` se conservan por compatibilidad con el temario, pero `less` y formatos específicos suelen ser más útiles.
 
-## 7.14 Características de un fichero. Comando file
+## 7.19 Buscar: `grep` y `find`
 
-Detectar tipo de contenido real.
+```bash
+grep -n 'ERROR' data/dummy_logs.txt
+grep -Ei 'warn|error' data/dummy_logs.txt
+grep -F '[INFO]' data/specials.txt
+find data -maxdepth 2 -type f -name '*.csv' -size +0c
+```
 
-- Analizar: `file paquete.bin`
+- `-n`: número de línea.
+- `-E`: expresiones regulares extendidas; sustituye al nombre histórico `egrep`.
+- `-F`: búsqueda literal; sustituye al nombre histórico `fgrep`.
+- `-i`: ignora mayúsculas/minúsculas.
+- `find -type f`: sólo archivos; `-name`: patrón de nombre; `-size +0c`: no vacíos.
 
-Casos de uso: validar uploads, binarios, scripts.
-Comprobación: coincide con lo esperado.
-Resultado esperado: `paquete.bin: ELF 64-bit LSB executable`
+## 7.20 Empaquetar y comprimir: `tar`/`gzip`
 
-## 7.15 Cambio de modo de los ficheros comandos chmod, chown y chgrp
+```bash
+tar -czf laboratorio/shell/datos.tar.gz data/dummy_logs.txt data/specials.txt
+tar -tzf laboratorio/shell/datos.tar.gz
+mkdir -p laboratorio/shell/restaurado
+tar -xzf laboratorio/shell/datos.tar.gz -C laboratorio/shell/restaurado
+```
 
-Gestionar permisos y propiedad.
+- `-c`: crear; `-t`: listar; `-x`: extraer.
+- `-z`: usar gzip.
+- `-f`: el argumento siguiente es el archivo.
+- `-C`: cambia el destino antes de extraer.
 
-Una calculadora octal es tu mejor amiga para entender chmod.
+Verifica el contenido con `-t` antes de extraer archivos recibidos.
 
-En el mundo de Linux, los permisos no se calculan con matemáticas complejas, sino con una suma muy simple basada en el sistema octal (base 8). Tu calculadora te servirá para sumar los "puntos" que vale cada permiso.
+## 7.21 Impresión: `lpr`
 
-Aquí tienes la guía definitiva para usar tu calculadora con chmod.
+El temario incluye impresión Unix. En un equipo configurado con CUPS:
 
-1. La Tabla de Puntos (El Código Secreto)
-Imagina que cada permiso tiene un precio o un valor en puntos. Solo hay 3 números que debes memorizar:
+```bash
+lpstat -p
+lpr documento.pdf
+lpq
+```
 
-| Valor | Permiso | Letra | Significado |
-|---|---|---|---|
-| 4 | Lectura | r (Read) | Ver el archivo (abrir el libro). |
-| 2 | Escritura | w (Write) | Modificar el archivo (arrancar o escribir hojas). |
-| 1 | Ejecución | x (Execute) | Correr el programa (si es un script o app). |
-| 0 | Nada | - | Prohibido el paso. |
+En servidores y EC2 normalmente no hay impresora; se presenta como referencia, no como laboratorio.
 
-2. Cómo usar tu calculadora
-Para saber qué número poner en el chmod, solo tienes que sumar lo que quieres permitir.
- * Quiero leer y escribir: 4 + 2 = 6
- * Quiero leer y ejecutar: 4 + 1 = 5
- * Quiero todo (Full access): 4 + 2 + 1 = 7
- * Solo quiero leer: 4 + 0 + 0 = 4
-¡Por eso el número máximo es 7! (Es un sistema octal porque los dígitos van del 0 al 7).
+## Práctica guiada resuelta — Respaldo de logs
 
-3. Los Tres Dígitos del chmod
-Cuando ves un comando como chmod 755 archivo.txt, en realidad son tres sumas separadas una al lado de la otra.
-Tu calculadora octal te ayuda a desglosar esto:
- * Primer dígito (El Dueño/Tú): ¿Qué permisos tienes tú?
- * Segundo dígito (El Grupo): ¿Qué permisos tienen tus colegas de equipo?
- * Tercer dígito (El Resto del Mundo): ¿Qué permiso tiene cualquier extraño?
+Esta práctica toma `data/dummy_logs.txt`, extrae las tres líneas `WARN`/`ERROR`, crea un paquete y lo restaura sin tocar el archivo original.
 
-Ejemplo: El famoso 755
+```bash
+mkdir -p laboratorio/shell/reporte laboratorio/shell/restauracion
+grep -En 'WARN|ERROR' data/dummy_logs.txt > laboratorio/shell/reporte/incidentes.txt
+wc -l laboratorio/shell/reporte/incidentes.txt
+tar -czf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell reporte
+tar -tzf laboratorio/shell/incidentes.tar.gz
+tar -xzf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell/restauracion
+cmp laboratorio/shell/reporte/incidentes.txt \
+    laboratorio/shell/restauracion/reporte/incidentes.txt
+```
 
-Desglosemos qué significa usando tu suma:
- * 7 (Tú): 4+2+1 -> Tienes control total (Lees, Escribes, Ejecutas).
- * 5 (Grupo): 4+1 -> Ellos pueden Leer y Ejecutar, pero no Escribir (el 2 no está en la suma).
- * 5 (Otros): 4+1 -> Los extraños igual: miran pero no tocan.
+`cmp` no produce salida cuando ambos archivos son idénticos y termina con código 0.
 
-4. Advertencia de Seguridad
-Seguro verás en internet gente recomendando chmod 777.
- * ¿Qué significa? 4+2+1 para TI, para el GRUPO y para TODOS.
- * Traducción: Dejas la puerta de tu casa abierta, sin llave, y con un cartel que dice "Entren y hagan lo que quieran". ¡Evítalo a menos que sea estrictamente necesario!
+Por eso, **no ver nada después de `cmp` significa éxito**. Para hacerlo visible:
 
-Resumen para tu calculadora
+```bash
+cmp laboratorio/shell/reporte/incidentes.txt \
+    laboratorio/shell/restauracion/reporte/incidentes.txt \
+  && echo "Restauración verificada"
+```
 
-No necesitas hacer multiplicaciones ni divisiones.
+## Errores frecuentes
 
-Tu calculadora octal te sirve para verificar: "Si sumo Lectura (4) + Escritura (2), ¿el resultado es 6?".
+- Usar rutas relativas sin comprobar `pwd`.
+- Omitir comillas alrededor de variables con rutas.
+- Confundir glob del shell (`*.csv`) con regex.
+- Empaquetar datos y asumir que existen sin listar el archivo resultante.
+- Usar `rm -rf` o `chmod 777` para evitar diagnosticar.
 
-¿Quieres hacer una prueba rápida?
-Dime qué permisos le darías a un archivo que es top secret: Solo tú puedes leerlo y escribirlo, y nadie más (ni grupo ni otros) puede ver nada. ¿Qué número (código de 3 dígitos) usarías?
+## Reto 7 — Snapshot de evidencias
 
-- Respuesta: 600
+[Ver respuesta](instructor/soluciones.md#respuesta-reto-7)
 
-### Resumen:
+Trabaja dentro de `laboratorio/reto7`. Busca en `data/` archivos de texto o CSV no vacíos, genera `inventario.txt` con ruta y tamaño, empaqueta el inventario junto con `data/dummy_logs.txt` y restaura el paquete dentro de `laboratorio/reto7/restaurado`.
 
-Explicación de permisos (octal y simbólico):
+### Criterios de comprobación
 
-- Lectura (`r`=4), escritura (`w`=2), ejecución (`x`=1). Octal combina por posición: propietario/grupo/otros.
-- Ejemplo `chmod 750 script.sh` equivale a `u=rwx,g=rx,o=---`.
+- El inventario se genera con comandos, no manualmente.
+- El paquete puede listarse sin extraerse.
+- La restauración no sobrescribe los originales.
+- Se demuestra que el inventario restaurado coincide con el original.
 
-Tabla descriptiva rápida:
+## Checklist
 
-- Permiso: `r` — Descripción: leer contenido — Afecta: archivos y directorios (listar).
-- Permiso: `w` — Descripción: modificar — Afecta: escribir archivo; crear/borrar en directorio.
-- Permiso: `x` — Descripción: ejecutar — Afecta: ejecutar binario/script; entrar a directorio.
-- Modo: `u,g,o` — Usuario, grupo, otros.
-- Símbolos: `+` añade, `-` quita, `=` asigna exacto.
-
-Comandos comunes y casos de uso:
-
-- Cambiar permisos (octal): `chmod 640 README.md`
-	- Caso: restringir lectura a grupo, negar a otros.
-	- Comprobación: `ls -l README.md`
-	- Resultado esperado: `-rw-r-----`
-
-- Cambiar permisos (simbólico): `chmod u+x scripts/deploy.sh`
-	- Caso: permitir ejecución al propietario.
-	- Comprobación: `ls -l scripts/deploy.sh`
-	- Resultado esperado: `-rwx------` o similar, según estado previo.
-
-- Cambiar dueño y grupo: `sudo chown root:dev /opt/app/config.yml`
-	- Caso: propiedad correcta para servicios.
-	- Comprobación: `ls -l /opt/app/config.yml`
-	- Resultado esperado: dueño `root`, grupo `dev`.
-
-- Cambiar grupo: `sudo chgrp dev /opt/app/config.yml`
-	- Caso: ajustar acceso compartido.
-	- Comprobación: `ls -l /opt/app/config.yml`
-	- Resultado esperado: grupo `dev` aplicado.
-
-Tabla descriptiva (resumen de comandos):
-
-- Comando: `chmod` — Acción: permisos — Ejemplos: `chmod 755 archivo`, `chmod g-w,o-r archivo` — Resultado: actualización de bits de permiso.
-- Comando: `chown` — Acción: dueño/grupo — Ejemplos: `chown user archivo`, `chown user:group archivo` — Resultado: cambio de propietario.
-- Comando: `chgrp` — Acción: grupo — Ejemplos: `chgrp dev archivo` — Resultado: cambio de grupo.
-
-## 7.16 Espacio ocupado en el disco comandos DU y DF
-
-Medir uso y disponibilidad.
-
-- Uso por directorio: `du -h -d 1 /var/log`
-    - Verificar el espacio ocupado por cada usuario
-        - `du -h -d 1 /home/`
-
-- Espacio libre: `df -h`
-
-Casos de uso: monitoreo de disco, evitar incidentes.
-Comprobación: comparar suma de `du` con `df`.
-Resultado esperado: tamaños legibles por directorio y total disponible.
-
-## 7.17 Visualización sin formato de un fichero comando CAT y con formato comando PR
-
-Ver contenido de archivos.
-
-- Sin formato: `cat README.md`
-- Con paginado/encabezado (impresión): `pr -h "Reporte" archivo.txt`
-
-Casos de uso: revisión rápida de configs/logs.
-Recomendación: usar `cat` en pipelines.
-Comprobación: contenido visible en terminal.
-Resultado esperado: líneas del archivo impresas.
-
-## 7.18 Visualización de ficheros pantalla a pantalla comandos MORE y LESS
-
-Navegar archivos largos.
-
-- Paginado: `less /var/log/syslog`
-- Búsqueda: dentro de `less` usar `/error`.
-
-Casos de uso: análisis de logs extensos.
-Recomendación: preferir `less` a `more`.
-Comprobación: moverse con flechas y encontrar patrones.
-Resultado esperado: visualización página a página.
-
-## 7.19 Busqueda en ficheros comandos GREP, FGREP y EGREP
-
-Buscar patrones en textos. `grep` significa Global Regular Expressions Print y  en términos simples funciona como un filtro.
-
-Tabla descriptiva rápida:
-
-- Comando: `grep` — Patrones básicos (BRE) — Ejemplo: `grep -n ERROR archivo.log`
-- Comando: `egrep` o `grep -E` — Patrones extendidos (ERE) — Ejemplo: `grep -E "(ERROR|FAIL)" archivo.log`
-    - Equivale a ejecutar grep -E. Su función principal es permitir el uso de Expresiones Regulares Extendidas sin necesidad de "escapar" caracteres especiales ( como  +, ?, |, etc.), lo que hace que los comandos sean más legibles.
-
-- Ejemplos:
-    - Encontrar líneas que comiencen con una o más letras mayúsculas seguidas de dos puntos (:), ejemplo: "NOMBRE: Juan".
-        - `egrep "^[A-Z]+:" README.md ` (si no funciona quitar ^)
-    - Validación de formato de URLs
-        - Imagina que quieres buscar URLs en un archivo, pero algunas son http y otras https. Quieres capturar ambas con un solo patrón.
-            - `egrep "https?://www\.google\.com" enlaces.txt`
-                - |: O lógico 
-                - +: Significa que el anterior se repite 1 o más veces.
-                - ?: Significa que el anterior se repite 0 o 1 vez (opcional)
-                - .: Cualquier caracter
-                - ^: Inicio de línea
-                - $: Fin de la línea
-        
-- Comando: `fgrep` o `grep -F` — Búsqueda literal — Ejemplo: `grep -F "[INFO]" archivo.log`
-
-Opciones útiles:
-- `-n` (número de línea), `-i` (insensible a mayúsculas), `-r` (recursivo), `--color=auto` (resaltar), `-H` (mostrar nombre archivo).
-
-Ejemplos usando este repositorio (`*.md`):
-
-- Buscar “Linux” en todos los temas: `grep -nH "Linux" *.md`
-	- Caso: verificar menciones en documentación.
-	- Resultado esperado: líneas con `Linux` y archivos como `README.md:1: Temario de Linux`.
-
-- Buscar títulos de sección “El Shell” en todo: `grep -nH "El Shell" *.md`
-	- Caso: localizar sección rápidamente.
-	- Resultado esperado: coincidencias en `README.md` y `07-el-shell.md`.
-
-- Recursivo por carpetas (si las hubiera): `grep -rnH "Permisos" .`
-	- Caso: auditar documentación de permisos.
-	- Resultado esperado: rutas y líneas con “Permisos”.
-
-- Literal exacto con corchetes: `grep -F "[INFO]" app.log`
-	- Caso: logs con etiquetas.
-	- Resultado esperado: líneas con `[INFO]` sin interpretar regex.
-
-- Regex extendido con alternación: `grep -E "(GNOME|KDE)" README.md`
-	- Caso: buscar tecnologías de entornos gráficos.
-	- Resultado esperado: líneas que contienen GNOME o KDE.
-
-Ejercicios prácticos (usa los archivos del repo):
-
-- Contar cuántas veces aparece “Introducción” en todos los `.md`: `grep -o "Introducción" *.md | wc -l`
-	- Comprobación: número total impreso.
-	- Resultado esperado: un entero, por ejemplo `5`.
-
-- Listar archivos que mencionan “permisos” ignorando mayúsculas: `grep -li "permisos" *.md`
-	- Comprobación: nombres de archivos mostrados.
-	- Resultado esperado: `03-estructura...`, `07-el-shell.md`, etc.
-
-- Mostrar líneas y archivo donde aparece “GREP”: `grep -nH "GREP" 07-el-shell.md`
-	- Comprobación: ver el número de línea.
-	- Resultado esperado: coincidencias en la sección 7.19.
-
-- Extraer encabezados (líneas que empiezan con `#`) del README: `grep -n "^#" README.md`
-	- Comprobación: todas las cabeceras con número de línea.
-	- Resultado esperado: líneas que comienzan con `#`.
-
-## 7.20 Comandos TAR y GZIP
-
-Empaquetar y comprimir.
-
-Tabla descriptiva rápida:
-
-- Comando: `tar` — Empaquetar múltiples archivos en un único tarball.
-- Comando: `gzip` — Comprimir un archivo (incluido un tarball) usando DEFLATE.
-
-Opciones comunes de `tar`:
-- `-c` crear, `-x` extraer, `-t` listar, `-z` gzip, `-v` verbose, `-f` archivo, `-C` directorio destino.
-
-Ejemplos prácticos:
-
-- Crear un paquete del repositorio actual: `tar -czf linux-desde-cero_$(date +%F).tar.gz *.md`
-	- Caso: snapshot de documentación.
-	- Comprobación: `tar -tzf linux-desde-cero_$(date +%F).tar.gz | head`
-	- Resultado esperado: lista de `.md` dentro del tar.gz.
-
-- Listar contenido detallado: `tar -tvzf linux-desde-cero_2025-12-05.tar.gz`
-	- Caso: inspeccionar permisos y fechas dentro del tar.
-	- Resultado esperado: líneas con permisos/tamaño/fecha/nombre.
-
-- Extraer a carpeta específica: `mkdir -p dist && tar -xzf linux-desde-cero_2025-12-05.tar.gz -C dist`
-	- Comprobación: `ls dist`
-	- Resultado esperado: archivos `.md` presentes en `dist`.
-
-- Comprimir un archivo suelto con gzip: `gzip README.md`
-	- Caso: reducir tamaño para transferencia.
-	- Comprobación: `ls README.md.gz`
-	- Resultado esperado: `README.md.gz` creado.
-
-- Descomprimir: `gunzip README.md.gz`
-	- Comprobación: `ls README.md`
-	- Resultado esperado: archivo restaurado.
-
-- Ver tamaño antes/después: `ls -lh README.md README.md.gz`
-	- Resultado esperado: tamaños distintos (gz más pequeño).
-
-Ejercicios:
-
-- Empaqueta todos los temas y verifica: `tar -czf temas.tar.gz 0*.md 1*.md`
-	- Comprobación: `tar -tzf temas.tar.gz | wc -l`
-	- Resultado esperado: conteo de archivos incluidos.
-
-- Crea un tar sin compresión y luego comprímelo: `tar -cf docs.tar *.md && gzip docs.tar`
-	- Comprobación: `ls docs.tar.gz`
-	- Resultado esperado: `docs.tar.gz` existente.
-
-## 7.21 Comandos de impresion lpr
-
-Enviar trabajos a impresión.
-
-- Imprimir: `lpr documento.pdf`
-- Ver cola: `lpq`
-- Cancelar: `lprm <job_id>`
-
-Casos de uso: oficinas, reportes.
-Recomendación: verificar impresora con `lpstat -p`.
-Comprobación: `lpq` muestra el trabajo en cola.
-Resultado esperado: trabajo en cola y salida impresa.
+- [ ] Navego con rutas absolutas y relativas.
+- [ ] Copio, muevo, enlazo y borro con verificación.
+- [ ] Consulto tipo, permisos, propietario y espacio.
+- [ ] Busco por contenido y por metadatos.
+- [ ] Creo, inspecciono y restauro un `tar.gz`.

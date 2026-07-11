@@ -1,31 +1,17 @@
-# #!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
-# for file in ./data/inherited_folder/*.R
-# do
-#     echo "$file"
-# done
+origen=${1:-}
+destino=${2:-}
+if [[ -z "$origen" || -z "$destino" || ! -d "$origen" ]]; then
+  printf 'Uso: %s <directorio-python> <destino>\n' "$0" >&2
+  exit 64
+fi
 
-#!/bin/bash
-
-# for file in ./data/robs_files/*.py
-# do
-#     if grep -q 'RandomForestClassifier' "$file"; then
-#         mv "$file" ./data/to_keep/
-#     fi
-# done
-
-
-#!/bin/bash
-
-case $1 in
-    Monday|Tuesday|Wednesday|Thursday|Friday)
-        echo "Es un día de semana!";;
-    Saturday|Sunday)
-        echo "Es fin de semana!";;
-    HOLA)
-        echo "Saludos!";;
-    ADIOS)
-        echo "Hasta luego!";;
-    *)
-        echo "No es un día!";;
-esac
+mkdir -p "$destino"
+shopt -s nullglob
+for archivo in "$origen"/*.py; do
+  if grep -q 'RandomForestClassifier' "$archivo"; then
+    mv -- "$archivo" "$destino/"
+  fi
+done

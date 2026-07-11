@@ -1,189 +1,158 @@
-# 6. KDE Plasma Desktop
+# 6. KDE Plasma
 
-Ejercicios prácticos hands-on para dominar KDE. Compararemos GUI vs CLI y veremos las diferencias clave con GNOME.
+## Objetivos
 
-Nota: ejecicios realizado con `kubuntu-16.04.6-desktop-amd64`
+- Reconocer Plasma, Dolphin, Konsole y System Settings.
+- Relacionar administración gráfica de archivos con comandos Linux.
+- Contextualizar los nombres históricos del temario.
 
-## Índice
+## Antes de empezar
 
-- [6. KDE Plasma Desktop](#6-kde-plasma-desktop)
-  - [6.1 Partes de la pantalla](#61-partes-de-la-pantalla)
-  - [6.2 Dolphin File Manager](#62-dolphin-file-manager)
-  - [6.3 Navegación y visualización de archivos](#63-navegación-y-visualización-de-archivos)
-  - [6.4 Crear directorios](#64-crear-directorios)
-  - [6.5 Operaciones con archivos: copiar, mover, borrar](#65-operaciones-con-archivos-copiar-mover-borrar)
-  - [6.6 Links (Simbólicos y Hard Links)](#66-links-simbólicos-y-hard-links)
-  - [6.7 Asociación de tipos de archivo (MIME types)](#67-asociación-de-tipos-de-archivo-mime-types)
-  - [6.8 Propiedades y permisos](#68-propiedades-y-permisos)
-  - [6.9 Apps esenciales de KDE](#69-apps-esenciales-de-kde)
-  - [6.10 Herramientas de productividad](#610-herramientas-de-productividad)
-  - [6.11 System Settings (Configuración)](#611-system-settings-configuración)
-  - [6.12 KMenuEdit (Personalizar menú de apps)](#612-kmenuedit-personalizar-menú-de-apps)
-  - [6.13 Configuración avanzada del sistema](#613-configuración-avanzada-del-sistema)
-  - [6.14 Personalizar el Panel](#614-personalizar-el-panel)
-  - [KDE vs GNOME: Diferencias clave](#kde-vs-gnome-diferencias-clave)
+Este capítulo continúa con los archivos creados en GNOME. Si abriste este documento directamente, prepara el mismo punto de partida desde Konsole:
+
+```bash
+mkdir -p ~/curso-gui/{entrada,kde-demo}
+printf 'estado=ok\n' > ~/curso-gui/entrada/servicio.conf
+cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
+```
+
+Después existirán `servicio.conf`, `config-actual.conf` y el directorio vacío `kde-demo`.
 
 ## 6.1 Partes de la pantalla
 
-| ID | Ejercicio | Resultado |
-|---|---|---|
-| 6.1.A | Identificar: Panel (barra inferior), Kickoff (icono K), Escritorio, y Bandeja del Sistema | Panel = taskbar de Windows, NO es el Dash/Dock de GNOME |
-| 6.1.B | Clic derecho en Panel → "Editar Panel" → Arrastrar y mover a otro borde | Panel reposicionado. KDE es altamente configurable |
-| 6.1.C | Modo edición activo → "Añadir Widgets" → Buscar "Reloj Digital" → Arrastrar al escritorio | Widget independiente en el escritorio |
-| 6.1.D | Abrir Kickoff y comparar con Activities Overview de GNOME | KDE: menú jerárquico. GNOME: overview full-screen |
+KDE Plasma suele presentar panel, lanzador, bandeja, escritorio, widgets y actividades. Es altamente configurable, pero en este curso sólo se recorren elementos que ayudan a trabajar.
 
-## 6.2 Dolphin File Manager
+## 6.2 Administración de archivos con Dolphin
 
-**Nota:** Dolphin reemplazó a KFM (antiguo gestor de KDE).
+KFM fue un gestor antiguo de KDE. Su equivalente actual es Dolphin.
 
-| ID | Ejercicio | Resultado |
-|---|---|---|
-| 6.2.A | Abrir Dolphin → Identificar panel Lugares (izq) y área de archivos (der) | Vista de carpetas personales (Desktop, Documents, Downloads) |
-| 6.2.B | Cambiar entre vistas: Iconos, Detalles, Columnas | Modo Columnas = ideal para jerarquías |
-| 6.2.C | Presionar `F3` → Navegar al `/etc` en panel derecho | Split view vertical. Útil para arrastrar entre directorios |
-| 6.2.D | Presionar `F4` → Cambiar carpeta en Dolphin | Terminal embebida (Konsole) con PWD sincronizado |
+Funciones de la demostración:
 
-## 6.3 Navegación y visualización de archivos
+- panel de lugares y ruta editable;
+- vista dividida;
+- archivos ocultos;
+- terminal integrada;
+- propiedades, tipo y permisos.
 
-| ID | Comando/Acción | Resultado |
-|---|---|---|
-| 6.3.A | `pwd` | Imprime directorio actual (ej: `/home/usuario`) |
-| 6.3.B | `cd /` | Cambia a root. Prompt: `user@kubuntuvm:/$` |
-| 6.3.C | `ls -l` | Lista detallada: permisos, owner, tamaño, fecha. GUI = capa visual sobre esto |
-| 6.3.D | `cat /etc/issue` | Muestra info de distro (ej: `Kubuntu 22.04 LTS`) |
-| 6.3.E | Dolphin: usar breadcrumb trail → `/` → `home` → `usuario` | GUI y CLI muestran la misma jerarquía |
+## 6.3 Navegación y contenido
+
+En Dolphin navega a `~/curso-gui`. Abre la terminal integrada y comprueba:
+
+```bash
+pwd
+ls -lah
+file config-actual.conf
+```
+
+`~/curso-gui` significa la carpeta `curso-gui` dentro de tu home. Puedes escribir esa ruta en la barra de ubicación de Dolphin. Los comandos funcionan porque la terminal integrada se abre en la carpeta que Dolphin muestra; confirma que `pwd` termina en `/curso-gui`.
+
+La GUI y la terminal observan el mismo sistema de archivos.
 
 ## 6.4 Crear directorios
 
-| ID | Comando/Acción | Resultado |
-|---|---|---|
-| 6.4.A | `mkdir ~/CursoKDE` | Crea directorio en home |
-| 6.4.B | `mkdir -p ~/CursoKDE/modulos/configuracion` | Flag `-p`: crea toda la ruta anidada |
-| 6.4.C | `ls -F ~/CursoKDE/` | Verifica: muestra `modulos/` |
-| 6.4.D | Dolphin: clic derecho → "Crear Nuevo" → "Carpeta" → `EjerciciosGUI` | Aparece en GUI y CLI instantáneamente (sincronizados) |
+Crear una carpeta desde Dolphin equivale a:
 
-## 6.5 Operaciones con archivos: copiar, mover, borrar
+```bash
+mkdir -p ~/curso-gui/kde-demo
+```
 
-| ID | Comando/Acción | Resultado |
-|---|---|---|
-| 6.5.A | `touch ~/CursoKDE/archivo_a_copiar.txt` | Crea archivo vacío |
-| 6.5.B | `cp ~/CursoKDE/archivo_a_copiar.txt ~/CursoKDE/copia_simple.txt` | Copia en mismo directorio |
-| 6.5.C | `mv ~/CursoKDE/copia_simple.txt ~/EjerciciosGUI/archivo_movido.txt` | Mueve Y renombra |
-| 6.5.D | `rm -rf ~/EjerciciosGUI` | Borra recursivamente sin confirmación (`-rf` = forced) |
-| 6.5.E | Dolphin: arrastrar `CursoKDE` → Papelera → Vaciar Papelera | Drag & drop = equivalente GUI de `rm` |
+`-p` crea padres faltantes y no falla si la ruta ya existe.
 
-## 6.6 Links (Simbólicos y Hard Links)
+## 6.5 Copiar, borrar y mover
 
-**Explicación:** Los links permiten acceder al mismo archivo desde múltiples ubicaciones sin duplicar datos.
+```bash
+cp ~/curso-gui/config-actual.conf ~/curso-gui/kde-demo/
+mv ~/curso-gui/kde-demo/config-actual.conf ~/curso-gui/kde-demo/app.conf
+rm -i ~/curso-gui/kde-demo/app.conf
+```
 
-- **Hard Link**: Otro nombre para el mismo archivo físico. Comparte el mismo inode (número único del archivo en disco). Si borras el archivo original, el hard link sigue funcionando perfectamente (el archivo existe mientras al menos un hard link apunte a él). Solo funciona dentro del mismo filesystem.
-- **Symbolic Link (Symlink)**: Un puntero que apunta al archivo original. Si borras el original, el symlink se rompe ("broken link"). Puede apuntar a archivos en diferentes filesystems o directorios.
+`rm -i` solicita confirmación. La terminal no tiene una papelera universal equivalente a Trash.
 
-**¿Qué es un inode?** Estructura de datos que representa un archivo en el disco. Contiene metadatos (permisos, tamaño, timestamps, punteros a bloques de datos) pero NO el nombre del archivo ni su contenido. Cada archivo tiene un inode único por filesystem. Los hard links comparten el mismo inode.
+Cuando aparezca `remove regular file ...?`, responde `y` para borrar el archivo de práctica o `n` para conservarlo. Si respondes `y`, el enlace del siguiente apartado seguirá funcionando porque apunta a `servicio.conf`, no a `app.conf`.
 
-**Desde KDE (Dolphin) sin terminal:**
-- **Symlinks**: Sí, clic derecho en archivo → "Crear enlace" (crea symlink automáticamente).
-- **Hard Links**: No directamente en GUI; requiere terminal (`ln` sin `-s`).
+## 6.6 Enlaces
 
-**Casos de uso:**
-- **Hard Links**: Backup de archivos críticos (ej: `ln /etc/passwd /backup/passwd_backup`). El backup sobrevive si borras el original.
-- **Symbolic Links**: Enlaces a directorios compartidos (ej: `ln -s /mnt/shared /home/user/shared`). Facilita acceso sin duplicar datos. También para versiones de software (ej: `ln -s /usr/bin/python3.9 /usr/bin/python`).
+Dolphin puede mostrar el destino de un enlace. La forma reproducible es:
 
-| ID | Comando/Acción | Resultado |
-|---|---|---|
-| 6.6.A | `echo "Soy el archivo original" > original.txt` | Crea archivo con contenido |
-| 6.6.B | `ln -s original.txt enlace_simbolico.txt` | Symlink (acceso directo) |
-| 6.6.C | `ln original.txt enlace_duro.txt` | Hard link (mismo inode, solo en mismo filesystem) |
-| 6.6.D | Dolphin: observar íconos | Symlink tiene flecha superpuesta. Hard link = igual que original |
-| 6.6.E | `ls -li` | Inode (1ra columna): original y hard link tienen el mismo, symlink difiere |
-| 6.6.G | `rm original.txt` → Luego `cat enlace_simbolico.txt` (error) y `cat enlace_duro.txt` (funciona) | Symlink se rompe (broken link). Hard link mantiene el contenido intacto |
-| 6.6.F | Dolphin: clic derecho en `original.txt` → "Crear enlace" | Crea symlink en el mismo directorio |
+```bash
+ln -s ../entrada/servicio.conf ~/curso-gui/kde-demo/servicio-actual
+readlink ~/curso-gui/kde-demo/servicio-actual
+```
 
-## 6.7 Asociación de tipos de archivo (MIME types)
+## 6.7 Tipos MIME
 
-| ID | Acción | Resultado |
-|---|---|---|
-| 6.7.A | `touch test.abc` (Ctrl+Alt+T para Konsole) | Crea archivo con extensión desconocida |
-| 6.7.B | Doble clic en `test.abc` en Dolphin | KDE pregunta con qué app abrirlo |
-| 6.7.C | Clic derecho → Propiedades → pestaña "Tipo de Archivo" → Añadir → KWrite (mover arriba) → Aceptar → Doble clic nuevamente | Se abre con KWrite. Asociación MIME configurada |
+Las asociaciones de aplicaciones usan tipos MIME, no únicamente extensiones:
+
+```bash
+xdg-mime query filetype ~/curso-gui/config-actual.conf
+```
 
 ## 6.8 Propiedades y permisos
 
-**Nota:** Usaremos una carpeta y archivo de prueba que crearemos para evitar modificar carpetas del sistema.
+Compara Properties con:
 
-| ID | Comando/Acción | Resultado |
-|---|---|---|
-| 6.8.A | `mkdir -p ./CursoKDE/permisos_test && touch ./CursoKDE/permisos_test/archivo_test.txt` | Crea directorio y archivo de prueba para experimentar |
-| 6.8.B | Clic derecho en `permisos_test` → Propiedades → Ver pestañas General, Permisos, Metadatos | Muestra tamaño, fecha, permisos de acceso del directorio |
-| 6.8.C | Pestaña Permisos → Sección "Otros" → "Puede ver y modificar" → Aplicar | Equivalente GUI de `chmod` para dar permisos |
-| 6.8.D | `chmod o+w ./CursoKDE/permisos_test` | Da permiso de escritura a "others". Cambio visible en GUI |
-| 6.8.E | `sudo chown root:root ./CursoKDE/permisos_test` | Cambia owner a root. Verificar en Dolphin > Propiedades |
-| 6.8.F | `ls -l ./CursoKDE/` | Verifica permisos y owner en terminal (ej: `drwxrwxr-x 2 root root ...`) |
+```bash
+stat ~/curso-gui/config-actual.conf
+namei -l ~/curso-gui/config-actual.conf
+```
 
-## 6.9 Apps esenciales de KDE
+`namei -l` ayuda a encontrar permisos insuficientes en algún directorio de la ruta.
 
-| ID | App y Acción | Resultado |
-|---|---|---|
-| 6.9.A | **Spectacle** (screenshot tool): Menú > Utilidades → Modo "Región rectangular" → Capturar → Guardar en `~/Descargas` | Genera archivo `.png` |
-| 6.9.B | **Ark** (compresor): Menú > Utilidades → Nuevo → Seleccionar `archivo_a_copiar.txt` → Formato `.zip` → `ejemplo.zip` | Crea archivo comprimido |
-| 6.9.C | **Okular** (visor universal): Abrir PDF → Menú Herramientas → Opciones de anotación (highlight, notas) | Visor con capacidad de markup |
+## 6.9–6.10 Aplicaciones esenciales
 
-## 6.10 Herramientas de productividad
+- Dolphin: archivos.
+- Konsole: terminal.
+- Kate: edición de texto; sustituye en la práctica a referencias antiguas como `kedit`/`kwrite`.
+- KHelpCenter: ayuda gráfica.
+- KFind o búsqueda de Dolphin: localización de archivos.
 
-| ID | App y Acción | Resultado |
-|---|---|---|
-| 6.10.A | **Konsole**: Ctrl+Shift+T (nueva pestaña) → Ctrl+Shift+L (split vertical) → En panel izq: `htop` → En panel der: `ls -l /etc` | Terminal con tabs y splits. Máxima productividad |
-| 6.10.B | **KWrite vs KEdit**: Abrir `original.txt` en ambos y comparar | KEdit = notepad simple. KWrite = editor con syntax highlighting y números de línea |
-| 6.10.C | **KDE Help Center**: `Alt + Espacio` > "Ayuda"  | Documentación unificada del sistema |
-| 6.10.D | **KFind**: Menú > Utilidades → Buscar en `/etc` → Patrón `*.conf` → Modificado últimos 7 días → Buscar | Búsqueda avanzada con filtros de fecha/tamaño/contenido |
+## 6.11–6.14 Configuración
 
-## 6.11 System Settings (Configuración)
+“KDE Control Center” se denomina actualmente System Settings. Se demostrará configuración de pantalla, teclado, apariencia y panel. KMenuEdit y la personalización profunda quedan como exploración opcional.
 
-Ir a Equipo --> Preferencias del Sistema
+## Práctica guiada resuelta
 
-| ID | Configuración | Resultado |
-|---|---|---|
-| 6.11.A | K-Menu → Preferencias del Sistema → Apariencia → Tema Global → "Breeze Dark" | Todo el sistema cambia a tema oscuro instantáneamente |
-| 6.11.B | Comportamiento del Espacio de Trabajo → Efectos de Escritorio → Activar "Wobbly Windows" → Mover ventana | Efecto de gelatina en ventanas. KDE = altamente customizable |
-| 6.11.C | Comportamiento del Espacio de Trabajo → General → Comportamiento de clic → Cambiar a "Clic simple" | Clic simple abre archivos (como web browser) |
+En Dolphin crea un archivo, abre la terminal integrada y ejecuta:
 
-## 6.12 KMenuEdit (Personalizar menú de apps)
+```bash
+printf 'creado-desde=plasma\n' > ~/curso-gui/kde-demo/origen.txt
+chmod 640 ~/curso-gui/kde-demo/origen.txt
+stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/origen.txt
+```
 
-Estos tres ejercicios ejecutan una calculadora que se ubicará en "Aplicaciones".
+Aunque el texto diga “crea un archivo”, la primera línea con `printf` ya lo crea y escribe su contenido; no necesitas crearlo antes con Dolphin.
 
-| ID | Acción | Resultado |
-|---|---|---|
-| 6.12.A | Clic derecho en Kickoff → "Editar Aplicaciones" → Panel izq: clic derecho en "Utilidades" → "Nuevo elemento" → Nombre: "Calculadora CLI" | Nueva entrada en blanco creada |
-| 6.12.B | En pestaña "General" y el campo "Comando" (o "Orden"): `konsole -e bc -l` → Guardar | Entrada configurada para ejecutar calculadora en terminal |
-| 6.12.C | Cerrar editor → K-Menu → Utilidades → "Calculadora CLI" | Abre Konsole con `bc` ejecutándose. Probar una suma, por ejemplo: 5 + 2 y dar Enter |
+Salida representativa:
 
-## 6.13 Configuración avanzada del sistema
+```text
+-rw-r----- 640 ubuntu:ubuntu /home/ubuntu/curso-gui/kde-demo/origen.txt
+```
 
-Ir a Equipo --> Preferencias del Sistema
+- `%A`: permisos simbólicos.
+- `%a`: permisos octales.
+- `%U:%G`: dueño y grupo.
+- `%n`: nombre.
 
-**Nota:** "KDE Control Center" (nombre antiguo) ahora es "System Settings" en Plasma.
+## Errores frecuentes
 
-| ID | Configuración | Resultado |
-|---|---|---|
-| 6.13.A | System Settings → Comportamiento del Espacio de Trabajo → Escritorios Virtuales → Aumentar a 4 → Nombres: Trabajo, Estudio, Navegación, Música → Ctrl+F8 (o click en los recuadros que aparecen abajo) | 4 escritorios virtuales con nombres custom |
-| 6.13.B | System Settings → Arranque y Apagado → Gestión de Sesiones → "Empezar con sesión vacía" | Apps NO se restauran al reiniciar |
-| 6.13.C | System Settings → Conexiones (Red) → Configurar interfaces y VPNs | Network Manager de Plasma |
+- Seguir tutoriales de KFM o KDE Control Center como si fueran herramientas actuales.
+- Asociar una aplicación incorrecta a un tipo MIME globalmente.
+- Confundir un enlace con una copia.
 
-## 6.14 Personalizar el Panel
+## Reto 6 — Diagnóstico desde Dolphin
 
-| ID | Acción | Resultado |
-|---|---|---|
-| 6.14.A | K-Menu → Buscar Dolphin → Clic derecho → "Añadir a la barra de tareas" | Icono fijo en Panel para acceso rápido |
-| 6.14.B | Clic derecho en Panel → "Editar Panel" → "Añadir Widgets" → "Application Launcher" → Arrastrar al Panel | Segundo botón de Kickoff añadido |
-| 6.14.C | Modo "Editar Panel" → Arrastrar elementos (reloj, Kickoff, etc.) → Icono candado ("Bloquear Widgets") | Reorden completo. Panel extremadamente flexible |
+[Ver respuesta](instructor/soluciones.md#respuesta-reto-6)
 
-## KDE vs GNOME: Diferencias clave
+Crea `~/curso-gui/kde-demo/check.sh` con texto válido de Bash, pero sin permiso de ejecución. Usa Dolphin y Konsole para diagnosticarlo. Documenta tipo, permisos, propietario y ruta completa; corrige únicamente el permiso necesario.
 
-| Aspecto | KDE Plasma | GNOME |
-|---|---|---|
-| **Filosofía** | Configurabilidad total + productividad | Minimalismo + simplicidad |
-| **Window Manager** | KWin: efectos avanzados built-in (Wobbly Windows) | Mutter: extensiones para personalización |
-| **File Manager** | Dolphin: terminal embebida (F4), split view (F3) | Nautilus: interfaz simple y minimalista |
-| **Themes** | Sistema global robusto, cambios instantáneos | Theming más limitado sin extensiones |
-| **Workflow** | Menú jerárquico tradicional | Activities Overview full-screen |
-| **Target** | Power users, programadores | Usuarios casuales, diseño limpio |
+### Criterios de comprobación
+
+- No utiliza `chmod 777`.
+- Explica la diferencia entre archivo no ejecutable y directorio no accesible.
+- Confirma el modo antes y después.
+
+## Checklist
+
+- [ ] Reconozco Dolphin, Konsole, Kate y System Settings.
+- [ ] Identifico nombres históricos del temario.
+- [ ] Relaciono Properties con `stat` y `namei`.

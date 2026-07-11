@@ -1,3 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
-cat ./data/basketball_scores.csv | grep -e "Lakers" -e "Celtics" | wc -l
+archivo=${1:-}
+if [[ -z "$archivo" || ! -r "$archivo" ]]; then
+  printf 'Uso: %s <basketball_scores.csv>\n' "$0" >&2
+  exit 66
+fi
+
+grep -Ec 'Lakers|Celtics' "$archivo"

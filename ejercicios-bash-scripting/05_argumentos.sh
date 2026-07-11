@@ -1,11 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
-# Imprime el primer y segundo argumento
-echo "Primer argumento: $1"
-echo "Segundo argumento: $2"
-
-# Imprime todos los argumentos
-echo "Todos los argumentos: $*"
-
-# Imprime el número de argumentos
-echo "Número de argumentos: $#"
+printf 'Primer argumento: %s\n' "${1:-no definido}"
+printf 'Segundo argumento: %s\n' "${2:-no definido}"
+printf 'Cantidad: %d\n' "$#"
+printf 'Todos:'
+printf ' [%s]' "$@"
+printf '\n'

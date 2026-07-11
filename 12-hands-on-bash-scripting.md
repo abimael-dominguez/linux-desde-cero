@@ -1,761 +1,525 @@
 # 12. Hands-on Bash Scripting
 
-Este módulo cubre conceptos prácticos de scripting en Bash. Aprenderemos a usar comandos, variables, estructuras de control y más, con ejercicios resueltos. Los datos para los ejercicios se encuentran en la carpeta `./data`.
+Taller ampliado de Bash con ejercicios resueltos. Conserva temas que pueden exceder las cuatro sesiones para que el instructor seleccione según el grupo.
+
+## Preparación
+
+Desde la raíz del repositorio:
+
+```bash
+sudo apt update
+sudo apt install -y bc
+bash ejercicios-bash-scripting/preparar-lab.sh
+cd laboratorio
+```
+
+El script copia fixtures inmutables de `data/` a `laboratorio/data/`. Todos los ejercicios modifican la copia. Para reiniciar:
+
+```bash
+cd ..
+bash ejercicios-bash-scripting/preparar-lab.sh
+cd laboratorio
+```
+
+Los scripts se invocan como `../ejercicios-bash-scripting/<script>` desde `laboratorio/`.
+
+## Cómo leer los argumentos de los scripts
+
+Un argumento es un valor escrito después del nombre del script. Por ejemplo:
+
+```bash
+../ejercicios-bash-scripting/01_contar_ganadores.sh data/basketball_scores.csv
+```
+
+En esa ejecución:
+
+- `$0` es la ruta del script;
+- `$1` es `data/basketball_scores.csv`;
+- `$#` vale `1` porque se proporcionó un argumento.
+
+Esta tabla muestra todos los valores que espera el taller:
+
+| Script | Sintaxis general | Ejemplo concreto |
+|---|---|---|
+| `01_contar_ganadores.sh` | `<csv>` | `data/basketball_scores.csv` |
+| `02_contar_variante.sh` | `<csv>` | `data/basketball_scores.csv` |
+| `03_editar_equipos.sh` | `<entrada.csv> <salida.csv>` | `data/basketball_scores.csv salida/editado.csv` |
+| `04_separar_numeros.sh` | `[directorio_salida]` | `salida` |
+| `05_argumentos.sh` | `<argumento>...` | `"hola mundo" Linux` |
+| `06_grep_parametrizado.sh` | `<patrón> <directorio_csv> <salida.csv>` | `Engineer data/hire_data salida/engineer.csv` |
+| `07_convertir_temperatura.sh` | `<fahrenheit>` | `100` |
+| `08_leer_temperaturas.sh` | `<directorio_temperaturas>` | `data/temps` |
+| `09_array_capitales.sh` | sin argumentos | — |
+| `11_calcular_promedio_arrays.sh` | `<directorio_temperaturas>` | `data/temps` |
+| `12_mover_modelos.sh` | `<resultado> <buenos> <malos>` | `data/model_results/model1.txt data/good_models data/bad_models` |
+| `13_mover_logs.sh` | `<log> <destino>` | `data/logs/servicio.log data/good_logs` |
+| `16_mover_archivos_python.sh` | `<origen> <destino>` | `data/robs_files data/to_keep` |
+| `16_evaluar_dias.sh` | `<día_en_inglés>` | `Monday` |
+| `17_clasificar_modelos.sh` | `<origen> <árboles> <descartados>` | `data/model_out data/tree_models data/descartados` |
+| `18_subir_nube.sh` | `<directorio_resultados>` | `data/output_dir` |
+| `19_obtener_dia.sh` | sin argumentos | — |
+| `20_calcular_porcentaje.sh` | `<parte> <total>` | `456 632` |
+| `21_contar_victorias.sh` | `<equipo> <csv>` | `Lakers data/basketball_scores.csv` |
+| `22_sumar_array.sh` | `<número>...` | `14 12 23.5 16 19.34` |
+
+Los nombres entre `< >` describen valores que debes sustituir. Los valores entre `[ ]` son opcionales. La columna “Ejemplo concreto” contiene los valores usados en las prácticas y puede copiarse.
 
 ## Índice
 
-- [1. Pipes y Comandos Básicos](#1-pipes-y-comandos-básicos)
-  - [01_contar_ganadores.sh](#contar-equipos-ganadores-únicos)
-  - [02_contar_variante.sh](#contar-apariciones-de-lakers-y-celtics)
-  - [03_egrep_variante.sh](#03_egrep_variante.sh)
-- [2. Edición de Archivos con sed](#2-edición-de-archivos-con-sed)
-  - [03_editar_equipos.sh](#editar-nombres-de-equipos-con-sed)
-- [3. Variables y Argumentos (STDIN, STDOUT, STDERR, ARGV)](#3-variables-y-argumentos-stdin-stdout-stderr-argv)
-  - [04_separar_numeros.sh](#ejercicio-separar-números-pares-e-impares)
-  - [05_argumentos.sh](#manejo-de-argumentos-en-scripts)
-  - [06_grep_parametrizado.sh](#búsqueda-parametrizada-en-hire_data)
-- [4. Cálculos con bc](#4-cálculos-con-bc)
-  - [07_convertir_temperatura.sh](#conversión-de-temperaturas-con-bc)
-  - [08_leer_temperaturas.sh](#leer-temperaturas-de-archivos)
-- [5. Arrays](#5-arrays)
-  - [09_array_capitales.sh](#trabajar-con-arrays-indexados)
-  - [11_calcular_promedio_arrays.sh](#calcular-promedio-con-arrays)
-- [6. Estructuras de Control: If](#6-estructuras-de-control-if)
-  - [12_mover_modelos.sh](#mover-modelos-basado-en-precisión)
-  - [13_mover_logs.sh](#mover-logs-basado-en-contenido)
-- [7. Bucles: For](#7-bucles-for)
-  - [16_mover_archivos_python.sh](#mover-archivos-python-con-condición)
-- [8. Case Statements](#8-case-statements)
-  - [17_clasificar_modelos.sh](#clasificar-modelos-con-case)
-- [9. Funciones](#9-funciones)
-  - [18_subir_nube.sh](#función-para-subir-a-la-nube)
-  - [19_obtener_dia.sh](#obtener-el-día-actual)
-  - [20_calcular_porcentaje.sh](#calcular-porcentaje)
-  - [21_contar_victorias.sh](#contar-victorias-de-un-equipo)
-  - [22_sumar_array.sh](#sumar-elementos-de-un-array)
-- [10. Cron Jobs](#10-cron-jobs)
+1. Pipes y comandos básicos
+2. Edición con `sed`
+3. Variables, argumentos y descriptores
+4. Cálculos con `bc`
+5. Arrays
+6. Condicionales `if`
+7. Bucles `for`
+8. Selección con `case`
+9. Funciones
+10. Cron
 
-## Recursos Útiles
+## 1. Pipes y comandos básicos
 
-- Para evaluar expresiones regulares: [Regex101.com](https://regex101.com/)
-- Para programar tareas con cron: [Crontab Guru](https://crontab.guru/)
-
-## 1. Pipes y Comandos Básicos
-
-Los pipes (`|`) permiten conectar la salida de un comando a la entrada de otro. Usaremos datos del archivo `basketball_scores.csv` ubicado en `./data/basketball_scores.csv`.
-
-### Ejercicio: Contar apariciones de nombres en un archivo
-
-Primero, veamos el contenido del archivo:
+### 1.1 Contar equipos ganadores
 
 ```bash
-head -5 ./data/basketball_scores.csv
+../ejercicios-bash-scripting/01_contar_ganadores.sh data/basketball_scores.csv
 ```
 
 Salida esperada:
+
+```text
+      1 Bucks
+      2 Celtics
+      2 Lakers
+      1 Warriors
 ```
-Year, Winner, Winner Points
-2020,Lakers,120
+
+Implementación:
+
+```bash
+archivo=$1
+tail -n +2 "$archivo" | cut -d',' -f2 | sort | uniq -c | sort -k2
+```
+
+`archivo=$1` guarda el primer argumento en una variable con un nombre comprensible. En el comando resuelto, `$archivo` representa `data/basketball_scores.csv`.
+
+- `tail -n +2`: omite encabezado.
+- `cut -d',' -f2`: usa coma y toma campo 2.
+- `sort`: agrupa valores iguales.
+- `uniq -c`: cuenta grupos consecutivos.
+- `sort -k2`: ordena por nombre del equipo.
+
+No se necesita `cat archivo |`: `tail` puede abrir el archivo directamente.
+
+### 1.2 Contar Lakers y Celtics
+
+```bash
+../ejercicios-bash-scripting/02_contar_variante.sh data/basketball_scores.csv
+```
+
+Salida esperada:
+
+```text
+4
+```
+
+El script usa:
+
+```bash
+archivo=$1
+grep -Ec 'Lakers|Celtics' "$archivo"
+```
+
+Otra vez, `$archivo` no es un nombre mágico: el script lo define a partir de `$1`.
+
+- `-E`: alternancia extendida con `|`.
+- `-c`: imprime el número de líneas coincidentes.
+- El nombre histórico `egrep` equivale a `grep -E`, pero no se usa en scripts nuevos.
+
+## 2. Edición de archivos con `sed`
+
+### 2.1 Normalizar nombres
+
+```bash
+../ejercicios-bash-scripting/03_editar_equipos.sh \
+  data/basketball_scores.csv salida/basketball_scores_edited.csv
+head -n 5 salida/basketball_scores_edited.csv
+```
+
+Salida representativa:
+
+```text
+Year,Winner,Winner Points
+2020,LA Lakers,120
 2021,Bucks,125
 2022,Warriors,118
-2023,Celtics,122
-2024,Lakers,115
+2023,Boston Celtics,122
 ```
 
-Ahora, contemos las apariciones de "Lakers" y "Celtics" en un archivo de texto (ejemplo hipotético, adaptado a nuestros datos). Para nuestros datos, contemos los equipos ganadores únicos.
+Transformación:
 
-#### Contar Equipos Ganadores Únicos
-
-Utiliza la base de datos: `basketball_scores.csv`
-
-Crear el archivo:
 ```bash
-touch 01_contar_ganadores.sh
+entrada=$1
+salida=$2
+sed -e 's/Lakers/LA Lakers/g' \
+    -e 's/Celtics/Boston Celtics/g' "$entrada" > "$salida"
 ```
 
-```bash
-#!/bin/bash
+Con el ejemplo resuelto, `$entrada` vale `data/basketball_scores.csv` y `$salida` vale `salida/basketball_scores_edited.csv`.
 
-cat ./data/basketball_scores.csv | cut -d "," -f 2 | tail -n +2 | sort | uniq -c | sort
+- `s/origen/destino/g`: sustituye todas las apariciones por línea.
+- Varios `-e` aplican varias expresiones.
+- Se escribe en otro archivo; el fixture original permanece intacto.
+
+## 3. Variables, argumentos y descriptores
+
+### 3.1 Separar pares e impares
+
+```bash
+../ejercicios-bash-scripting/04_separar_numeros.sh salida
+wc -l salida/{todos,pares,impares}.txt
+cat salida/errores.log
 ```
 
-Ejecuta el script:
-```bash
-chmod +x 01_contar_ganadores.sh
-./01_contar_ganadores.sh
+Salida esperada:
+
+```text
+100 salida/todos.txt
+ 50 salida/pares.txt
+ 50 salida/impares.txt
 ```
 
-Explicación de comandos y flags:
-- `cat`: imprime el contenido del archivo.
-- `cut -d "," -f 2`: especifica el delimitador (coma) y selecciona el campo 2.
-- `tail -n +2`: muestra desde la línea 2 en adelante.
-- `sort`: ordena líneas alfabéticamente (orden por defecto).
-- `uniq -c`: cuenta líneas duplicadas consecutivas.
-- `sort`: ordena líneas alfabéticamente nuevamente (orden por defecto).
+El script genera números con `printf`, filtra el último dígito con `grep -E` y envía diagnósticos al descriptor 2.
 
-### Variante con grep
+`salida` es el primer argumento y representa un **directorio**, no un archivo. El script crea dentro `todos.txt`, `pares.txt`, `impares.txt`, `errores.log` y `proceso.log`.
 
-#### Contar Apariciones de Lakers y Celtics
+- `stdout` es descriptor 1.
+- `stderr` es descriptor 2.
+- `2>` guarda errores sin mezclarlos con datos.
+- `{ ...; }` permite redirigir un bloque completo.
 
-Utiliza la base de datos: `basketball_scores.csv`
+### 3.2 Argumentos
 
-Crear el archivo:
 ```bash
-touch 02_contar_variante.sh
+../ejercicios-bash-scripting/05_argumentos.sh "hola mundo" Linux
 ```
 
-```bash
-#!/bin/bash
+Salida esperada:
 
-cat ./data/basketball_scores.csv | grep -e "Lakers" -e "Celtics" | wc -l
+```text
+Primer argumento: hola mundo
+Segundo argumento: Linux
+Cantidad: 2
+Todos: [hola mundo] [Linux]
 ```
 
-Explicación de comandos y flags:
-- `cat`: imprime el contenido del archivo.
-- `grep -e`: especifica patrón.
-- `wc -l`: cuenta líneas.
+- `$1`, `$2`: argumentos posicionales.
+- `$#`: cantidad.
+- `"$@"`: conserva cada argumento, incluso con espacios.
 
-#### 03_egrep_variante.sh
+### 3.3 Búsqueda parametrizada
 
-O con egrep (equivalente a grep -E):
-
-Crear el archivo:
 ```bash
-touch 03_egrep_variante.sh
+../ejercicios-bash-scripting/06_grep_parametrizado.sh \
+  Engineer data/hire_data salida/engineer.csv
+head salida/engineer.csv
 ```
 
-```bash
-#!/bin/bash
+El script valida directorio, patrón y destino; usa `grep -h` para no anteponer nombres de archivo.
 
-cat ./data/basketball_scores.csv | egrep 'Lakers|Celtics' | wc -l
+## 4. Cálculos con `bc`
+
+### 4.1 Conversión de temperatura
+
+```bash
+../ejercicios-bash-scripting/07_convertir_temperatura.sh 100
 ```
 
-Explicación de comandos y flags:
-- `cat`: imprime el contenido del archivo.
-- `egrep 'Lakers|Celtics'`: busca líneas que contengan "Lakers" o "Celtics" (equivalente a grep -E).
-- `wc -l`: cuenta el número de líneas.
+Salida esperada:
 
-## 2. Edición de Archivos con sed
-
-Usaremos `sed` para reemplazar texto en el archivo.
-
-#### Editar Nombres de Equipos con sed
-
-Utiliza la base de datos: `basketball_scores.csv`
-
-Crear el archivo:
-```bash
-touch 03_editar_equipos.sh
-```
-
-```bash
-#!/bin/bash
-
-cat ./data/basketball_scores.csv | sed 's/Lakers/LA Lakers/g' | sed 's/Celtics/Boston Celtics/g' > ./data/basketball_scores_edited.csv
-```
-
-Ejecuta:
-```bash
-./03_editar_equipos.sh
-head -5 ./data/basketball_scores_edited.csv
-```
-
-Explicación de comandos y flags:
-`sed 's/patrón/reemplazo/g'`: substituye globalmente.
-
-- `cat`: imprime el contenido del archivo.
-- `sed 's/Lakers/LA Lakers/g'`: substituye globalmente "Lakers" por "LA Lakers".
-- `sed 's/Celtics/Boston Celtics/g'`: substituye globalmente "Celtics" por "Boston Celtics".
-- `>`: redirige la salida al archivo especificado.
-
-## 3. Variables y Argumentos (STDIN, STDOUT, STDERR, ARGV)
-
-### Ejercicio: Separar números pares e impares
-
-Crea un script que genere los números del 1 al 100, los separe en pares e impares en archivos separados (`pares.txt` e `impares.txt`), y genere errores en `errores.log`.
-
-Crear el archivo:
-```bash
-touch 04_separar_numeros.sh
-```
-
-Ejemplo:
-
-```bash
-#!/bin/bash
-
-# Generar todos los números
-printf "%s\n" {1..100} > all.txt
-echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Números del 1 al 100 generados en all.txt" >> process.log
-
-# Separar impares (último dígito impar)
-grep -E '[13579]$' all.txt > impares.txt
-echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Números impares separados en impares.txt" >> process.log
-
-# Separar pares (último dígito par)
-grep -E '[02468]$' all.txt > pares.txt
-echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Números pares separados en pares.txt" >> process.log
-
-# Generar errores
-{
-    echo "Error: procesamiento incompleto" >&2
-    ls /archivo_falso >&2
-} 2> errores.log
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') INFO: Proceso completado" >> process.log
-
-# Ejemplo en una sóla línea. Separar usando tee para duplicar el stream
-# printf "%s\n" {1..100} | tee all.txt | tee >(grep -E '[13579]$' > impares.txt) >(grep -E '[02468]$' > pares.txt) > /dev/null
-
-```
-
-#### Explicación de Descriptores Estándar
-- **stdin**: Descriptor 0. No usado aquí.
-- **stdout**: Descriptor 1. `printf` y `grep` envían salida a archivos con `>`. Nota: `>` es equivalente a `1>`, redirige stdout sobrescribiendo el archivo.
-- **stderr**: Descriptor 2. `echo` y `ls` fallido se redirigen con `2>` al final del bloque. Nota: El bloque `{ ... }` agrupa comandos para redirigir su stderr colectivamente.
-
-Nota: `>&2` redirige stdout al descriptor 2 (stderr), útil para enviar mensajes de error.
-
-Ejecuta el script y verifica los archivos.
-
-```bash
-./04_separar_numeros.sh
-```
-
-
-### Manejo de Argumentos en Scripts
-
-Los argumentos se pasan al script como `$1`, `$2`, etc. `$*` y `$@` representan todos los argumentos (con diferencias en cómo se expanden dentro de comillas), `$#` es el número de argumentos.
-
-Crear el archivo:
-```bash
-touch 05_argumentos.sh
+```text
+100 F = 37.78 C
 ```
 
 ```bash
-#!/bin/bash
-
-# Imprime el primer y segundo argumento
-echo "Primer argumento: $1"
-echo "Segundo argumento: $2"
-
-# Imprime todos los argumentos
-echo "Todos los argumentos: $*"
-
-# Imprime el número de argumentos
-echo "Número de argumentos: $#"
-```
-
-Ejecuta con argumentos:
-```bash
-./05_argumentos.sh hola mundo
-```
-
-Los archivos están en `./data/hire_data/`.
-
-#### Búsqueda Parametrizada en hire_data
-
-Utiliza la base de datos: archivos en `hire_data/`
-
-Crear el archivo:
-```bash
-touch 06_grep_parametrizado.sh
-```
-
-```bash
-#!/bin/bash
-
-# Busca el primer argumento en todos los archivos CSV de hire_data
-# grep "$1": busca el patrón en la entrada
-# > "$1".csv: guarda en archivo nombrado con el argumento
-
-cat ./data/hire_data/*.csv | grep "$1" > "./data/$1.csv"
-```
-
-Ejemplo:
-```bash
-./06_grep_parametrizado.sh "Engineer"
-```
-
-Explicación de comandos y flags:
-- `cat ./data/hire_data/*.csv`: concatena todos los archivos CSV en hire_data.
-- `grep "$1"`: busca líneas que contengan el primer argumento.
-- `> "./data/$1.csv"`: redirige la salida a un archivo CSV nombrado con el argumento.
-
-## 4. Cálculos con bc
-
-Usa `bc` para cálculos de punto flotante.
-
-#### Conversión de Temperaturas con bc
-
-Crear el archivo:
-```bash
-touch 07_convertir_temperatura.sh
-```
-
-```bash
-#!/bin/bash
-
 temp_f=$1
-temp_f2=$(echo "scale=2; $temp_f - 32" | bc)
-temp_c=$(echo "scale=2; $temp_f2 * 5 / 9" | bc)
-echo "$temp_f F es $temp_c C"
+temp_c=$(bc -l <<< "scale=4; ($temp_f - 32) * 5 / 9")
 ```
 
-Ejecuta:
-```bash
-./07_convertir_temperatura.sh 100
-```
+Al ejecutar el ejemplo con `100`, `$1` y por tanto `$temp_f` valen `100`.
 
-Explicación de comandos y flags:
-- `scale=2`: dos decimales.
-- `bc`: ejecuta cálculo.
+- `bc -l`: habilita biblioteca matemática y decimales; se calculan cuatro decimales y `printf` redondea a dos.
+- `<<<`: here-string hacia `stdin`.
+- El script valida que la entrada sea numérica.
 
-Suponiendo archivos en `./data/temps/region_A`, etc.
-
-#### Leer Temperaturas de Archivos
-
-Utiliza archivos en: `temps/`
-
-Crear el archivo:
-```bash
-touch 08_leer_temperaturas.sh
-```
+### 4.2 Leer temperaturas de archivos
 
 ```bash
-#!/bin/bash
-
-# Lee temperaturas de archivos
-temp_a=$(cat ./data/temps/region_A)
-temp_b=$(cat ./data/temps/region_B)
-temp_c=$(cat ./data/temps/region_C)
-
-echo "Las temperaturas son $temp_a, $temp_b, y $temp_c"
+../ejercicios-bash-scripting/08_leer_temperaturas.sh data/temps
 ```
 
-Explicación de comandos y flags:
-- `temp_a=$(cat ./data/temps/region_A)`: asigna el contenido del archivo a la variable.
-- `echo "Las temperaturas son $temp_a, $temp_b, y $temp_c"`: imprime las variables.
+Salida esperada:
+
+```text
+region_A=72 F
+region_B=68 F
+region_C=75 F
+```
+
+`$(< archivo)` lee un archivo pequeño sin invocar `cat`.
 
 ## 5. Arrays
 
-### Array Normal
+### 5.1 Arrays indexados y asociativos
 
-#### Trabajar con Arrays Indexados
-
-Crear el archivo:
 ```bash
-touch 09_array_capitales.sh
+../ejercicios-bash-scripting/09_array_capitales.sh
 ```
 
-```bash
-#!/bin/bash
+Salida representativa:
 
-declare -a capital_cities
-capital_cities+=("Sydney")
-capital_cities+=("Albany")
-capital_cities+=("Paris")
-
-echo "Ciudades: ${capital_cities[@]}"
-
-echo "Número de ciudades: ${#capital_cities[@]}"
+```text
+Ciudades (3): Sydney Albany Paris
+Modelo: knn
+Accuracy: 98
+F1: 0.82
 ```
 
-Explicación de comandos y flags:
-- `declare -a capital_cities`: declara un array indexado.
-- `capital_cities+=("Sydney")`: añade elemento al array.
-- `echo "Ciudades: ${capital_cities[@]}"`: imprime todos los elementos del array.
-- `echo "Número de ciudades: ${#capital_cities[@]}"`: imprime la longitud del array.
+- `declare -a`: array indexado.
+- `declare -A`: array asociativo.
+- `"${array[@]}"`: todos los elementos preservando límites.
+- `${#array[@]}`: cantidad.
+- `${mapa[clave]}`: valor por clave.
 
-### Array Asociativo
-
-#### Trabajar con Arrays Asociativos
+### 5.2 Promedio en un array
 
 ```bash
-#!/bin/bash
-
-declare -A model_metrics
-model_metrics[model_accuracy]=98
-model_metrics[model_name]="knn"
-model_metrics[model_f1]=0.82
-
-echo "Valores: ${model_metrics[@]}"
-
-echo "Claves: ${!model_metrics[@]}"
+../ejercicios-bash-scripting/11_calcular_promedio_arrays.sh data/temps
 ```
 
-Explicación de comandos y flags:
-- `declare -A model_metrics`: declara un array asociativo.
-- `model_metrics[model_accuracy]=98`: asigna valor a clave.
-- `echo "Valores: ${model_metrics[@]}"`: imprime todos los valores.
-- `echo "Claves: ${!model_metrics[@]}"`: imprime todas las claves.
+Salida esperada:
 
-### Cálculo con Arrays
-
-#### Calcular Promedio con Arrays
-
-Utiliza archivos en: `temps/`
-
-Crear el archivo:
-```bash
-touch 11_calcular_promedio_arrays.sh
+```text
+Temperaturas: 68 75
+Promedio: 71.50
 ```
 
-```bash
-#!/bin/bash
+El promedio calculado por `bc` se agrega como tercer elemento sin expansión no citada.
 
-temp_b="$(cat ./data/temps/region_B)"
-temp_c="$(cat ./data/temps/region_C)"
-region_temps=($temp_b $temp_c)
-average_temp=$(echo "scale=2; (${region_temps[0]} + ${region_temps[1]}) / 2" | bc)
-region_temps+=($average_temp)
-echo "Temperaturas y promedio: ${region_temps[@]}"
+## 6. Estructuras de control: `if`
+
+### 6.1 Clasificar un resultado de modelo
+
+```bash
+../ejercicios-bash-scripting/12_mover_modelos.sh \
+  data/model_results/model1.txt data/good_models data/bad_models
+find data/good_models data/bad_models -maxdepth 1 -type f
 ```
 
-Explicación de comandos y flags:
-- `cat ./data/temps/region_B`: lee el archivo de temperatura.
-- `region_temps=($temp_b $temp_c)`: crea array con las temperaturas.
-- `echo "scale=2; ... | bc"`: calcula promedio con bc.
-- `region_temps+=($average_temp)`: añade promedio al array.
-- `echo "Temperaturas y promedio: ${region_temps[@]}"`: imprime el array.
-
-## 6. Estructuras de Control: If
-
-Archivos en `./data/model_results/`.
-
-#### Mover Modelos Basado en Precisión
-
-Utiliza archivos en: `model_results/`
-
-Crear el archivo:
-```bash
-touch 12_mover_modelos.sh
-```
+El script extrae `Accuracy`, valida que sea entero y mueve la **copia del laboratorio**:
 
 ```bash
-#!/bin/bash
+archivo=$1
+buenos=$2
+malos=$3
+accuracy=$(awk '/Accuracy/ {print $NF; exit}' "$archivo")
 
-# Extrae precisión y mueve a carpetas
-accuracy=$(grep "Accuracy" "$1" | sed 's/.* //')
-if [ $accuracy -ge 90 ]; then
-    mv "$1" ./data/good_models/
-elif [ $accuracy -lt 90 ]; then
-    mv "$1" ./data/bad_models/
+if (( accuracy >= 90 )); then
+  mv -- "$archivo" "$buenos/"
+else
+  mv -- "$archivo" "$malos/"
 fi
 ```
 
-Ejecuta:
+En el ejemplo, `$archivo` representa `data/model_results/model1.txt`, `$buenos` representa `data/good_models` y `$malos` representa `data/bad_models`. Esas variables se asignan desde `$1`, `$2` y `$3`. `awk` extrae el último campo de la línea `Accuracy: 94`, por lo que `accuracy` vale `94`.
+
+- `(( ... ))`: contexto aritmético de Bash.
+- `--`: termina opciones; protege nombres que comienzan con `-`.
+
+### 6.2 Clasificar un log
+
 ```bash
-./12_mover_modelos.sh ./data/model_results/model1.txt
+../ejercicios-bash-scripting/13_mover_logs.sh \
+  data/logs/servicio.log data/good_logs
 ```
 
-Explicación de comandos y flags:
-- `grep "Accuracy" "$1"`: busca "Accuracy" en el archivo pasado como argumento.
-- `sed 's/.* //'`: extrae el último campo (el valor de accuracy).
-- `[ $accuracy -ge 90 ]`: condición si accuracy >= 90.
-- `mv "$1" ./data/good_models/`: mueve el archivo a good_models si condición.
-- `elif [ $accuracy -lt 90 ]`: condición alternativa si < 90.
-- `mv "$1" ./data/bad_models/`: mueve a bad_models.
+Se mueve únicamente cuando aparecen ambos patrones `SRVM_` y `vpt`. `grep -q` comprueba sin imprimir.
 
-#### Mover Logs Basado en Contenido
+## 7. Bucles: `for`
 
-Crear el archivo:
-```bash
-touch 13_mover_logs.sh
-```
+### 7.1 Listar archivos R
 
 ```bash
-#!/bin/bash
-
-sfile=$1
-
-if grep -q 'SRVM_' "$sfile" && grep -q 'vpt' "$sfile"; then
-    mv "$sfile" ./data/good_logs/
-fi
-```
-
-Explicación de comandos y flags:
-- `grep -q 'SRVM_' "$sfile"`: busca 'SRVM_' en el archivo silenciosamente (-q).
-- `&&`: operador lógico AND.
-- `grep -q 'vpt' "$sfile"`: busca 'vpt' silenciosamente.
-- `mv "$sfile" ./data/good_logs/`: mueve el archivo si ambas condiciones son true.
-
-## 7. Bucles: For
-
-#### Listar Archivos en un Directorio
-
-Utiliza directorio: `inherited_folder/`
-
-```bash
-#!/bin/bash
-
-for file in ./data/inherited_folder/*.R
-do
-    echo "$file"
+for archivo in data/inherited_folder/*.R; do
+  printf '%s\n' "$archivo"
 done
 ```
 
-Explicación de comandos y flags:
-- `for file in ./data/inherited_folder/*.R`: itera sobre archivos .R.
-- `echo "$file"`: imprime el nombre del archivo.
+Las comillas protegen cada ruta. El glob se expande antes de ejecutar el bucle.
 
-#### Mover Archivos Python con Condición
-
-Utiliza directorio: `robs_files/`
-
-Crear el archivo:
-```bash
-touch 16_mover_archivos_python.sh
-```
+### 7.2 Seleccionar modelos Python
 
 ```bash
-#!/bin/bash
-
-for file in ./data/robs_files/*.py
-do
-    if grep -q 'RandomForestClassifier' "$file"; then
-        mv "$file" ./data/to_keep/
-    fi
-done
+../ejercicios-bash-scripting/16_mover_archivos_python.sh \
+  data/robs_files data/to_keep
+find data/to_keep -maxdepth 1 -type f
 ```
 
-Explicación de comandos y flags:
-- `for file in ./data/robs_files/*.py`: itera sobre archivos .py.
-- `grep -q 'RandomForestClassifier' "$file"`: busca la cadena silenciosamente.
-- `mv "$file" ./data/to_keep/`: mueve el archivo si encontrado.
+El script mueve copias que contienen `RandomForestClassifier` y deja el resto en origen.
 
-## 8. Case Statements
+`data/robs_files` es el directorio origen y `data/to_keep` el destino. Ambos están dentro de la copia `laboratorio/data`, por lo que repetir `preparar-lab.sh` restaura el estado original.
 
-#### Evaluar Días de la Semana con case
+## 8. Selección con `case`
+
+### 8.1 Día de la semana
 
 ```bash
-#!/bin/bash
-
-case $1 in
-    Monday|Tuesday|Wednesday|Thursday|Friday)
-        echo "Es un día de semana!";;
-    Saturday|Sunday)
-        echo "Es fin de semana!";;
-    *)
-        echo "No es un día!";;
-esac
+../ejercicios-bash-scripting/16_evaluar_dias.sh Monday
+../ejercicios-bash-scripting/16_evaluar_dias.sh Sunday
 ```
 
-Ejecuta:
-```bash
-./16_evaluar_dias.sh Monday
+Salida:
+
+```text
+Es un día de semana
+Es fin de semana
 ```
 
-Explicación de comandos y flags:
-- `case $1 in`: evalúa el primer argumento.
-- `Monday|Tuesday|... )`: patrón para días de semana.
-- `echo "Es un día de semana!";;`: acción para el patrón.
-- `Saturday|Sunday)`: patrón para fin de semana.
-- `*)`: patrón por defecto.
+`case` compara una palabra contra patrones. `|` separa alternativas y `*` es el caso por defecto.
 
-#### Clasificar Modelos con case
-
-Utiliza directorio: `model_out/`
-
-Crear el archivo:
-```bash
-touch 17_clasificar_modelos.sh
-```
+### 8.2 Clasificar tipos de modelo
 
 ```bash
-#!/bin/bash
-
-for file in ./data/model_out/*
-do
-    case $(cat "$file") in
-        *"Random Forest"*|*GBM*|*XGBoost*)
-            mv "$file" ./data/tree_models/ ;;
-        *KNN*|*Logistic*)
-            rm "$file" ;;
-        *)
-            echo "Modelo desconocido en $file" ;;
-    esac
-done
+../ejercicios-bash-scripting/17_clasificar_modelos.sh \
+  data/model_out data/tree_models data/descartados
 ```
 
-Explicación de comandos y flags:
-- `for file in ./data/model_out/*`: itera sobre archivos en model_out.
-- `case $(cat "$file") in`: evalúa el contenido del archivo.
-- `*"Random Forest"*|*GBM*|*XGBoost*)`: patrón para modelos de árbol.
-- `mv "$file" ./data/tree_models/ ;;`: mueve a tree_models.
-- `*KNN*|*Logistic*)`: patrón para otros modelos.
-- `rm "$file" ;;`: elimina el archivo.
-- `*)`: caso por defecto.
+- Random Forest, GBM y XGBoost se mueven a `tree_models`.
+- KNN y Logistic se mueven a `descartados`; no se eliminan.
+- Los desconocidos permanecen y se informan.
 
 ## 9. Funciones
 
-### Función simple
+### 9.1 Simular una carga
 
-#### Función para Subir a la Nube
-
-Utiliza directorio: `output_dir/`
-
-Crear el archivo:
 ```bash
-touch 18_subir_nube.sh
+../ejercicios-bash-scripting/18_subir_nube.sh data/output_dir
 ```
 
-```bash
-#!/bin/bash
+El ejercicio simula la acción con `printf`; no usa credenciales ni modifica servicios externos.
 
-function upload_to_cloud () {
-    for file in ./data/output_dir/*results.txt
-    do
-        echo "Subiendo $file a la nube"
-    done
+```bash
+upload_to_cloud() {
+  local directorio=$1
+  local archivo
+  for archivo in "$directorio"/*results.txt; do
+    [[ -e "$archivo" ]] || continue
+    printf 'Simulación: subir %s\n' "$archivo"
+  done
 }
-
-upload_to_cloud
 ```
 
-### Función con parsing
+La función recibe `data/output_dir` como `$1`. Dentro de la función ese valor se guarda en una variable local llamada `directorio`.
 
-#### Obtener el Día Actual
+- `local`: alcance dentro de la función.
+- `[[ -e ... ]] || continue`: maneja un glob sin coincidencias.
 
-Crear el archivo:
-```bash
-touch 19_obtener_dia.sh
-```
+### 9.2 Obtener el día
 
 ```bash
-#!/bin/bash
-
-what_day_is_it() {
-    date=$(date | cut -d " " -f1)
-    echo "$date"
-}
-
-what_day_is_it
+../ejercicios-bash-scripting/19_obtener_dia.sh
 ```
 
-### Función con retorno
+El script usa `date +%A`; no intenta separar una salida dependiente de espacios.
 
-#### Calcular Porcentaje
-
-Crear el archivo:
-```bash
-touch 20_calcular_porcentaje.sh
-```
+### 9.3 Calcular porcentaje
 
 ```bash
-#!/bin/bash
-
-function return_percentage () {
-    percent=$(echo "scale=2; 100 * $1 / $2" | bc)
-    echo "$percent"
-}
-
-return_test=$(return_percentage 456 632)
-echo "456 de 632 es $return_test%"
+../ejercicios-bash-scripting/20_calcular_porcentaje.sh 456 632
 ```
 
-#### Contar Victorias de un Equipo
+Salida esperada:
 
-Utiliza la base de datos: `basketball_scores.csv`
-
-Crear el archivo:
-```bash
-touch 21_contar_victorias.sh
+```text
+456 de 632 = 72.15%
 ```
+
+La función valida divisor distinto de cero y devuelve el resultado mediante `stdout`.
+
+### 9.4 Contar victorias
 
 ```bash
-#!/bin/bash
-
-function get_number_wins () {
-    win_stats=$(cat ./data/basketball_scores.csv | cut -d "," -f2 | tail -n +2 | sort | uniq -c | grep "$1")
-}
-
-get_number_wins "Lakers"
-echo "Estadísticas: $win_stats"
+../ejercicios-bash-scripting/21_contar_victorias.sh \
+  Lakers data/basketball_scores.csv
 ```
 
-Explicación de comandos y flags:
-- `cat ./data/basketball_scores.csv`: lee el archivo.
-- `cut -d "," -f2`: selecciona la columna de ganadores.
-- `tail -n +2`: omite encabezado.
-- `sort`: ordena.
-- `uniq -c`: cuenta únicos.
-- `grep "$1"`: filtra por el argumento.
+Salida esperada:
 
-#### Sumar Elementos de un Array
-
-Crear el archivo:
-```bash
-touch 22_sumar_array.sh
+```text
+Lakers: 2
 ```
+
+### 9.5 Sumar un array
 
 ```bash
-#!/bin/bash
-
-function sum_array () {
-    local sum=0
-    for number in "$@"
-    do
-        sum=$(echo "$sum + $number" | bc)
-    done
-    echo "$sum"
-}
-
-test_array=(14 12 23.5 16 19.34)
-total=$(sum_array "${test_array[@]}")
-echo "Suma total: $total"
+../ejercicios-bash-scripting/22_sumar_array.sh 14 12 23.5 16 19.34
 ```
 
-Explicación de comandos y flags:
-- `local sum=0`: declara variable local sum.
-- `for number in "$@"`: itera sobre argumentos de la función.
-- `echo "$sum + $number" | bc`: suma usando bc.
-- `"${test_array[@]}"`: pasa todos los elementos del array como argumentos.
+Salida esperada:
 
-## 10. Cron Jobs
-
-Cron es un programador de tareas que ejecuta comandos o scripts en intervalos específicos. Usa una sintaxis de 5 campos para definir cuándo ejecutar.
-
-### Diagrama de Campos de Cron
-
-```
-* * * * * comando_a_ejecutar
-│ │ │ │ │
-│ │ │ │ └─ Día de la semana (0-7, donde 0 y 7 = Domingo, 1 = Lunes, ..., 6 = Sábado)
-│ │ │ └─── Mes (1-12, o nombres abreviados como jan, feb)
-│ │ └───── Día del mes (1-31)
-│ └─────── Hora (0-23)
-└───────── Minuto (0-59)
+```text
+Suma total: 84.84
 ```
 
-Cada campo puede ser:
-- `*`: Cualquier valor
-- `número`: Valor específico
-- `número1-número2`: Rango
-- `*/número`: Cada número unidades
-- `número1,número2`: Lista de valores
+`"$@"` entrega cada número a la función y `bc` permite decimales.
 
-Cron permite programar tareas.
+## 10. Cron jobs
 
-Ejemplos de crontab:
+Cron ejecuta comandos según cinco campos:
 
-- `30 2 * * * bash script1.sh`: Todos los días a las 2:30 AM.
-- `15,30,45 * * * * bash script2.sh`: Cada hora a los 15, 30, 45 minutos.
-- `30 23 * * 0 bash script3.sh`: Domingos a las 11:30 PM.
+```text
+minuto hora día-del-mes mes día-de-semana comando
+  30    2       *        *         *         /ruta/absoluta/script.sh
+```
 
-Para editar:
+Ejemplos:
+
+```cron
+30 2 * * * /home/ubuntu/bin/respaldo.sh >> /home/ubuntu/logs/respaldo.log 2>&1
+15,30,45 * * * * /home/ubuntu/bin/metricas.sh
+30 23 * * 0 /home/ubuntu/bin/reporte-semanal.sh
+```
+
+- `*`: cualquier valor.
+- `a-b`: rango.
+- `*/n`: cada n unidades.
+- `a,b`: lista.
+
+### Práctica segura resuelta
+
+No se espera a que cron ejecute durante clase. Primero prueba el comando directamente:
+
 ```bash
-crontab -e  # Abre editor (nano recomendado)
+mkdir -p "$HOME/bin" "$HOME/logs"
+cp ../ejercicios-bash-scripting/19_obtener_dia.sh "$HOME/bin/"
+chmod +x "$HOME/bin/19_obtener_dia.sh"
+"$HOME/bin/19_obtener_dia.sh" >> "$HOME/logs/dia.log" 2>&1
+tail "$HOME/logs/dia.log"
+crontab -l 2>/dev/null || true
 ```
 
-Para listar:
-```bash
-crontab -l
+Una entrada posible para cada lunes a las 09:00:
+
+```cron
+0 9 * * 1 /home/ubuntu/bin/19_obtener_dia.sh >> /home/ubuntu/logs/dia.log 2>&1
 ```
 
-Ejemplo de contenido:
-```
-30 2 * * * ./extract_data.sh
-```
+Usa rutas absolutas: cron tiene un entorno y `PATH` más limitados que una terminal interactiva.
 
-Asegúrate de que los scripts tengan permisos de ejecución y rutas absolutas si es necesario.
+## Checklist del taller
+
+- [ ] Puedo explicar cada etapa de un pipeline.
+- [ ] Mis scripts validan argumentos y citan rutas.
+- [ ] Los ejercicios modifican `laboratorio/`, no los fixtures.
+- [ ] Distingo `if`, `for`, `case` y función.
+- [ ] Pruebo un comando antes de programarlo con cron.

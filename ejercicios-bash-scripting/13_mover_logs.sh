@@ -1,8 +1,16 @@
-#!/bin/bash
-palabras_a_buscar=$1
-nombre_archivo=$2
+#!/usr/bin/env bash
+set -o nounset
 
-if egrep -q "$palabras_a_buscar" "$nombre_archivo"; then
-    mkdir -p ./data/moved_logs
-    mv "$nombre_archivo" ./data/moved_logs/
+archivo=${1:-}
+destino=${2:-}
+if [[ -z "$archivo" || -z "$destino" || ! -r "$archivo" ]]; then
+  printf 'Uso: %s <log> <destino>\n' "$0" >&2
+  exit 64
+fi
+
+if grep -q 'SRVM_' "$archivo" && grep -q 'vpt' "$archivo"; then
+  mkdir -p "$destino"
+  mv -- "$archivo" "$destino/"
+else
+  printf 'El archivo no cumple ambos patrones: %s\n' "$archivo"
 fi

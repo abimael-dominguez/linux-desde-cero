@@ -1,0 +1,3 @@
+Model: Random Forest
+Accuracy: 94
+F1: 0.92

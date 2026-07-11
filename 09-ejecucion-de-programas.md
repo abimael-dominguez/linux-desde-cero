@@ -1,305 +1,201 @@
-# 9. Ejecución de programas
+# 9. Ejecución de programas, procesos y servicios
 
-En este capítulo exploraremos la ejecución de programas en Linux: monitoreo de procesos con `ps` y `top`, ejecución en segundo plano, gestión de recursos con `free`, prioridades con `nice` y `renice`, señales con `kill`, y más. Ejemplos prácticos incluidos para optimizar el rendimiento del sistema.
+## Objetivos
 
-## Índice
+- Identificar procesos y relaciones padre/hijo.
+- Controlar trabajos en foreground y background.
+- Enviar señales y ajustar prioridad.
+- inspeccionar servicios y logs con systemd.
 
-- [9. Ejecución de programas](#9-ejecución-de-programas)
-  - [Introducción](#introducción)
-  - [Monitoreo de procesos con `ps`](#monitoreo-de-procesos-con-ps)
-  - [Monitoreo en tiempo real con `top`](#monitoreo-en-tiempo-real-con-top)
-  - [Matar procesos](#matar-procesos)
-  - [Ver recursos disponibles con `free`](#ver-recursos-disponibles-con-free)
-  - [9.1 Ejecución en el fondo (background) &, KILL, NICE y NOHUP](#91-ejecución-en-el-fondo-background--kill-nice-y-nohup)
-    - [Ejecutar en background con &](#ejecutar-en-background-con-)
-    - [Diferencia entre Ctrl + Z y :q](#diferencia-entre-ctrl--z-y-q)
-    - [KILL](#kill)
-    - [Prioridades de ejecución](#prioridades-de-ejecución)
-      - [NICE](#nice)
-      - [RENICE](#renice)
-    - [NOHUP](#nohup)
-  - [9.2 Comando TIME](#92-comando-time)
-  - [9.3 Comando TOP](#93-comando-top)
-  - [Conclusión y ejercicios](#conclusión-y-ejercicios)
+## Antes de empezar
 
-## Introducción
-Los procesos son instancias en ejecución de programas con espacio de memoria propio. Aprenderemos a listar, monitorear y controlar procesos para una administración eficiente.
+Abre una terminal nueva, sitúate en la raíz del curso y crea la carpeta de salida:
 
-## Monitoreo de procesos con `ps`
-El comando `ps` (process status) muestra información sobre procesos activos.
-
-- `ps`: Lista procesos del usuario actual en la terminal actual.
-- `ps -a`: Muestra procesos de todos los usuarios, excluyendo los de control de terminal.
-- `ps -aux`: Muestra todos los procesos con detalles completos (usuario, PID, %CPU, %MEM, etc.).
-- `ps -aux | grep bash`: Filtra procesos relacionados con bash.
-
-Ejemplo:
-```
-$ ps -aux | head -10
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.1  225564  9212 ?        Ss   08:00   0:02 /sbin/init
-root         2  0.0  0.0      0     0 ?        S    08:00   0:00 [kthreadd]
-...
+```bash
+cd ~/linux-desde-cero
+mkdir -p laboratorio
 ```
 
-Nota: `%MEM` indica el porcentaje de memoria usada; `%CPU` el porcentaje de CPU.
+Trabajaremos únicamente con procesos que tú mismo inicies (`script_largo.sh` y `sleep`). No copies un PID de `top` para terminar procesos del sistema.
 
-## Monitoreo en tiempo real con `top`
-`top` proporciona una vista en tiempo real de procesos, actualizándose periódicamente.
+## Inspección con `ps`, `pgrep` y `top`
 
-- Ejecuta `top` para ver la lista interactiva.
-- Presiona `Shift + M` para ordenar por uso de memoria (%MEM).
-- Presiona `Shift + P` para ordenar por uso de CPU (%CPU).
-
-Ejemplo de salida (simulada):
-```
-top - 10:00:00 up 2:00,  1 user,  load average: 0.00, 0.01, 0.05
-Tasks: 100 total,   1 running,  99 sleeping,   0 stopped,   0 zombie
-%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-MiB Mem :   2048.0 total,   1500.0 free,    300.0 used,    248.0 buff/cache
-MiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   1748.0 avail Mem
-
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-    1 root      20   0  225564   9212   6680 S   0.0   0.4   0:02.34 systemd
-    2 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kthreadd
-...
+```bash
+ps -o pid,ppid,user,stat,%cpu,%mem,comm -p "$$"
+ps aux --sort=-%cpu | head
+pgrep -a bash
+top
 ```
 
-## Matar procesos
-Para terminar un proceso problemático:
-- En `top`, presiona `k`, ingresa el PID y confirma con ENTER.
+- `PID`/`PPID`: proceso y padre.
+- `STAT`: estado; `R` ejecutando, `S` esperando, `T` detenido, `Z` zombie.
+- `pgrep -a`: PID y línea de comando.
+- En `top`, presiona `P` para CPU, `M` para memoria y `q` para salir.
 
-Alternativamente, usa `kill <PID>` o `kill -9 <PID>` para forzar.
+## 9.1 Background, señales, prioridad y `nohup`
 
-Ejemplo:
-```
-$ kill 1234  # Envía señal SIGTERM
-$ kill -9 1234  # Fuerza con SIGKILL
-```
+### Trabajos del shell
 
-## Ver recursos disponibles con `free`
-`free` muestra el uso de memoria RAM y swap.
+`script_largo.sh` imprime una línea por segundo durante aproximadamente un minuto. `&` lo inicia sin bloquear la terminal.
 
-Ejemplo:
-```
-$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           1.9G        300M        1.4G         10M        200M        1.5G
-Swap:          1.0G          0B        1.0G
+```bash
+bash script_largo.sh > laboratorio/proceso.log 2>&1 &
+jobs -l
+fg %1
 ```
 
-## 9.1 Ejecución en el fondo (background) &, KILL, NICE y NOHUP
+`%1` significa “job número 1 de esta terminal”, no PID 1. Confirma el número real en la primera columna de `jobs -l`; si aparece `[2]`, usa `fg %2`.
 
-## Ejecutar en background con &
+Durante `fg`, presiona `Ctrl+Z` para suspender y luego:
 
-Agrega `&` al final de un comando para ejecutarlo en background.
-
-Ejemplo:
-```
-$ long-running-command &
-[1] 1234
+```bash
+bg %1
+jobs -l
 ```
 
-Para ejecutar programas sin bloquear la terminal:
-- Ejecuta un comando seguido de `&` para enviarlo a background inmediatamente.
-- Usa `Ctrl + Z` para suspender un proceso en ejecución y enviarlo a background.
-- Reanuda con `% <número de job>` (ej. `%1`), `bg` (background) o `fg` (foreground).
+- `&`: inicia en background.
+- `jobs`: trabajos del shell actual, no todos los procesos.
+- `fg`/`bg`: reanuda en foreground/background.
+- `Ctrl+Z`: suspende; no termina.
 
-Ejemplo:
-```
-$ vim archivo.txt  # Ejecuta vim (o para mandae directo a background `vim archivo.txt &`)
-# Presiona Ctrl + Z (si estás dentro de vim)
-[1]+  Stopped                 vim archivo.txt
-$ %1  # Reanuda en foreground
-$ bg  # Reanuda en background
-$ jobs  # Lista jobs activos
-[1]+  Stopped                 vim archivo.txt
-```
+### Señales y `kill`
 
-Nota: Los jobs se numeran automáticamente. Usa `jobs` para verlos.
+En este bloque, `sleep 300 &` crea el proceso y `$!` entrega exactamente su PID. La variable `pid` no existe antes de la segunda línea; nosotros la definimos con `pid=$!`.
 
-### Diferencia entre Ctrl + Z y :q
-- `Ctrl + Z`: Suspende el proceso (lo pausa) y lo envía a background. No termina el programa; puedes reanudarlo.
-- `:q` (en editores como Vim): Sale del programa completamente, liberando recursos. Si hay cambios sin guardar, usa `:q!` para forzar.
-
-Ejemplo práctico: En Vim, edita un archivo, presiona `Ctrl + Z` para pausar y volver a la shell, luego `%1` para continuar editando.
-
-## KILL
-Termina procesos. `kill -l` lista todas las señales disponibles (hay más de 60). Señales clave:
-- SIGHUP (1): Reinicia el proceso (útil para recargar configuraciones).
-- SIGKILL (9): Fuerza terminación inmediata (no puede ignorarse).
-- SIGTERM (15): Pide al proceso terminar suavemente (por defecto).
-
-Ejemplo:
-```
-$ kill 1234          # SIGTERM
-$ kill -9 1234       # SIGKILL
-$ killall firefox    # Mata todos los procesos de firefox
-$ killall chrome     # Mata todos los procesos de chrome
+```bash
+sleep 300 &
+pid=$!
+kill -TERM "$pid"
+wait "$pid" 2>/dev/null || true
 ```
 
-## Prioridades de ejecución
-Linux es un sistema multitarea: el kernel actúa como "policía de tráfico" para dar turnos a procesos en la CPU. Por defecto, todos los procesos son tratados igualitariamente. Sin embargo, en cargas altas (como codificación de video o backups), podemos intervenir para priorizar tareas importantes, como backups sobre servicios web.
+- `$!`: PID del último proceso en background.
+- `TERM` solicita cierre ordenado y es la primera opción.
+- `KILL` no puede manejarse ni limpiar recursos; úsala sólo si `TERM` no funciona.
+- `wait`: espera y recoge el estado del proceso hijo.
 
-Usos: Ajustar prioridades para minimizar impacto en sistemas compartidos, asegurando que tareas críticas (ej. bases de datos) no se ralenticen por procesos intensivos.
+### Prioridad
 
-### NICE
-Ajusta la prioridad al lanzar un proceso. Valores de -20 (alta prioridad, mejor) a 19 (baja). Como en golf, menor valor es mejor. Usuarios normales solo pueden aumentar (valores positivos); administradores pueden disminuir.
+Volvemos a crear un `sleep` independiente. La variable `pid` se reemplaza con el PID nuevo, por eso `renice` y `kill` sólo afectan este proceso de práctica.
 
-Ejemplo: Priorizar un checksum de disco para backup.
-```
-$ sudo nice -12 sha256sum /dev/sda16  # Alta prioridad
-$ nice 12 sha256sum /dev/sda16       # Baja prioridad
-```
-
-Ver prioridades en `top`: Columna `NI` (nice). Procesos root a menudo tienen -20.
-
-### RENICE
-Cambia la prioridad de un proceso en ejecución sin interrumpirlo. Usa el PID; a veces requiere `-u <usuario>` para especificar el usuario.
-
-Ejemplo: Cambiar prioridad de un proceso corriendo.
-```
-$ sudo renice 10 -p 5096  # Baja prioridad
-$ sudo renice 5 -u usuario -p 5096  # Especificando usuario
+```bash
+nice -n 10 sleep 60 &
+pid=$!
+ps -o pid,ni,comm -p "$pid"
+renice 15 -p "$pid"
+kill "$pid"
 ```
 
-### Ejercicio práctico: Gestionar procesos con kill, nice y renice
-1. Crea un script simple para darle un nombre identificable al proceso:
-   ```
-   $ nano mi_proceso.sh
-   #!/bin/bash
-   echo "Proceso en ejecución..."
-   sleep 300  # Espera 300 segundos (5 minutos) para simular un proceso largo
-   ```
-   ```
-   $ chmod +x mi_proceso.sh
-   ```
+Un valor nice mayor concede menos prioridad de CPU. Aumentar prioridad suele requerir privilegios.
 
-2. Inicia el proceso con baja prioridad usando `nice`:
-   ```
-   $ nice -n 10 ./mi_proceso.sh &
-   $ jobs  # Nota el job number
-   ```
+### Persistencia con `nohup`
 
-3. Verifica su prioridad en `top` (columna NI) o con `ps`:
-   ```
-   $ ps -o pid,ni,cmd | grep mi_proceso
-   $ top -p <PID>
-   ```
-
-4. Cambia la prioridad del proceso en ejecución con `renice`:
-   ```
-   $ sudo renice -5 -p <PID>
-   $ top -p <PID> # Verifica el cambio con top
-   $ ps -o pid,ni,cmd | grep mi_proceso  # Verifica el cambio
-   ```
-
-5. Termina el proceso suavemente con `kill`:
-   ```
-   $ kill <PID>
-   $ ps -o pid,ni,cmd | grep mi_proceso  # Debería desaparecer
-   ```
-
-6. Si no responde, fuerza la terminación:
-   ```
-   $ kill -9 <PID>
-   ```
-
-7. Experimenta con diferentes valores de nice y señales de kill para entender su impacto en el sistema.
-
-
-## NOHUP
-Ejecuta comandos inmunes a señales de hangup (cierre de sesión). Útil para procesos largos.
-
-Ejemplo:
-```
-$ nohup long-command &
-# Salida se guarda en nohup.out
+```bash
+nohup bash script_largo.sh > laboratorio/nohup.log 2>&1 &
+echo "$!" > laboratorio/nohup.pid
 ```
 
-### Ejercicio práctico: Ejecutar un proceso largo con nohup
-1. Crea un script simple que simule un proceso largo:
-   ```
-   $ nano script_largo.sh
-   #!/bin/bash
-   echo "Iniciando proceso largo..."
-   for i in {1..10}; do
-       echo "Iteración $i - $(date)"
-       sleep 60  # Espera 1 minuto por iteración
-   done
-   echo "Proceso completado."
-   ```
+`nohup` ignora SIGHUP, pero no convierte el proceso en servicio. Para cargas operativas se prefiere un supervisor o unidad systemd.
 
-2. Haz el script ejecutable y ejecútalo con `nohup`:
-   ```
-   $ chmod +x script_largo.sh
-   $ nohup ./script_largo.sh &
-   ```
+El comando guarda el PID en `laboratorio/nohup.pid`. Al terminar la demostración, limpia el proceso de forma controlada:
 
-3. Verifica que esté corriendo en background:
-   ```
-   $ jobs
-   $ ps aux | grep script_largo
-   ```
-
-4. Cierra la sesión (o abre una nueva terminal) y verifica que el proceso sigue corriendo:
-   ```
-   $ ps aux | grep script_largo
-   ```
-
-5. Revisa la salida en `nohup.out`:
-   ```
-   $ tail -f nohup.out
-   ```
-
-6. Una vez completado, elimina el archivo de salida si deseas:
-   ```
-   $ rm nohup.out
-   ```
-
-Este ejercicio demuestra cómo `nohup` permite que procesos continúen ejecutándose incluso después de cerrar la sesión, guardando la salida en un archivo.
-
-## 9.2 Comando TIME
-Mide el tiempo de ejecución de un comando (usuario, sistema, real).
-
-Ejemplo:
-```
-$ time sleep 5
-real    0m5.001s
-user    0m0.000s
-sys     0m0.000s
+```bash
+pid=$(cat laboratorio/nohup.pid)
+if kill -0 "$pid" 2>/dev/null; then
+  kill -TERM "$pid"
+else
+  echo "El proceso ya había terminado"
+fi
+wait "$pid" 2>/dev/null || true
 ```
 
-### Ejercicio práctico: Medir tiempos de ejecución
-1. Mide el tiempo de un comando simple:
-   ```
-   $ time ls -la /etc
-   ```
+`kill -0` no termina el proceso: sólo comprueba si existe y si tienes permiso para señalarlo. `wait` sólo funciona si sigue siendo hijo del shell actual; el `|| true` tolera que ya haya terminado.
 
-2. Crea un script CPU-intensivo y mide su tiempo:
-   ```
-   $ nano cpu_intensivo.sh
-   #!/bin/bash
-   for i in {1..100000}; do
-       echo $i > /dev/null
-   done
-   ```
-   ```
-   $ chmod +x cpu_intensivo.sh
-   $ time ./cpu_intensivo.sh
-   ```
+## 9.2 Medición con `time`
 
-3. Mide el tiempo de una operación I/O (copia de archivos):
-   ```
-   $ time cp -r /etc /tmp/etc_backup
-   ```
+```bash
+time grep -c 'ERROR' data/dummy_logs.txt
+```
 
-4. Compara los tiempos: Observa cómo `real` (tiempo total) difiere de `user` (CPU en modo usuario) y `sys` (CPU en modo sistema). En tareas CPU-intensivas, `user` será alto; en tareas I/O, `real` será mucho mayor que `user + sys`.
+- `real`: tiempo de pared.
+- `user`: CPU en espacio de usuario.
+- `sys`: CPU dentro del kernel.
 
-5. Experimenta con `time` en combinación con otros comandos, como `find` o `grep` en archivos grandes, para ver el impacto en el rendimiento.
+## 9.3 `top` y recursos
 
-## 9.3 Comando TOP
-Ya cubierto arriba, pero adicional: Presiona `q` para salir, `h` para ayuda.
+```bash
+free -h
+uptime
+df -h /
+```
 
-## Conclusión y ejercicios
-Practica con `ps`, `top` y jobs. Ejercicio: Ejecuta `vim` y `mc` (Midnight Commander), suspende con `Ctrl + Z`, lista con `jobs`, y reanuda.
+La carga no es un porcentaje. Debe interpretarse con cantidad de CPU, procesos bloqueados y contexto del sistema.
+
+## Servicios y logs con systemd
+
+En Ubuntu 24.04:
+
+```bash
+systemctl status ssh --no-pager
+systemctl is-enabled ssh
+journalctl -u ssh --since '30 minutes ago' --no-pager
+```
+
+- `status`: estado y mensajes recientes.
+- `is-enabled`: si inicia automáticamente; no indica necesariamente que esté activo.
+- `journalctl -u`: filtra una unidad.
+- `--since`: limita el periodo.
+- `--no-pager`: salida no interactiva, útil en scripts y clases.
+
+Si aparece `Unit ssh.service could not be found`, el servidor OpenSSH no está instalado en ese equipo. En la EC2 del curso debe existir porque es el servicio que permite la conexión inicial.
+
+No reinicies servicios compartidos sin autorización.
+
+## Práctica guiada resuelta — Ciclo de un proceso
+
+No debes sustituir `$pid` manualmente. La línea `pid=$!` captura el PID del `sleep` que acaba de arrancar y todas las señales posteriores usan ese mismo valor.
+
+```bash
+mkdir -p laboratorio
+sleep 120 &
+pid=$!
+printf 'PID=%s\n' "$pid" | tee laboratorio/proceso.pid
+ps -o pid,ppid,stat,ni,etime,comm -p "$pid"
+kill -STOP "$pid"
+ps -o pid,stat,comm -p "$pid"
+kill -CONT "$pid"
+kill -TERM "$pid"
+wait "$pid" 2>/dev/null || true
+ps -p "$pid" || printf 'Proceso finalizado\n'
+```
+
+`STOP` suspende, `CONT` reanuda y `TERM` solicita terminar. La práctica usa un proceso creado por el propio alumno.
+
+La columna `STAT` debe contener `T` después de `STOP`. Al final se imprime `Proceso finalizado`.
+
+## Errores frecuentes
+
+- Ejecutar `kill -9` como primera respuesta.
+- Confundir PID con número de job `%1`.
+- Cerrar la terminal creyendo que `&` garantiza persistencia.
+- Reiniciar un servicio sin revisar logs.
+
+## Reto 9 — Operación observable
+
+[Ver respuesta](instructor/soluciones.md#respuesta-reto-9)
+
+Trabaja dentro de `laboratorio/reto9`. Ejecuta `script_largo.sh` en background, guarda salida/errores en `proceso.log` y el PID en `proceso.pid`. Demuestra que está activo, mide otra ejecución corta y termina el proceso limpiamente. Guarda el estado del servicio SSH en `ssh-status.txt`.
+
+### Criterios de comprobación
+
+- PID y log se conservan en archivos.
+- Se usa `TERM` antes de cualquier señal forzada.
+- El reporte distingue proceso, job y servicio.
+- Al final el PID ya no existe.
+
+## Checklist
+
+- [ ] Identifico PID, PPID, estado y prioridad.
+- [ ] Controlo jobs con `jobs`, `fg` y `bg`.
+- [ ] Uso señales de manera gradual.
+- [ ] Consulto servicios y journal sin modificarlos.

@@ -1,13 +1,19 @@
-#!/bin/bash
-LOGFILE="$1"
-if [[ ! -f "$LOGFILE" ]]; then
-  echo "Uso: $0 <archivo_log>"
-  exit 1
+#!/usr/bin/env bash
+set -o nounset
+set -o pipefail
+
+log=${1:-}
+if [[ -z "$log" || ! -r "$log" ]]; then
+  printf 'Uso: %s <archivo-log>\n' "$0" >&2
+  exit 66
 fi
-echo "Resumen de $LOGFILE:"
-echo "----------------------"
-echo "Errores:   $(grep -c 'ERROR' "$LOGFILE")"
-echo "Warnings:  $(grep -c 'WARN' "$LOGFILE")"
-echo "Infos:     $(grep -c 'INFO' "$LOGFILE")"
-echo "Usuarios únicos:"
-grep -oE 'User [a-z]+' "$LOGFILE" | awk '{print $2}' | sort | uniq
+
+printf 'Archivo: %s\n' "$log"
+for nivel in INFO WARN ERROR; do
+  total=$(grep -c "$nivel" "$log" || true)
+  printf '%-5s %d\n' "$nivel" "$total"
+done
+printf 'Usuarios:\n'
+grep -oE 'User [[:alnum:]_-]+' "$log" \
+  | cut -d' ' -f2 \
+  | sort -u

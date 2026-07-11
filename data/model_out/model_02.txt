@@ -1,0 +1,2 @@
+Model: KNN
+Accuracy: 82

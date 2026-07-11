@@ -1,390 +1,226 @@
 # 3. Estructura del sistema de archivos de Linux
 
-Este capítulo cubre la estructura básica del sistema de archivos en Linux, enfocándose en conceptos esenciales para desarrolladores: tipos de archivos, enlaces, rutas y permisos. Se incluye una visión general de los directorios raíz para facilitar la navegación y el desarrollo de proyectos.
+## Objetivos
 
-## Índice
+- Reconocer tipos de archivos y rutas.
+- Navegar la jerarquía principal de Linux.
+- Crear enlaces y explicar su diferencia.
+- inspeccionar montajes sin modificar discos.
+- aplicar permisos y propietarios de forma consciente.
 
-- [3. Estructura del sistema de archivos de Linux](#3-estructura-del-sistema-de-archivos-de-linux)
-  - [3.1 Archivos: tipos](#31-archivos-tipos)
-    - [Actividad práctica](#actividad-práctica)
-  - [3.2 Enlaces](#32-enlaces)
-    - [Actividad práctica](#actividad-práctica-1)
-  - [3.3 El camino o path](#33-el-camino-o-path)
-    - [Actividad práctica](#actividad-práctica-2)
-  - [3.4 Estructura del sistema de archivos de Linux](#34-estructura-del-sistema-de-archivos-de-linux)
-    - [Actividad práctica](#actividad-práctica-3)
-  - [3.5 Acceso a los diferentes sistemas de archivos](#35-acceso-a-los-diferentes-sistemas-de-archivos)
-    - [Sistemas de Archivos en Linux](#sistemas-de-archivos-en-linux)
-      - [¿Por qué elegir un sistema de archivos específico?](#por-qué-elegir-un-sistema-de-archivos-específico)
-      - [EXT (Extended File System)](#ext-extended-file-system)
-      - [XFS (Extents File System)](#xfs-extents-file-system)
-      - [BTRFS (B-Tree File System)](#btrfs-b-tree-file-system)
-      - [Tabla comparativa de sistemas de archivos](#tabla-comparativa-de-sistemas-de-archivos)
-      - [Unidades de medida: Terabytes vs Tebibytes](#unidades-de-medida-terabytes-vs-tebibytes)
-      - [Conclusión](#conclusión)
-    - [Creando Sistemas de archivos](#creando-sistemas-de-archivos)
-      - [Pasos para preparar un disco](#pasos-para-preparar-un-disco)
-      - [Herramientas para crear FS](#herramientas-para-crear-fs)
-      - [Casos especiales: Swap](#casos-especiales-swap)
-      - [Modificaciones post-creación](#modificaciones-post-creación)
-      - [Conclusión](#conclusión-1)
-  - [3.6 Permisos](#36-permisos)
-    - [Actividad práctica](#actividad-práctica-5)
+## Antes de empezar
 
-## 3.1 Archivos: tipos
+Sitúate en la raíz del curso y crea el espacio de trabajo:
 
-En Linux, todo se trata como archivos, pero existen diferentes tipos según su función:
-
-- **Archivos regulares**: Contienen datos (texto, binarios, etc.). Ejemplo: `script.py`.
-- **Directorios**: Contienen otros archivos o directorios. Ejemplo: `/home/user`.
-- **Enlaces simbólicos**: Punteros a otros archivos (como atajos en Windows).
-- **Dispositivos**: Representan hardware, como `/dev/sda` para discos.
-- **Sockets y pipes**: Para comunicación entre procesos.
-
-### Actividad práctica
 ```bash
-# Verificar tipo de archivo
-file /etc/passwd
-# Salida: /etc/passwd: ASCII text
-
-file /dev/sda
-# Salida: /dev/sda: block special
+cd ~/linux-desde-cero
+mkdir -p laboratorio/enlaces
 ```
 
-**Explicación**: El comando `file` identifica el tipo basado en el contenido o metadatos.
+En los ejemplos usaremos estos nombres concretos:
+
+| Nombre | Qué representa |
+|---|---|
+| `config.ini` | archivo original |
+| `config-duro.ini` | enlace duro al original |
+| `config-actual.ini` | enlace simbólico al original |
+| `deploy.sh` | archivo para practicar permisos |
+
+## 3.1 Tipos de archivo
+
+El primer carácter de `ls -l` indica el tipo:
+
+| Carácter | Tipo | Ejemplo |
+|---|---|---|
+| `-` | archivo regular | texto, CSV, binario |
+| `d` | directorio | `/home` |
+| `l` | enlace simbólico | acceso alternativo |
+| `b`/`c` | dispositivo de bloque/carácter | discos, terminales |
+| `s` | socket | comunicación local |
+| `p` | pipe con nombre | comunicación entre procesos |
+
+```bash
+file /etc/passwd /bin/ls /dev/null
+ls -ld /etc/passwd /tmp /dev/null
+```
+
+`file` inspecciona el contenido o metadatos; la extensión no decide el tipo en Linux.
 
 ## 3.2 Enlaces
 
-Los enlaces permiten acceder a un archivo desde múltiples ubicaciones sin duplicar datos.
+Sintaxis general:
 
-- **Enlaces duros**: Apuntan directamente al inode del archivo. Si el original se borra, el enlace sigue funcionando.
-- **Enlaces simbólicos (soft)**: Como atajos; si el original se borra, el enlace queda roto.
-
-### Actividad práctica
 ```bash
-# Crear enlace simbólico
-ln -s /home/user/documento.txt enlace.txt
-
-# Verificar
-ls -l enlace.txt
-# Salida: lrwxrwxrwx 1 user user ... enlace.txt -> /home/user/documento.txt
-
-# Crear enlace duro
-ln /home/user/documento.txt copia_duro.txt
+ln <archivo_existente> <nuevo_enlace_duro>
+ln -s <ruta_objetivo> <nuevo_enlace_simbolico>
 ```
 
-**Explicación**: Útil para bibliotecas compartidas en proyectos, evitando copias innecesarias.
+Ejemplo resuelto: `config.ini` será el archivo existente y los otros dos nombres serán los enlaces.
 
-## 3.3 El camino o path
-
-Las rutas especifican la ubicación de archivos.
-
-- **Absolutas**: Empiezan con `/`, desde la raíz. Ej: `/home/user/proyecto/main.py`.
-- **Relativas**: Desde el directorio actual. Ej: `../scripts/run.sh`.
-
-### Actividad práctica
 ```bash
-# Mostrar directorio actual
+mkdir -p laboratorio/enlaces
+printf 'version=1\n' > laboratorio/enlaces/config.ini
+ln laboratorio/enlaces/config.ini laboratorio/enlaces/config-duro.ini
+ln -s config.ini laboratorio/enlaces/config-actual.ini
+ls -li laboratorio/enlaces
+```
+
+- `ln origen destino`: enlace duro al mismo inode.
+- `ln -s objetivo enlace`: enlace simbólico que guarda una ruta.
+- `ls -i`: muestra el inode; los enlaces duros comparten número.
+- Un enlace simbólico puede cruzar sistemas de archivos, pero puede quedar roto.
+
+## 3.3 Rutas o paths
+
+- Absoluta: comienza en `/`, por ejemplo `/var/log`.
+- Relativa: comienza en el directorio actual, por ejemplo `../data`.
+- `.`: directorio actual.
+- `..`: directorio padre.
+- `~`: home del usuario.
+
+```bash
 pwd
-# Salida: /home/user
-
-# Cambiar a absoluto
-cd /usr/bin
-
-# Cambiar relativo
-cd ../lib
+realpath laboratorio/enlaces/config.ini
+basename /var/log/syslog
+dirname /var/log/syslog
 ```
 
-**Explicación**: Crucial para scripts y builds; evita errores de path en entornos de desarrollo.
+## 3.4 Jerarquía principal
 
-## 3.4 Estructura del sistema de archivos de Linux
+| Ruta | Propósito práctico |
+|---|---|
+| `/home` | datos y configuración de usuarios |
+| `/etc` | configuración del sistema y servicios |
+| `/var` | datos variables, cachés y logs |
+| `/tmp` | temporales; no asumir persistencia |
+| `/usr` | programas, bibliotecas y datos compartidos |
+| `/dev` | dispositivos |
+| `/proc` | vista del kernel y procesos |
+| `/run` | estado desde el arranque |
 
-Linux usa una jerarquía unificada desde `/` (raíz). Para desarrolladores, conoce estos directorios clave:
-
-- `/bin`: Ejecutables esenciales (ls, cp).
-- `/usr/bin`: Más ejecutables, incluyendo herramientas de desarrollo (gcc, python).
-- `/home`: Directorios de usuarios; aquí van tus proyectos.
-- `/etc`: Configuraciones del sistema (no edites sin cuidado).
-- `/tmp`: Archivos temporales; se borran al reiniciar.
-- `/var`: Datos variables (logs, bases de datos).
-- `/dev`: Dispositivos (no relevante para dev cotidiano).
-
-### Actividad práctica
 ```bash
-# Explorar raíz
-ls -l /
-# Salida: drwxr-xr-x 2 root root ... bin
-#        drwxr-xr-x 3 root root ... home
-#        ...
-
-# Ver contenido de /usr/bin
-ls /usr/bin | head -10
+ls -lah /
+cat /proc/meminfo | head
 ```
 
-**Explicación**: Facilita encontrar herramientas y organizar proyectos en `/home`.
+## 3.5 Acceso a sistemas de archivos
 
-## 3.5 Acceso a los diferentes sistemas de archivos
+En este curso se inspeccionan montajes; no se formatean discos.
 
-### Sistemas de Archivos en Linux (EXT, XFS, BTRFS)
-
-¿Con tantas opciones de sistemas de archivos en Linux, cuál es el adecuado para ti? Quédate para aprender algunos atributos comunes de los sistemas de archivos de Linux.
-
-#### ¿Por qué elegir un sistema de archivos específico?
-
-Cuando instalas Linux, cada distribución tiene un sistema de archivos predeterminado. Por ejemplo, Ubuntu usa EXT4 (aunque experimentó con BTRFS), mientras que Red Hat usa XFS. Si sigues el predeterminado, estarás bien, pero elegir el correcto desde el inicio puede mejorar el rendimiento o proporcionar características útiles. Cambiar después es complicado: requiere respaldar datos, reformatear y restaurar.
-
-#### EXT (Extended File System)
-
-EXT es el más común, evolucionando de EXT2 a EXT4. EXT2, 3 y 4 comparten la misma base, con características añadidas como journaling en EXT3 y extents en EXT4.
-
-**Características principales:**
-- **Tamaño de volumen:** Hasta 1 exabyte (EXT4).
-- **Tamaño de archivo:** Hasta 16 terabytes (EXT4).
-- **Subdirectorios ilimitados.**
-- **Journaling:** Protege contra corrupción por interrupciones (escribe en un journal primero).
-- **Compatibilidad:** Ampliamente soportado, incluso en Windows/Mac con drivers.
-
-**Comando para verificar el sistema de archivos:**
-```bash
-df -T
-# Salida esperada: Muestra el tipo de FS, ej. ext4 para /dev/sda1
-```
-
-**Explicación:** `df -T` muestra el uso del disco y el tipo de sistema de archivos (`-T` añade la columna Type).
-
-**Cuándo usar EXT4:**
-- General purpose, máxima compatibilidad.
-- Si no sabes cuál elegir, EXT4 es seguro.
-
-#### XFS (Extents File System)
-
-Desarrollado por Silicon Graphics (SGI) para manejar archivos grandes eficientemente. Usa "extents" (rangos de bloques) en lugar de punteros individuales, mejorando el rendimiento con archivos grandes.
-
-**Características principales:**
-- **Tamaño de volumen:** Hasta 8 exabytes.
-- **Tamaño de archivo:** Hasta 1 petabyte.
-- **Journaling completo.**
-- **Optimizado para archivos grandes:** Ideal para gráficos, bases de datos, renderizado 3D.
-
-**Comando para montar un volumen XFS:**
-```bash
-sudo mount -t xfs /dev/sdb1 /mnt
-# Salida: Ninguna si es exitoso; verifica con df -T
-```
-
-**Explicación:** `mount -t xfs` especifica el tipo de FS (`-t` indica type). Útil para discos externos o servidores.
-
-**Cuándo usar XFS:**
-- Alto rendimiento con archivos grandes (gráficos, DB).
-- Predeterminado en Red Hat.
-
-#### BTRFS (B-Tree File System)
-
-Diseñado con todas las características modernas: snapshots, LVM integrado, redimensionamiento dinámico. Es "cutting-edge" pero con más bugs y mantenimiento.
-
-**Características principales:**
-- **Tamaño de volumen:** Hasta 8 exabytes.
-- **Tamaño de archivo:** Hasta 8 exabytes.
-- **Snapshots, journaling, LVM integrado.**
-- **Características avanzadas:** Clones, compresión, RAID integrado.
-
-**Comando para crear un snapshot en BTRFS:**
-```bash
-sudo btrfs subvolume snapshot /mnt /mnt/snapshot
-# Salida: Ninguna; verifica con ls /mnt
-```
-
-**Explicación:** `btrfs subvolume snapshot` crea una instantánea (`subvolume` maneja subvolúmenes, `snapshot` crea la copia). Requiere FS BTRFS.
-
-**Cuándo usar BTRFS:**
-- Necesitas características avanzadas como snapshots o redimensionamiento sin LVM.
-- Almacenamiento en red (NAS, NFS).
-- Cuidado: Puede ser inestable; no es predeterminado en la mayoría de distros.
-
-#### Tabla comparativa de sistemas de archivos
-
-| Característica          | EXT4                  | XFS                   | BTRFS                 |
-|-------------------------|-----------------------|-----------------------|-----------------------|
-| **Tamaño máximo volumen** | 1 EB                 | 8 EB                 | 8 EB                 |
-| **Tamaño máximo archivo** | 16 TB                | 1 PB                 | 8 EB                 |
-| **Journaling**          | Sí                   | Sí                   | Sí                   |
-| **Extents**             | Sí (añadido)         | Sí (nativo)          | Sí                   |
-| **Snapshots**           | No                   | No                   | Sí                   |
-| **LVM integrado**       | No                   | No                   | Sí                   |
-| **Compatibilidad**      | Alta                 | Media                | Baja (nuevo)         |
-| **Uso recomendado**     | General             | Archivos grandes     | Avanzado/Red         |
-| **Estabilidad**         | Alta                 | Alta                 | Media (bugs)         |
-
-#### Unidades de medida: Terabytes vs Tebibytes
-
-En el mundo real, "terabyte" es base 10 (1 TB = 1000^4 bytes), pero discos usan base 2 (1 TiB = 1024^4 bytes). EXT4 soporta 16 TB (terabytes), pero en práctica, verifica con herramientas.
-
-**Comando para verificar tamaño real:**
-```bash
-lsblk -b
-# Salida: Muestra tamaños en bytes
-```
-
-**Explicación:** `lsblk -b` muestra bloques en bytes (`-b` para bytes). Útil para confirmar capacidades.
-
-#### Conclusión
-
-- **Workstation:** Usa el predeterminado de tu distro.
-- **Servidor específico:** Elige basado en necesidades (EXT4 general, XFS archivos grandes, BTRFS avanzado).
-- Recuerda: Elegir bien evita dolores de cabeza futuros.
-
-**Actividad práctica (opcional)**
-1. Verifica el FS de tu raíz: `df -T /`
-2. Monta un USB y nota el FS: `mount | grep /mnt`
-3. Experimenta con snapshots si tienes BTRFS.
-
-**Explicación:** Practica comandos para familiarizarte con FS en entornos reales.
-
-### Creando Sistemas de archivos
-
-Has particionado tu disco duro, pero es inútil sin un sistema de archivos. Quédate para aprender cómo aplicarlo a tu disco duro.
-
-### Pasos para preparar un disco
-
-Después de particionar (o crear volúmenes), necesitas formatear aplicando un sistema de archivos. Esto crea tablas para rastrear archivos y bloques de datos. Sin FS, la partición está vacía.
-
-Pasos básicos:
-1. **Tener una partición/volumen listo** (de episodios anteriores).
-2. **Formatear:** Aplicar FS (ej. EXT4, XFS).
-3. **Montar:** Hacerlo accesible.
-
-### Herramientas para crear FS
-
-Usa `mkfs` (make file system). Varía por distro; Ubuntu incluye EXT, Red Hat añade XFS.
-
-**Ver utilidades mkfs disponibles:**
-```bash
-ls /usr/sbin/mkfs*
-# Salida: mkfs.ext2, mkfs.ext3, mkfs.ext4, mkfs.xfs (si instalado), etc.
-```
-
-**Explicación:** Lista herramientas mkfs; instala paquetes si faltan (ej. `sudo apt install xfsprogs` para XFS).
-
-**Ver dispositivos y FS existentes:**
 ```bash
 lsblk -f
-# Salida: Lista dispositivos con FS, UUID, labels (ej. sda1 ext4, sdb1 vacío)
+findmnt /
+df -hT /
 ```
 
-**Explicación:** `lsblk -f` muestra FS y detalles; `-f` para formato completo.
+Salida representativa:
 
-**Crear EXT4:**
-```bash
-sudo mkfs.ext4 /dev/sdb1
-# Salida: Progreso de creación (grupos, superbloques); confirma con lsblk -f
+```text
+TARGET SOURCE    FSTYPE OPTIONS
+/      /dev/...  ext4   rw,relatime
 ```
 
-**Explicación:** Aplica EXT4; si no vacío, advierte. Usa `sudo` para permisos.
-
-**Alternativa con mkfs genérico:**
-```bash
-sudo mkfs -t ext4 /dev/sdc1
-# Salida: Similar, crea FS especificado por -t (type)
-```
-
-**Explicación:** `-t` especifica tipo; útil para cualquier FS soportado.
-
-**Crear XFS (en distros con soporte):**
-```bash
-sudo mkfs.xfs /dev/nvme0n1p1
-# Salida: Diferente (usa xfs_admin); asigna UUID
-```
-
-**Explicación:** Requiere paquete xfsprogs; instala si falta (`sudo apt install xfsprogs` en Ubuntu).
-
-### Casos especiales: Swap
-
-Swap no tiene FS tradicional; el kernel maneja tablas en RAM.
-
-**Crear swap:**
-```bash
-sudo mkswap /dev/sdd1
-# Salida: "Setting up swapspace version 1"; asigna UUID
-```
-
-**Activar swap:**
-```bash
-sudo swapon /dev/sdd1
-# Salida: Ninguna; verifica con free -h
-```
-
-**Verificar swap:**
-```bash
-free -h
-# Salida: Muestra swap total/usado (ej. 150G swap disponible)
-```
-
-**Desactivar swap:**
-```bash
-sudo swapoff /dev/sdd1
-# Salida: Ninguna; swap regresa a original
-```
-
-**Explicación:** Swap se activa/desactiva sin montar; útil para memoria virtual.
-
-### Modificaciones post-creación
-
-Después de crear FS, puedes modificar propiedades (sin destruir datos).
-
-**Cambiar label (EXT):**
-```bash
-sudo e2label /dev/sdb1 backup
-# Salida: Ninguna; verifica con lsblk -f (muestra label)
-```
-
-**Explicación:** Labels identifican discos para montaje; `e2label` para EXT (compatible con EXT2-4).
-
-**Cambiar label (XFS):**
-```bash
-sudo xfs_admin -L backup /dev/nvme0n1p1
-# Salida: "writing all SBs"; new label = backup
-```
-
-**Explicación:** `-L` para label; usa `xfs_admin` para XFS.
-
-**Redimensionar (riesgos altos):**
-- EXT: `sudo resize2fs /dev/sdb1` (crecer; shrinking limitado).
-- XFS: `sudo xfs_growfs /mnt` (solo crecer; monta primero).
-- Riesgo: Posible pérdida de datos; respalda siempre. Vendors como Red Hat no lo soportan. Usa LVM para evitar.
-
-**Cambiar FS:** Imposible sin destruir datos (excepto EXT2→3→4). Respaldar, reformatear, restaurar.
-
-### Conclusión
-
-Crea FS para hacer particiones usables. Usa `mkfs` para formatear, `lsblk` para verificar. Modificaciones son posibles pero riesgosas; prefiere planificación inicial.
-
-**Actividad práctica (opcional)**
-1. Lista dispositivos: `lsblk -f`
-2. Crea EXT4 en partición vacía: `sudo mkfs.ext4 /dev/sdX1` (reemplaza sdX)
-3. Cambia label: `sudo e2label /dev/sdX1 mi_label`
-4. Verifica: `lsblk -f`
-
-**Explicación:** Practica en VM o disco externo; evita discos con datos.
+- `lsblk -f`: dispositivos, sistema de archivos, etiquetas y montajes.
+- `findmnt`: relación entre destino y origen.
+- `df -hT`: espacio disponible y tipo; `-h` usa unidades legibles y `-T` agrega el tipo.
+- ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario trabaja con la misma jerarquía.
 
 ## 3.6 Permisos
 
-Los permisos controlan quién puede leer (r), escribir (w) o ejecutar (x) archivos.
-
-- **Propietario**: Usuario que creó el archivo.
-- **Grupo**: Grupo del usuario.
-- **Otros**: Todos los demás.
-
-### Actividad práctica
-```bash
-# Ver permisos
-ls -l script.sh
-# Salida: -rw-r--r-- 1 user dev 1024 ... script.sh
-
-# Cambiar permisos (ejecutable para todos)
-chmod +x script.sh
-
-# Cambiar propietario
-sudo chown user:dev script.sh
+```text
+-rwxr-x--- 1 alumno devops 1200 jul 4 10:00 deploy.sh
+│└┬┘└┬┘└┬┘   dueño  grupo
+│ │  │  └─ otros: ---
+│ │  └──── grupo: r-x
+│ └─────── dueño: rwx
+└───────── archivo regular
 ```
 
-**Explicación**: Esencial para compartir código; asegura que scripts sean ejecutables y archivos sensibles protegidos.
+| Permiso | Archivo | Directorio | Valor |
+|---|---|---|---:|
+| `r` | leer contenido | listar nombres | 4 |
+| `w` | modificar | crear/eliminar entradas | 2 |
+| `x` | ejecutar | atravesar/acceder | 1 |
+
+```bash
+touch laboratorio/enlaces/deploy.sh
+chmod u=rwx,g=rx,o= laboratorio/enlaces/deploy.sh
+chmod 750 laboratorio/enlaces/deploy.sh
+sudo chown "$USER":"$(id -gn)" laboratorio/enlaces/deploy.sh
+ls -l laboratorio/enlaces/deploy.sh
+```
+
+En `chown`, `$USER` se sustituye automáticamente por tu usuario actual y `$(id -gn)` por tu grupo principal. Por ejemplo, si ambos se llaman `ubuntu`, el comando efectivo equivale a:
+
+```bash
+sudo chown ubuntu:ubuntu laboratorio/enlaces/deploy.sh
+```
+
+No copies `ubuntu:ubuntu` si tu cuenta tiene otro nombre; la versión con `$USER` se adapta sola.
+
+- `chmod`: cambia bits de permiso.
+- `chown usuario:grupo`: cambia dueño y grupo.
+- `chgrp`: cambia sólo el grupo.
+- `750` equivale a `rwxr-x---`.
+
+## Práctica guiada resuelta
+
+La práctica crea este árbol, por lo que no necesitas preparar los archivos a mano:
+
+```text
+laboratorio/proyecto/
+├── bin/status.sh
+├── config/app.env
+└── logs/
+```
+
+```bash
+mkdir -p laboratorio/proyecto/{config,logs,bin}
+printf 'PORT=8080\n' > laboratorio/proyecto/config/app.env
+printf '#!/usr/bin/env bash\necho "servicio listo"\n' > laboratorio/proyecto/bin/status.sh
+chmod 640 laboratorio/proyecto/config/app.env
+chmod 750 laboratorio/proyecto/bin/status.sh
+ln -s ../config/app.env laboratorio/proyecto/bin/config-actual
+laboratorio/proyecto/bin/status.sh
+ls -l laboratorio/proyecto/config laboratorio/proyecto/bin
+```
+
+Salida principal:
+
+```text
+servicio listo
+-rwxr-x--- ... status.sh
+lrwxrwxrwx ... config-actual -> ../config/app.env
+-rw-r----- ... app.env
+```
+
+El enlace muestra `rwx` por sí mismo; el acceso efectivo depende del objetivo y de los directorios de la ruta.
+
+Si ves `Permission denied` al ejecutar `status.sh`, confirma primero `pwd` y luego ejecuta `ls -l laboratorio/proyecto/bin/status.sh`.
+
+## Errores frecuentes
+
+- Aplicar `chmod -R 777` para ocultar un problema.
+- Confundir espacio de `df` con tamaño de archivos calculado por `du`.
+- Crear un enlace simbólico relativo desde el directorio equivocado.
+- Ejecutar `chown` o `rm` sin comprobar la ruta.
+
+## Reto 3 — Directorio compartido
+
+[Ver respuesta](instructor/soluciones.md#respuesta-reto-3)
+
+Crea `laboratorio/compartido` para un equipo: dueño con control total, grupo con lectura/escritura/acceso y otros sin acceso. Dentro crea `app.env` como configuración no ejecutable, `check.sh` como script ejecutable y `check-actual` como enlace simbólico al script.
+
+### Criterios de comprobación
+
+- Los modos reflejan necesidades distintas para directorio, configuración y script.
+- El script se ejecuta y la configuración no.
+- `readlink` permite identificar el objetivo del enlace.
+
+## Checklist
+
+- [ ] Distingo tipo de archivo, extensión e inode.
+- [ ] Uso rutas absolutas y relativas.
+- [ ] Puedo explicar enlaces duros y simbólicos.
+- [ ] Inspecciono montajes sin modificar discos.
+- [ ] Interpreto y cambio permisos simbólicos y octales.

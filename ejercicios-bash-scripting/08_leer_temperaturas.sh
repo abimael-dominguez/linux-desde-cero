@@ -1,8 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
-# Lee temperaturas de archivos
-temp_a=$(cat ./data/temps/region_A)
-temp_b=$(cat ./data/temps/region_B)
-temp_c=$(cat ./data/temps/region_C)
+directorio=${1:-}
+if [[ -z "$directorio" || ! -d "$directorio" ]]; then
+  printf 'Uso: %s <directorio-temps>\n' "$0" >&2
+  exit 66
+fi
 
-echo "Las temperaturas son $temp_a, $temp_b, y $temp_c"
+for region in region_A region_B region_C; do
+  archivo="$directorio/$region"
+  if [[ ! -r "$archivo" ]]; then
+    printf 'No puedo leer %s\n' "$archivo" >&2
+    exit 66
+  fi
+  printf '%s=%s F\n' "$region" "$(< "$archivo")"
+done

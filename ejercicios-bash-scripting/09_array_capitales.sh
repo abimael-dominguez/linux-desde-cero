@@ -1,22 +1,16 @@
-# #!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
-# declare -a capital_cities
-# capital_cities+=("Sydney")
-# capital_cities+=("Albany")
-# capital_cities+=("Paris")
-# capital_cities+=("Abimael")
+capitales=(Sydney Albany Paris)
+printf 'Ciudades (%d):' "${#capitales[@]}"
+printf ' %s' "${capitales[@]}"
+printf '\n'
 
-# echo "Ciudades: ${capital_cities[@]}"
-
-# echo "Número de ciudades: ${#capital_cities[@]}"
-
-#!/bin/bash
-
-declare -A model_metrics
-model_metrics[model_accuracy]=98
-model_metrics[model_name]="knn"
-model_metrics[model_f1]=0.82
-
-echo "Claves: ${!model_metrics[@]}"
-
-echo "Valores: ${model_metrics[@]}"
+declare -A metricas=(
+  [model_name]=knn
+  [model_accuracy]=98
+  [model_f1]=0.82
+)
+printf 'Modelo: %s\n' "${metricas[model_name]}"
+printf 'Accuracy: %s\n' "${metricas[model_accuracy]}"
+printf 'F1: %s\n' "${metricas[model_f1]}"

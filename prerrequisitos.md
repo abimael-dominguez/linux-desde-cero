@@ -1,295 +1,177 @@
-# Prerrequisitos para el Curso de Linux
+# Prerrequisitos — Ubuntu 24.04 en AWS EC2
 
-Este documento contiene los prerrequisitos que deben instalar y configurar los alumnos antes del inicio del curso. El objetivo es poder probar comandos de Linux en diferentes sistemas operativos utilizando Docker y AWS.
+Esta preparación debe completarse **antes** de la primera clase. En clase se usarán Linux y SSH; no se dedicará tiempo a crear cuentas, configurar AWS CLI o diseñar una VPC.
 
-## Índice
+## Objetivo de verificación
 
-- [Prerrequisitos para el Curso de Linux](#prerrequisitos-para-el-curso-de-linux)
-  - [1. Instalación de Docker](#1-instalación-de-docker)
-    - [Instalación en Windows (10 y 11)](#instalación-en-windows-10-y-11)
-    - [Instalación en Linux (Ubuntu)](#instalación-en-linux-ubuntu)
-    - [Instalación en macOS (Solo si algún alumno usa Mac)](#instalación-en-macos-solo-si-algún-alumno-usa-mac)
-    - [Comandos básicos para validar entorno Docker](#comandos-básicos-para-validar-entorno-docker)
-  - [2. Creación de Cuenta AWS](#2-creación-de-cuenta-aws)
-  - [3. Instalación y Configuración de AWS CLI](#3-instalación-y-configuración-de-aws-cli)
-    - [Windows (PowerShell)](#windows-powershell)
-    - [Linux (x86_64)](#linux-x8664)
-    - [Configurar credenciales](#configurar-credenciales)
-    - [Verificar conexión API](#verificar-conexión-api)
-  - [4. Inicialización de Terminal en Instancias AWS](#4-inicialización-de-terminal-en-instancias-aws)
-    - [Crear una Instancia EC2](#crear-una-instancia-ec2)
-    - [(Opcional) Listar instancias vía AWS CLI](#opcional-listar-instancias-vía-aws-cli)
-    - [Conectar a la Instancia vía SSH](#conectar-a-la-instancia-vía-ssh)
-    - [Pruebas en Diferentes Distribuciones](#pruebas-en-diferentes-distribuciones)
-    - [Limpieza de recursos (AWS CLI ejemplar)](#limpieza-de-recursos-aws-cli-ejemplar)
-  - [5. Resumen Rápido de Verificación Antes del Curso](#5-resumen-rápido-de-verificación-antes-del-curso)
-  - [6. Checklist de Problemas Comunes](#6-checklist-de-problemas-comunes)
+La conexión necesita tres datos:
 
-## 1. Instalación de Docker
+| Dato | Ejemplo | Significado |
+|---|---|---|
+| Clave privada | `~/.ssh/curso-linux.pem` | archivo `.pem` descargado al crear la instancia |
+| Usuario remoto | `ubuntu` | usuario predeterminado de Ubuntu Server en EC2 |
+| IP pública | diferente para cada instancia | valor “Public IPv4 address” de la consola EC2 |
 
-Docker nos permitirá ejecutar contenedores Linux en cualquier sistema operativo, facilitando la práctica de comandos Linux. Asegúrate de poder ejecutar un contenedor de prueba antes del curso.
+Sintaxis general:
 
-### Instalación en Windows (10 y 11)
-
-1. **Requisitos del sistema:**
-   - Windows 10 64-bit (versión 2004 o superior) o Windows 11.
-   - Ediciones: Home, Pro, Enterprise o Education.
-   - Virtualización habilitada en BIOS (Intel VT-x / AMD-V).
-   - Habilitar WSL 2 y la característica "Virtual Machine Platform".
-
-2. **Habilitar WSL 2 (método rápido Windows 11 / builds recientes):**
-   Abrir PowerShell como administrador:
-   ```powershell
-   wsl --install
-   ```
-   Esto instala WSL y una distro Ubuntu por defecto. Reinicia si lo solicita.
-
-   **Si el comando anterior falla (build antigua):**
-   ```powershell
-   dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-   dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-   wsl --set-default-version 2
-   ```
-   Luego instala Ubuntu desde Microsoft Store.
-
-3. **Descargar Docker Desktop:**
-   - [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
-   - Descargar instalador para Windows.
-
-4. **Instalar Docker Desktop:**
-   - Ejecutar instalador.
-   - Aceptar uso de WSL 2 (marcar "Use WSL 2 instead of Hyper-V" si aparece).
-   - Finalizar y abrir Docker Desktop (esperar a que diga "Docker is running").
-
-5. **Verificar versión y probar contenedor:**
-   Abrir PowerShell:
-   ```powershell
-   docker --version
-   docker run --rm hello-world
-   ```
-   Debes ver el mensaje de bienvenida de Docker.
-
-6. **(Opcional) Comprobar distro WSL:**
-   ```powershell
-   wsl -l -v
-   ```
-   Asegura que la distro usada (Ubuntu) esté en versión 2.
-
-### Instalación en Linux (Ubuntu)
-1. Seguir el siguiente tutorial
-    - https://www.datacamp.com/tutorial/install-docker-on-ubuntu
-
-### Instalación en macOS (Solo si algún alumno usa Mac)
-1. Descargar Docker Desktop para macOS (Apple Silicon o Intel según modelo).
-2. Instalar y abrir la aplicación.
-3. Probar:
-   ```bash
-   docker run --rm hello-world
-   ```
-
-### Comandos básicos para validar entorno Docker
 ```bash
-docker ps               # Contenedores en ejecución
-docker images           # Imágenes locales
-docker pull alpine      # Descarga imagen ligera
-docker run -it --rm alpine sh   # Abre shell busybox/alpine
+ssh -i <ruta_clave> <usuario>@<IP_PUBLICA>
 ```
 
-## 2. Creación de Cuenta AWS
+No escribas los marcadores `<...>` literalmente. Antes del curso debes poder ejecutar el equivalente con tus datos reales.
 
-AWS (Amazon Web Services) nos permitirá crear instancias virtuales Linux en la nube para practicar comandos en entornos reales.
+Y, dentro de la instancia:
 
-1. **Ir al sitio web de AWS:**
-   - Visitar [https://aws.amazon.com](https://aws.amazon.com).
+```bash
+whoami
+cat /etc/os-release
+uname -r
+```
 
-2. **Crear una cuenta gratuita:**
-   - Hacer clic en "Crear una cuenta AWS".
-   - Seleccionar "Cuenta personal".
-   - Ingresar información personal: nombre, email, contraseña.
+## 1. Cliente SSH
 
-3. **Verificar la cuenta:**
-   - AWS enviará un código de verificación al email proporcionado.
-   - Ingresar el código para verificar.
+### Windows 10/11
 
-4. **Configurar método de pago:**
-   - Ingresar información de tarjeta de crédito o débito (requerida, pero no se cobrará si se usa solo el nivel gratuito).
+Abre PowerShell y verifica:
 
-5. **Verificar identidad:**
-   - Confirmar número de teléfono mediante llamada o SMS.
-
-6. **Seleccionar plan:**
-   - Elegir el plan gratuito (Free Tier) que incluye 750 horas de EC2 al mes durante 12 meses.
-
-7. **Acceder a la consola:**
-   - Una vez creada la cuenta, iniciar sesión en la consola de AWS en [https://console.aws.amazon.com](https://console.aws.amazon.com).
-
-**Nota:** AWS ofrece un nivel gratuito generoso, pero asegúrate de monitorear el uso para evitar cargos inesperados.
-
-## 3. Instalación y Configuración de AWS CLI
-
-Instalar la AWS CLI permite gestionar instancias y otros servicios desde la terminal.
-
-### Windows (PowerShell)
 ```powershell
-winget install -e --id Amazon.AWSCLI
-aws --version
-```
-
-### Linux (x86_64)
-```bash
-curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
-unzip awscliv2.zip
-sudo ./aws/install
-aws --version
-```
-(Para ARM64 sustituir URL por `linux-aarch64`.)
-
-### Configurar credenciales
-Tras crear la cuenta y generar un usuario IAM (recomendado en vez de usar root):
-1. En la consola AWS: IAM > Usuarios > Agregar usuario (Acceso programático + consola si requiere). 
-2. Adjuntar política inicial: `AdministratorAccess` (solo durante aprendizaje) o una más restringida.
-3. Guardar Access Key ID y Secret Access Key.
-4. Configurar:
-   ```bash
-   aws configure
-   ```
-   Ingresa: Access Key, Secret, Región (ej: `us-east-1`), Formato salida (`json`).
-
-### Verificar conexión API
-```bash
-aws sts get-caller-identity
-```
-Debe devolver ARN del usuario.
-
-## 4. Inicialización de Terminal en Instancias AWS
-
-Una vez creada la cuenta AWS, podremos lanzar instancias EC2 (máquinas virtuales) con diferentes distribuciones Linux y conectar a ellas vía terminal SSH.
-
-### Crear una Instancia EC2
-
-1. **Acceder a la consola EC2:**
-   - En la consola AWS, buscar "EC2" y hacer clic en "Instancias".
-
-2. **Lanzar instancia:**
-   - Hacer clic en "Launch instance".
-   - Asignar un Nombre (Tag) ej: `linux-practica-ubuntu`.
-   - Elegir una AMI (Amazon Machine Image):
-     - Ubuntu Server (última versión LTS)
-     - Amazon Linux 2
-     - CentOS, etc.
-
-3. **Seleccionar tipo de instancia:**
-   - Elegir `t2.micro` o `t3.micro` (ambos suelen estar en Free Tier según región).
-
-4. **Configurar detalles:**
-   - Dejar configuraciones por defecto.
-
-5. **Agregar almacenamiento:**
-   - 8 GB es suficiente para pruebas.
-
-6. **Configurar grupo de seguridad:**
-   - Regla SSH puerto 22 (Origen: "My IP" preferido). Evita 0.0.0.0/0 salvo pruebas controladas.
-   - (Opcional) Agregar ICMP (ping) solo desde tu IP si deseas probar conectividad.
-
-7. **Revisar y lanzar:**
-   - Hacer clic en "Launch instance".
-   - Crear o seleccionar un par de claves (Key pair) tipo RSA.
-   - Descargar el archivo `.pem` y guardarlo con nombre claro: `curso-linux-ubuntu.pem`.
-
-### (Opcional) Listar instancias vía AWS CLI
-```bash
-aws ec2 describe-instances --query 'Reservations[].Instances[].{ID:InstanceId,Name:Tags[?Key==`Name`]|[0].Value,State:State.Name,PublicIP:PublicIpAddress}' --output table
-```
-
-### Conectar a la Instancia vía SSH
-
-1. **Cambiar permisos de la clave:**
-   ```
-   chmod 400 ruta/a/tu/clave.pem
-   ```
-
-2. **Conectar usando SSH:**
-    Obtener la IP pública desde la consola (o con AWS CLI). Ejemplos:
-    ```bash
-    ssh -i ruta/a/curso-linux-ubuntu.pem ubuntu@IP_PUBLICA
-    ssh -i ruta/a/curso-linux-amazon.pem ec2-user@IP_PUBLICA
-    ssh -i ruta/a/curso-linux-centos.pem centos@IP_PUBLICA
-    ```
-    Si aparece advertencia de permisos inseguros, confirma que el archivo está con `chmod 400`.
-
-    **(Opcional) Archivo de configuración `~/.ssh/config`:**
-    ```bash
-    Host curso-ubuntu
-       HostName IP_PUBLICA
-       User ubuntu
-       IdentityFile ~/ruta/a/curso-linux-ubuntu.pem
-    Host curso-amazon
-       HostName IP_PUBLICA
-       User ec2-user
-       IdentityFile ~/ruta/a/curso-linux-amazon.pem
-    ```
-    Luego simplemente: `ssh curso-ubuntu`.
-
-3. **Inicializar la terminal (pruebas básicas):**
-   ```bash
-   whoami
-   uname -a
-   cat /etc/os-release
-   ls -al
-   pwd
-   ```
-   Verifica distro, usuario y permisos.
-
-4. **Actualización inicial (Ubuntu/Debian):**
-   ```bash
-   sudo apt update && sudo apt upgrade -y
-   ```
-   Para Amazon Linux:
-   ```bash
-   sudo dnf update -y   # En Amazon Linux 2023
-   ```
-   Para Amazon Linux 2:
-   ```bash
-   sudo yum update -y
-   ```
-
-### Pruebas en Diferentes Distribuciones
-
-- Repite el proceso de lanzamiento de instancia para diferentes AMIs (Ubuntu, Amazon Linux, CentOS, etc.).
-- Conecta a cada una y practica comandos Linux específicos de cada distribución.
-
-**Importante:** Detén (Stop) o termina (Terminate) las instancias cuando acabes. Instancias detenidas aún conservan volúmenes (EBS) y pueden generar coste mínimo por almacenamiento. Terminar elimina el volumen.
-
-### Limpieza de recursos (AWS CLI ejemplar)
-Detener una instancia:
-```bash
-aws ec2 stop-instances --instance-ids i-XXXXXXXXXXXX
-```
-Terminar una instancia:
-```bash
-aws ec2 terminate-instances --instance-ids i-XXXXXXXXXXXX
-```
-Ver estados hasta que quede `stopped` o `terminated`:
-```bash
-aws ec2 describe-instances --instance-ids i-XXXXXXXXXXXX --query 'Reservations[].Instances[].State.Name' --output text
-```
-
-## 5. Resumen Rápido de Verificación Antes del Curso
-Cada alumno debe poder ejecutar sin error:
-```bash
-docker run --rm hello-world
-aws sts get-caller-identity
 ssh -V
-``` 
-Y conectarse a al menos una instancia EC2 Ubuntu y ejecutar `cat /etc/os-release`.
+```
 
-## 6. Checklist de Problemas Comunes
-- Docker no inicia en Windows: verificar que WSL versión sea 2 (`wsl -l -v`) y Virtualización habilitada.
-- Permisos clave SSH: usar `chmod 400 archivo.pem`.
-- AWS CLI sin credenciales: ejecutar `aws configure` o revisar `~/.aws/credentials`.
-- Conexión rechazada (SSH): revisar grupo de seguridad puerto 22 y IP de origen.
-- Docker sin permisos en Linux: usuario no pertenece al grupo `docker`.
+Si el comando no existe, abre PowerShell como administrador:
 
-Si tienes problemas durante la instalación o configuración, por favor contacta al instructor antes del inicio del curso.
+```powershell
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+```
 
-Si tienes problemas durante la instalación o configuración, por favor contacta al instructor antes del inicio del curso.
+WSL 2 con Ubuntu también es una alternativa válida.
+
+### macOS o Linux
+
+SSH normalmente ya está instalado:
+
+```bash
+ssh -V
+```
+
+## 2. Crear la instancia
+
+En la consola de EC2:
+
+1. Crea una instancia con **Ubuntu Server 24.04 LTS**.
+2. Selecciona un tipo pequeño apto para laboratorio.
+3. Usa entre 8 y 10 GiB de almacenamiento.
+4. Crea un par de claves y descarga el archivo `.pem` una sola vez.
+5. Permite tráfico SSH al puerto 22 únicamente desde tu IP pública.
+6. Anota la IP pública y el usuario `ubuntu`.
+
+En el selector de origen de la regla SSH elige **My IP**. No uses `0.0.0.0/0`, porque permitiría intentos de conexión desde cualquier dirección de Internet.
+
+En la vista de la instancia busca **Public IPv4 address**. No uses la IP privada `10.x.x.x`, porque normalmente no es alcanzable directamente desde tu computadora.
+
+No subas la clave privada al repositorio, correo, chat o almacenamiento público.
+
+## 3. Proteger la clave y conectar
+
+En macOS, Linux o WSL:
+
+1. Primero localiza el nombre exacto descargado:
+
+   ```bash
+   ls -l ~/Downloads/*.pem
+   ```
+
+2. En el ejemplo suponemos que se llama `curso-linux.pem`. Si tiene otro nombre, sustitúyelo en los comandos.
+
+```bash
+mkdir -p ~/.ssh
+mv ~/Downloads/curso-linux.pem ~/.ssh/
+chmod 400 ~/.ssh/curso-linux.pem
+```
+
+3. Guarda tus valores en variables. Sustituye la IP de documentación por la IP pública real:
+
+```bash
+CLAVE="$HOME/.ssh/curso-linux.pem"
+USUARIO_REMOTO="ubuntu"
+IP_PUBLICA="203.0.113.10"  # Sustituye este valor
+
+ssh -i "$CLAVE" "${USUARIO_REMOTO}@${IP_PUBLICA}"
+```
+
+`203.0.113.10` no es una instancia real; es una dirección reservada para ejemplos. Si dejas ese valor, la conexión no funcionará.
+
+En PowerShell nativo, conserva la clave en una ruta conocida y usa el mismo usuario/IP:
+
+```powershell
+$Key = "$HOME\Downloads\curso-linux.pem"
+$Ip = "203.0.113.10" # Sustituye por la IP real
+ssh -i $Key "ubuntu@$Ip"
+```
+
+La primera conexión muestra una huella parecida a esta:
+
+```text
+The authenticity of host '...' can't be established.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+Verifica que el host y la IP sean los esperados antes de responder `yes`.
+
+## 4. Comprobación resuelta
+
+Ejecuta en la instancia:
+
+```bash
+whoami
+hostname
+cat /etc/os-release
+pwd
+sudo -v
+```
+
+Salida representativa:
+
+```text
+ubuntu
+ip-10-0-1-25
+PRETTY_NAME="Ubuntu 24.04.x LTS"
+/home/ubuntu
+```
+
+- `ubuntu` es el usuario de la AMI.
+- El hostname depende de la dirección privada asignada.
+- `sudo -v` valida privilegios administrativos sin abrir una sesión de `root`.
+
+## 5. Problemas frecuentes
+
+| Problema | Revisión |
+|---|---|
+| `Permission denied (publickey)` | Usuario, ruta de la clave y par asociado a la instancia. |
+| `UNPROTECTED PRIVATE KEY FILE` | Ejecuta `chmod 400 ~/.ssh/curso-linux.pem`. |
+| Timeout | Estado de EC2, IP pública, regla del puerto 22 e IP de origen. |
+| La huella cambió | No la aceptes automáticamente; confirma si la instancia fue reemplazada. |
+
+Para ver más detalle:
+
+```bash
+ssh -vv -i "$CLAVE" "${USUARIO_REMOTO}@${IP_PUBLICA}"
+```
+
+Este comando presupone que definiste las tres variables en la misma terminal. `-vv` muestra decisiones de conexión y autenticación, pero no imprime el contenido de la clave privada.
+
+## 6. Costos y limpieza
+
+- Usa la instancia sólo durante las prácticas.
+- Detener una instancia no elimina necesariamente su almacenamiento.
+- Al terminar el curso, descarga lo necesario y **termina** la instancia.
+- Revisa que no queden volúmenes, snapshots o direcciones reservadas que no necesitas.
+
+## Checklist
+
+- [ ] `ssh -V` funciona en mi computadora.
+- [ ] Guardé la clave fuera del repositorio.
+- [ ] El puerto 22 está limitado a mi IP.
+- [ ] Puedo entrar como `ubuntu`.
+- [ ] Confirmé Ubuntu 24.04 LTS.
+- [ ] Sé cómo detener y terminar la instancia.

@@ -1,7 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
+set -o pipefail
 
-# Busca el primer argumento en todos los archivos CSV de hire_data
-# grep "$1": busca el patrón en la entrada
-# > "$1".csv: guarda en archivo nombrado con el argumento
+patron=${1:-}
+directorio=${2:-}
+salida=${3:-}
+if [[ -z "$patron" || -z "$directorio" || -z "$salida" || ! -d "$directorio" ]]; then
+  printf 'Uso: %s <patrón> <directorio-csv> <salida.csv>\n' "$0" >&2
+  exit 64
+fi
 
-cat ./data/hire_data/*.csv | grep "$1" > "./data/$1.csv"
+mkdir -p "$(dirname "$salida")"
+shopt -s nullglob
+archivos=("$directorio"/*.csv)
+if (( ${#archivos[@]} == 0 )); then
+  printf 'No hay archivos CSV en %s\n' "$directorio" >&2
+  exit 66
+fi
+grep -h -- "$patron" "${archivos[@]}" > "$salida"

@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -o nounset
 
 what_day_is_it() {
-    date=$(date | cut -d " " -f1)
-    echo "$date"
+  date +%A
 }
 
 what_day_is_it
