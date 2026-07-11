@@ -21,11 +21,54 @@ Trabajaremos con `modelo.txt` como archivo original, `backup-modelo.txt` como co
 
 ## 7.1–7.3 Shell, comandos y directorio personal
 
-Bash interpreta palabras, expansiones, redirecciones y operadores. Un comando puede ser builtin del shell o un ejecutable externo.
+Bash interpreta palabras, expansiones, redirecciones y operadores. Un comando puede ser **builtin del shell** o un **ejecutable externo**:
+
+| Tipo | Descripción | Ejemplos |
+|------|-------------|---------|
+| **Builtin** | Integrado en el propio shell; no existe como archivo en el sistema | `cd`, `echo`, `export`, `source` |
+| **Alias** | Atajo definido en la sesión o en `.bashrc`; envuelve otro comando | `ls` → `ls --color=auto`, `grep` → `grep --color=auto` |
+| **Función** | Función definida en el shell o en archivos de configuración | funciones personalizadas en `.bashrc` |
+| **Externo** | Archivo binario en el sistema de archivos; el shell lo localiza vía `$PATH` | `ls`, `grep`, `awk`, `sed`, `find`, `cp`, `mv`, `rm`, `cat`, `git`, `python3` |
+
+El shell resuelve en este orden: alias → función → builtin → externo.
+
+**¿Por qué importa?** Los builtins son más rápidos (no crean un proceso nuevo) y pueden modificar el estado del shell actual. `cd`, por ejemplo, solo funciona como builtin: si fuera externo, cambiaría el directorio de un proceso hijo y el shell padre nunca lo notaría.
+
+Usa `type` para identificar la naturaleza de cualquier comando:
 
 ```bash
 type cd
 type ls
+type echo
+```
+
+La salida depende de tu configuración; ejemplos comunes:
+
+```text
+cd is a shell builtin
+ls is aliased to `ls --color=auto'
+echo is a shell builtin
+```
+
+Para saltar aliases y llegar al ejecutable real, usa `type -a` o `which`:
+
+```bash
+type -a ls     # alias → /usr/bin/ls → /bin/ls  (alias + externo)
+type -a grep   # alias → /usr/bin/grep           (alias + externo)
+type -a echo   # builtin → /usr/bin/echo         (builtin Y también externo)
+type -a mkdir  # solo /usr/bin/mkdir             (puro externo, sin alias ni builtin)
+type -a cd     # cd is a shell builtin           (solo builtin, sin archivo)
+
+which ls       # /usr/bin/ls   (ignora el alias, devuelve el binario)
+which grep     # /usr/bin/grep (ignora el alias, devuelve el binario)
+which echo     # /usr/bin/echo (ignora el builtin, devuelve el binario externo)
+which mkdir    # /usr/bin/mkdir (externo puro, sin alias ni builtin)
+which cd       # (sin salida — cd es builtin, no tiene archivo ejecutable)
+```
+
+Directorio personal y navegación básica:
+
+```bash
 echo "$HOME"
 cd
 pwd
@@ -34,13 +77,9 @@ pwd
 Salida representativa:
 
 ```text
-cd is a shell builtin
-ls is /usr/bin/ls
 /home/ubuntu
 /home/ubuntu
 ```
-
-`cd` debe cambiar el directorio del shell actual; por eso es builtin.
 
 ## 7.4 Listar: `ls`
 
