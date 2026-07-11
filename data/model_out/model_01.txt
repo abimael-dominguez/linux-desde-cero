@@ -1,2 +1,0 @@
-Model: Random Forest
-Accuracy: 94

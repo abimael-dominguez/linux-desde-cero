@@ -1,0 +1,6 @@
+{"timestamp":"2026-07-11T09:00:01Z","level":"INFO","service":"catalogo","message":"servicio iniciado"}
+{"timestamp":"2026-07-11T09:01:12Z","level":"INFO","service":"catalogo","message":"consulta completada","duration_ms":42}
+{"timestamp":"2026-07-11T09:02:17Z","level":"WARN","service":"catalogo","message":"latencia elevada","duration_ms":812}
+{"timestamp":"2026-07-11T09:03:44Z","level":"ERROR","service":"catalogo","message":"base de datos no disponible","code":"DB_TIMEOUT"}
+{"timestamp":"2026-07-11T09:04:02Z","level":"INFO","service":"catalogo","message":"conexión restablecida"}
+{"timestamp":"2026-07-11T09:05:20Z","level":"ERROR","service":"pagos","message":"solicitud rechazada","code":"INVALID_TOKEN"}

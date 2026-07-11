@@ -1,0 +1,5 @@
+2026-07-11T09:00:00Z INFO api inicio_correcto
+2026-07-11T09:01:10Z WARN disco uso=82
+2026-07-11T09:02:20Z ERROR db conexion_rechazada
+2026-07-11T09:02:25Z INFO api reintento
+2026-07-11T09:03:00Z ERROR api timeout

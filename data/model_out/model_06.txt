@@ -1,2 +1,0 @@
-Model: Neural Network
-Accuracy: 93

@@ -1,3 +1,0 @@
-Model: Logistic Regression
-Accuracy: 87
-F1: 0.84

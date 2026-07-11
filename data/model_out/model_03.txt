@@ -1,2 +1,0 @@
-Model: XGBoost
-Accuracy: 91

@@ -1,0 +1,7 @@
+hostname,entorno,ip_privada,servicio,responsable
+web-01,produccion,10.0.1.10,nginx,equipo-web
+db-01,produccion,10.0.2.10,mariadb,equipo-datos
+worker-01,produccion,10.0.3.10,procesamiento,equipo-plataforma
+web-stg,staging,10.1.1.10,nginx,equipo-web
+db-stg,staging,10.1.2.10,mariadb,equipo-datos
+monitor-01,operacion,10.0.4.10,monitoreo,equipo-plataforma

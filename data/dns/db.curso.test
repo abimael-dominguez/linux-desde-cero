@@ -1,0 +1,7 @@
+$TTL 300
+@ IN SOA ns1.curso.test. admin.curso.test. (
+  2026071101 3600 600 86400 300
+)
+@   IN NS ns1.curso.test.
+ns1 IN A  192.0.2.53
+web IN A  192.0.2.80

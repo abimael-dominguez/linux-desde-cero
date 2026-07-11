@@ -1,0 +1,6 @@
+Jul 11 09:00:02 srv-linux sshd[1201]: Accepted publickey for deploy from 198.51.100.24 port 54210 ssh2
+Jul 11 09:04:17 srv-linux sudo[1288]: deploy : TTY=pts/0 ; PWD=/srv/consultor-linux ; USER=root ; COMMAND=/usr/bin/systemctl status ssh
+Jul 11 09:12:41 srv-linux sshd[1344]: Failed password for invalid user admin from 203.0.113.45 port 49811 ssh2
+Jul 11 09:12:45 srv-linux sshd[1344]: Connection closed by invalid user admin 203.0.113.45 port 49811 [preauth]
+Jul 11 09:25:03 srv-linux sshd[1510]: Accepted publickey for ubuntu from 192.0.2.18 port 60122 ssh2
+Jul 11 09:31:50 srv-linux sudo[1602]: deploy : user NOT in sudoers ; TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/apt update

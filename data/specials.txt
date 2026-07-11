@@ -1,5 +1,0 @@
-Precio: $100
-Archivo: data[1].csv
-Alternativa: foo|bar
-Etiqueta: [INFO]
-Ruta: /opt/models/v1.0

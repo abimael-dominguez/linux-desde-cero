@@ -10,16 +10,27 @@ Thumbs.db
 # Laboratorios y resultados regenerables
 /laboratorio/
 /salida/
+/backups/
+/proyecto-compose/secrets/
+/proyecto-compose/.env
 *.log
+!/data/**/*.log
 *.out
+*.pid
+*.sql
+*.sha256
+*.tar
 nohup.out
+
+# Discos y montajes de laboratorio
+*.img
+*.qcow2
+*.vdi
 
 # Builds
 *.o
 *.exe
 a.out
-src/11-scp-copias-remotas/pacman-game/pacman_game
-src/11-scp-copias-remotas/pacman-game/tmp/
 
 # Paquetes y datos locales
 *.tar.gz
@@ -27,6 +38,7 @@ src/11-scp-copias-remotas/pacman-game/tmp/
 *.iso
 *.pem
 *.key
+*.pub
 
 # Lenguajes y herramientas
 __pycache__/

@@ -1,16 +1,159 @@
-# Prerrequisitos — Ubuntu 24.04 en AWS EC2
+# Prerrequisitos — AWS Free Tier y Ubuntu 24.04
 
-Esta preparación debe completarse **antes** de la primera clase. En clase se usarán Linux y SSH; no se dedicará tiempo a crear cuentas, configurar AWS CLI o diseñar una VPC.
+Completa esta guía antes de la primera clase. El curso utiliza una sola EC2; no requiere RDS, balanceadores, Route 53, NAT Gateway, Elastic IP ni discos adicionales.
 
-## Objetivo de verificación
+> **Condición importante:** AWS gratuito significa **cuenta elegible y límites vigentes**. Una cuenta antigua cuyo beneficio terminó puede generar cargos. En ese caso usa el [fallback con VirtualBox](extras/virtualbox-fallback.md).
 
-La conexión necesita tres datos:
+## Resultado esperado
 
-| Dato | Ejemplo | Significado |
+Antes de clase debes poder:
+
+- entrar a una EC2 Ubuntu 24.04 mediante SSH;
+- confirmar el tipo de instancia y los recursos disponibles;
+- clonar este repositorio;
+- ejecutar `scripts/verificar-entorno.sh` sin errores;
+- detener la instancia y encontrarla nuevamente en la consola.
+
+## 1. Identifica tu modalidad Free Tier
+
+AWS distingue las cuentas creadas antes y después del 15 de julio de 2025.
+
+| Cuenta | Perfil del curso | Condición |
 |---|---|---|
-| Clave privada | `~/.ssh/curso-linux.pem` | archivo `.pem` descargado al crear la instancia |
-| Usuario remoto | `ubuntu` | usuario predeterminado de Ubuntu Server en EC2 |
-| IP pública | diferente para cada instancia | valor “Public IPv4 address” de la consola EC2 |
+| Nueva, con **Free account plan** activo | `t3.small`, 2 GiB | Al menos USD 10 en créditos y 30 días de vigencia |
+| Free Tier anterior todavía vigente | `t3.micro`, 1 GiB + swap | Debe seguir dentro de sus primeros 12 meses |
+| Sin beneficio activo | VirtualBox | No crear EC2 esperando que sea gratuita |
+
+Los USD 10 y 30 días son un **gate conservador del curso**, no un requisito de
+elegibilidad definido por AWS. Dejan margen para cuatro clases y posibles
+retrasos de limpieza; si no lo cumples, usa VirtualBox aunque la consola aún
+muestre algún crédito.
+
+Las cuentas nuevas reciben créditos y el Free account plan termina a los seis meses o al agotar esos créditos. Consulta siempre el panel **Billing and Cost Management**, no una captura antigua del curso.
+
+Fuentes: [planes actuales de AWS Free Tier](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-plans.html) y [tipos EC2 elegibles](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html).
+
+### Comprobación obligatoria
+
+En la consola de AWS:
+
+1. Abre **Billing and Cost Management**.
+2. Confirma el tipo de plan, saldo y fecha de expiración.
+3. Activa las alertas de Free Tier.
+4. Crea un presupuesto de USD 5 para el curso.
+5. Configura avisos al 50 %, 80 % y 100 %.
+6. Excluye los créditos en el cálculo del presupuesto si quieres observar el consumo bruto.
+
+Un presupuesto **avisa**, pero no detiene recursos inmediatamente. AWS puede tardar varias horas en actualizar sus datos.
+
+Referencias para revisar antes de cada grupo:
+
+- [seguimiento de uso de AWS Free Tier](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/tracking-free-tier-usage.html);
+- [precios de EBS](https://aws.amazon.com/ebs/pricing/), porque el volumen sigue
+  existiendo mientras la EC2 está detenida;
+- [créditos CPU T3 y modo Unlimited](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html),
+  que explica cuándo los créditos excedentes pueden generar cargos.
+
+## 2. Protege la cuenta
+
+- Activa MFA para el usuario raíz.
+- No guardes Access Keys en la EC2 ni en este repositorio.
+- No conviertas el Free account plan a Paid durante el curso.
+- No unas la cuenta a AWS Organizations o Control Tower.
+- Conserva la clave privada SSH únicamente en tu computadora.
+
+## 3. Crea la instancia
+
+En **EC2 → Instances → Launch instance** utiliza estos valores:
+
+| Campo | Valor del curso | Por qué |
+|---|---|---|
+| Nombre | `consultor-linux` | Identificación y limpieza |
+| Región | `us-east-1` | Entorno común para el grupo |
+| AMI | Ubuntu Server 24.04 LTS x86-64 | Referencia del curso |
+| Tipo recomendado | `t3.small` | 2 GiB para Docker |
+| Compatibilidad | `t3.micro` | Requiere 2 GiB de swap |
+| Volumen raíz | 20 GiB `gp3`, cifrado | Sistema, imágenes y laboratorios |
+| IP pública | Automática | Cambiará al detener/iniciar |
+| Créditos T3 | `standard` | Evita CPU excedente facturable |
+| Shutdown behavior | `Stop` | `shutdown` debe detener, no terminar |
+
+La AMI y el tipo deben mostrar la marca **Free tier eligible** correspondiente a tu plan. No selecciones una AMI de Marketplace.
+
+La IPv4 pública automática no equivale por sí sola a “sin costo”. AWS publica
+un precio de USD 0.005 por hora cuando la dirección no queda cubierta por Free
+Tier o créditos; 30 horas representarían aproximadamente USD 0.15 antes de esa
+cobertura. Al detener la EC2 se libera esa dirección y al iniciar recibirás
+otra. No reserves una Elastic IP. Verifica la tarifa vigente en
+[Amazon VPC Pricing](https://aws.amazon.com/vpc/pricing/).
+
+### Etiquetas
+
+Agrega:
+
+| Clave | Valor de ejemplo |
+|---|---|
+| `Course` | `consultor-linux` |
+| `Owner` | `tu-nombre` |
+| `DeleteAfter` | fecha del último día del curso |
+
+`<fecha>` o `tu-nombre` son marcadores explicativos; escribe tus valores reales en la consola.
+
+## 4. Clave y Security Group
+
+Crea un par de claves tipo ED25519 o RSA y descarga el `.pem` una sola vez.
+
+El Security Group tendrá una única regla entrante:
+
+| Tipo | Puerto | Origen |
+|---|---:|---|
+| SSH | 22/TCP | **My IP**, una dirección `/32` |
+
+No uses `0.0.0.0/0`. Tampoco abras 80, 443 o 3306: WordPress se consultará mediante un túnel SSH.
+
+Confirma que el volumen raíz tiene activada la eliminación al terminar la instancia (`DeleteOnTermination=true`).
+
+## 5. Protege la clave local
+
+En Linux, macOS o WSL, primero identifica el nombre descargado:
+
+```bash
+ls -l ~/Downloads/*.pem
+```
+
+Sintaxis general:
+
+```bash
+mkdir -p ~/.ssh
+mv <clave_descargada> ~/.ssh/<nombre_clave>
+chmod 400 ~/.ssh/<nombre_clave>
+```
+
+Ejemplo copiable cuando la descarga se llama `consultor-linux.pem`:
+
+```bash
+mkdir -p ~/.ssh
+mv ~/Downloads/consultor-linux.pem ~/.ssh/consultor-linux.pem
+chmod 400 ~/.ssh/consultor-linux.pem
+```
+
+- `chmod 400` permite lectura únicamente al propietario.
+- `~/.ssh/consultor-linux.pem` es la ruta concreta que usará el curso.
+- Si tu archivo tiene otro nombre, adapta el ejemplo; no escribas `<nombre_clave>` literalmente.
+
+En PowerShell puedes conservar la clave en `$HOME\Downloads`; no publiques esa ruta ni su contenido.
+
+## 6. Conexión SSH
+
+Necesitas tres valores:
+
+| Dato | Valor del ejemplo | Tu valor |
+|---|---|---|
+| Usuario remoto | `ubuntu` | `ubuntu` |
+| Clave | `~/.ssh/consultor-linux.pem` | ruta de tu `.pem` |
+| IP pública | `203.0.113.10` | dirección de la consola EC2 |
+
+`203.0.113.10` es una IP reservada para documentación; **no responderá**.
 
 Sintaxis general:
 
@@ -18,160 +161,131 @@ Sintaxis general:
 ssh -i <ruta_clave> <usuario>@<IP_PUBLICA>
 ```
 
-No escribas los marcadores `<...>` literalmente. Antes del curso debes poder ejecutar el equivalente con tus datos reales.
-
-Y, dentro de la instancia:
+Ejemplo parametrizado; sustituye únicamente la IP:
 
 ```bash
-whoami
-cat /etc/os-release
-uname -r
-```
-
-## 1. Cliente SSH
-
-### Windows 10/11
-
-Abre PowerShell y verifica:
-
-```powershell
-ssh -V
-```
-
-Si el comando no existe, abre PowerShell como administrador:
-
-```powershell
-Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-```
-
-WSL 2 con Ubuntu también es una alternativa válida.
-
-### macOS o Linux
-
-SSH normalmente ya está instalado:
-
-```bash
-ssh -V
-```
-
-## 2. Crear la instancia
-
-En la consola de EC2:
-
-1. Crea una instancia con **Ubuntu Server 24.04 LTS**.
-2. Selecciona un tipo pequeño apto para laboratorio.
-3. Usa entre 8 y 10 GiB de almacenamiento.
-4. Crea un par de claves y descarga el archivo `.pem` una sola vez.
-5. Permite tráfico SSH al puerto 22 únicamente desde tu IP pública.
-6. Anota la IP pública y el usuario `ubuntu`.
-
-En el selector de origen de la regla SSH elige **My IP**. No uses `0.0.0.0/0`, porque permitiría intentos de conexión desde cualquier dirección de Internet.
-
-En la vista de la instancia busca **Public IPv4 address**. No uses la IP privada `10.x.x.x`, porque normalmente no es alcanzable directamente desde tu computadora.
-
-No subas la clave privada al repositorio, correo, chat o almacenamiento público.
-
-## 3. Proteger la clave y conectar
-
-En macOS, Linux o WSL:
-
-1. Primero localiza el nombre exacto descargado:
-
-   ```bash
-   ls -l ~/Downloads/*.pem
-   ```
-
-2. En el ejemplo suponemos que se llama `curso-linux.pem`. Si tiene otro nombre, sustitúyelo en los comandos.
-
-```bash
-mkdir -p ~/.ssh
-mv ~/Downloads/curso-linux.pem ~/.ssh/
-chmod 400 ~/.ssh/curso-linux.pem
-```
-
-3. Guarda tus valores en variables. Sustituye la IP de documentación por la IP pública real:
-
-```bash
-CLAVE="$HOME/.ssh/curso-linux.pem"
+CLAVE="$HOME/.ssh/consultor-linux.pem"
 USUARIO_REMOTO="ubuntu"
-IP_PUBLICA="203.0.113.10"  # Sustituye este valor
+EC2_HOST="203.0.113.10"  # Sustituye por la IP pública real
 
-ssh -i "$CLAVE" "${USUARIO_REMOTO}@${IP_PUBLICA}"
+ssh -i "$CLAVE" "${USUARIO_REMOTO}@${EC2_HOST}"
 ```
 
-`203.0.113.10` no es una instancia real; es una dirección reservada para ejemplos. Si dejas ese valor, la conexión no funcionará.
+La primera conexión muestra una huella. Comprueba que la IP coincide con la consola antes de responder `yes`.
 
-En PowerShell nativo, conserva la clave en una ruta conocida y usa el mismo usuario/IP:
+### Windows PowerShell
 
 ```powershell
-$Key = "$HOME\Downloads\curso-linux.pem"
-$Ip = "203.0.113.10" # Sustituye por la IP real
-ssh -i $Key "ubuntu@$Ip"
+$Key = "$HOME\Downloads\consultor-linux.pem"
+$HostIp = "203.0.113.10" # Sustituye por la IP pública real
+ssh -i $Key "ubuntu@$HostIp"
 ```
 
-La primera conexión muestra una huella parecida a esta:
+## 7. Prepara Ubuntu
 
-```text
-The authenticity of host '...' can't be established.
-Are you sure you want to continue connecting (yes/no/[fingerprint])?
-```
-
-Verifica que el host y la IP sean los esperados antes de responder `yes`.
-
-## 4. Comprobación resuelta
-
-Ejecuta en la instancia:
+Ya dentro de EC2:
 
 ```bash
 whoami
-hostname
 cat /etc/os-release
-pwd
-sudo -v
+uname -m
+free -h
+df -h /
 ```
 
 Salida representativa:
 
 ```text
 ubuntu
-ip-10-0-1-25
 PRETTY_NAME="Ubuntu 24.04.x LTS"
-/home/ubuntu
+x86_64
 ```
 
-- `ubuntu` es el usuario de la AMI.
-- El hostname depende de la dirección privada asignada.
-- `sudo -v` valida privilegios administrativos sin abrir una sesión de `root`.
+Los tamaños, kernel, hostname e IP pueden cambiar.
 
-## 5. Problemas frecuentes
-
-| Problema | Revisión |
-|---|---|
-| `Permission denied (publickey)` | Usuario, ruta de la clave y par asociado a la instancia. |
-| `UNPROTECTED PRIVATE KEY FILE` | Ejecuta `chmod 400 ~/.ssh/curso-linux.pem`. |
-| Timeout | Estado de EC2, IP pública, regla del puerto 22 e IP de origen. |
-| La huella cambió | No la aceptes automáticamente; confirma si la instancia fue reemplazada. |
-
-Para ver más detalle:
+Clona el repositorio y ejecuta la preparación:
 
 ```bash
-ssh -vv -i "$CLAVE" "${USUARIO_REMOTO}@${IP_PUBLICA}"
+git clone <URL_DEL_REPOSITORIO> linux-desde-cero
+cd linux-desde-cero
+bash scripts/bootstrap-ubuntu.sh
+bash scripts/verificar-entorno.sh
 ```
 
-Este comando presupone que definiste las tres variables en la misma terminal. `-vv` muestra decisiones de conexión y autenticación, pero no imprime el contenido de la clave privada.
+`<URL_DEL_REPOSITORIO>` debe sustituirse por la URL entregada por el instructor. El bootstrap instala únicamente las herramientas del curso; no ejecuta una actualización completa del sistema ni abre puertos.
 
-## 6. Costos y limpieza
+### Sólo para `t3.micro`
 
-- Usa la instancia sólo durante las prácticas.
-- Detener una instancia no elimina necesariamente su almacenamiento.
-- Al terminar el curso, descarga lo necesario y **termina** la instancia.
-- Revisa que no queden volúmenes, snapshots o direcciones reservadas que no necesitas.
+```bash
+sudo bash scripts/configurar-swap.sh 2
+bash scripts/verificar-entorno.sh
+```
+
+El `2` significa 2 GiB. El script crea `/swapfile-consultor-linux`, ajusta `vm.swappiness=10` y valida el resultado.
+
+## 8. Apagado de seguridad
+
+Al comenzar cada clase:
+
+```bash
+bash scripts/programar-apagado.sh 360
+```
+
+- `360` son seis horas.
+- Para cancelar: `sudo shutdown -c`.
+- La consola debe indicar que el comportamiento iniciado por el sistema es **Stop**.
+
+Al terminar:
+
+```bash
+sudo shutdown -h now
+```
+
+Después confirma en la consola que el estado sea `Stopped`. Detener elimina el costo de cómputo, pero el EBS continúa existiendo. Al iniciar de nuevo probablemente recibirás otra IP pública; actualiza `EC2_HOST`.
+
+## 9. Túnel del proyecto web
+
+Durante la cuarta sesión, desde tu computadora local:
+
+```bash
+ssh -i "$CLAVE" \
+  -L 8080:127.0.0.1:8080 \
+  "${USUARIO_REMOTO}@${EC2_HOST}"
+```
+
+Mientras esa sesión permanezca abierta visita `http://127.0.0.1:8080`. El puerto 8080 pertenece a tu computadora; Nginx no queda expuesto públicamente.
+
+## 10. Limpieza final de AWS
+
+No basta con apagar la instancia. Después de descargar el respaldo final:
+
+1. Termina `consultor-linux`.
+2. Confirma que el volumen raíz fue eliminado.
+3. Revisa que no existan snapshots ni Elastic IP.
+4. Elimina el Security Group del curso.
+5. Elimina el Key Pair de AWS; conserva o destruye localmente el `.pem` según tu política.
+6. Revisa EC2 Global View y Billing al día siguiente.
+
+## Problemas frecuentes
+
+| Síntoma | Revisión |
+|---|---|
+| `Permission denied (publickey)` | Usuario `ubuntu`, clave asociada y ruta de la `.pem` |
+| Timeout | IP nueva, instancia encendida y regla SSH desde tu IP actual |
+| `UNPROTECTED PRIVATE KEY FILE` | Ejecuta `chmod 400` sobre la clave |
+| Docker se queda sin memoria | Confirma swap y perfil mediante `verificar-entorno.sh` |
+| La IP dejó de funcionar | Copia la nueva IPv4 después de iniciar EC2 |
+| La cuenta no muestra Free Tier | No continúes: usa VirtualBox o revisa elegibilidad |
 
 ## Checklist
 
-- [ ] `ssh -V` funciona en mi computadora.
-- [ ] Guardé la clave fuera del repositorio.
-- [ ] El puerto 22 está limitado a mi IP.
-- [ ] Puedo entrar como `ubuntu`.
-- [ ] Confirmé Ubuntu 24.04 LTS.
-- [ ] Sé cómo detener y terminar la instancia.
+- [ ] Confirmé que mi plan Free Tier está vigente.
+- [ ] Configuré MFA y alertas de presupuesto.
+- [ ] Elegí una AMI Ubuntu 24.04 marcada como elegible.
+- [ ] Configuré `t3.small` o el perfil `t3.micro` con swap.
+- [ ] Seleccioné CPU credits `standard`.
+- [ ] Dejé sólo SSH desde mi IP `/32`.
+- [ ] Verifiqué 20 GiB `gp3` y `DeleteOnTermination=true`.
+- [ ] Puedo conectarme como `ubuntu`.
+- [ ] `scripts/verificar-entorno.sh` no reporta errores.
+- [ ] Sé detener y terminar la instancia.
