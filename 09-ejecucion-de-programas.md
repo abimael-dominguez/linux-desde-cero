@@ -1,5 +1,18 @@
 # 9. Ejecución de programas, procesos y servicios
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [Inspección con `ps`, `pgrep` y `top`](#inspección-con-ps-pgrep-y-top)
+- [9.1 Background, señales, prioridad y `nohup`](#91-background-señales-prioridad-y-nohup)
+- [9.2 Medición con `time`](#92-medición-con-time)
+- [9.3 `top` y recursos](#93-top-y-recursos)
+- [Servicios y logs con systemd](#servicios-y-logs-con-systemd)
+- [Práctica guiada: ciclo de un proceso](#práctica-guiada-resuelta--ciclo-de-un-proceso)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 9](#reto-9--operación-observable)
+
 ## Objetivos
 
 - Identificar procesos y relaciones padre/hijo.
@@ -17,6 +30,8 @@ mkdir -p laboratorio
 ```
 
 Trabajaremos únicamente con procesos que tú mismo inicies (`script_largo.sh` y `sleep`). No copies un PID de `top` para terminar procesos del sistema.
+
+> **Continuidad entre sesiones.** Esta práctica reutiliza la raíz del curso, no los archivos creados en la Clase 2. Antes de iniciar, comprueba `ls script_largo.sh data/dummy_logs.txt`. Si falta `script_largo.sh` o el log, no inventes un sustituto: vuelve a la raíz con `cd ~/linux-desde-cero` y pide recuperar el repositorio. `mkdir -p laboratorio` conserva las demás evidencias de laboratorio.
 
 ## Inspección con `ps`, `pgrep` y `top`
 

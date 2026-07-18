@@ -2,6 +2,21 @@
 
 El nombre comercial del tema es “SCP Copias Remotas”, pero el temario agrupa compilación, expresiones regulares y redes. Este capítulo los conecta mediante una entrega reproducible.
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [11.1 Compilación en Linux](#111-compilación-en-linux)
+- [11.2 Linkado](#112-linkado)
+- [11.3 `make`](#113-make)
+- [11.4 Búsqueda avanzada y regex](#114-búsqueda-avanzada-y-regex)
+- [11.5–11.7 Expresiones regulares](#115-caracteres-especiales)
+- [11.8–11.10 Red, protocolos y DNS](#118-comandos-útiles-de-red)
+- [11.11 SSH, SCP y SFTP](#1111-telnet-ftp-ssh-scp-y-sftp)
+- [Práctica guiada: entrega remota](#práctica-guiada-resuelta--entrega-remota)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 11](#reto-11--entrega-devops)
+
 ## Objetivos
 
 - Distinguir código fuente, objeto, librería y ejecutable.
@@ -23,6 +38,8 @@ printf 'Raíz del curso: %s\n' "$RAIZ_CURSO"
 `RAIZ_CURSO` permitirá volver al repositorio después de entrar a la carpeta de Pac-Man. Si cierras la terminal, ejecuta nuevamente estas tres líneas.
 
 En este capítulo se crearán artefactos únicamente dentro de `src/11-scp-copias-remotas/pacman-game/` y `laboratorio/`.
+
+> **Continuidad entre sesiones.** Antes de compilar o buscar logs, confirma los recursos versionados: `ls data/dummy_logs.txt src/11-scp-copias-remotas/pacman-game/pacman.c`. Si alguno falta, no crees un archivo vacío ni descargues un reemplazo improvisado; vuelve a la raíz del curso y recupera el repositorio. Los artefactos de compilación y las carpetas de `laboratorio/` sí se crean durante esta clase.
 
 ## 11.1 Compilación en Linux
 
@@ -311,6 +328,8 @@ sftp -i "$CLAVE" "${USUARIO_REMOTO}@${IP_PUBLICA}"
 Dentro de SFTP: `pwd`/`ls` operan en remoto; `lpwd`/`lls` en local; `put` sube, `get` descarga y `bye` sale.
 
 ## Práctica guiada resuelta — Entrega remota
+
+> **Continuidad dentro de la clase.** Esta entrega necesita `laboratorio/red/incidentes.txt` y `laboratorio/red/usuarios.txt`. Ambos se crean en la práctica 11.7. Si faltan, vuelve a esa práctica y ejecútala completa; no crees archivos vacíos para que SCP continúe. Si abriste una terminal nueva, vuelve a definir `CLAVE`, `USUARIO_REMOTO` e `IP_PUBLICA` antes de copiar.
 
 Requisitos antes de copiar:
 

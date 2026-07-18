@@ -1,5 +1,17 @@
 # 2. Entrada y salida del sistema
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [2.1 Entrada y salida](#21-entrada-y-salida)
+- [Terminales TTY y PTY](#terminales-tty-y-pty)
+- [Todo es componible](#todo-es-componible)
+- [Dispositivos útiles](#dispositivos-útiles)
+- [Práctica guiada resuelta](#práctica-guiada-resuelta)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 2](#reto-2--flujo-de-componentes)
+
 ## Objetivos
 
 - Reconocer entrada estándar, salida estándar y salida de error.
@@ -16,6 +28,8 @@ mkdir -p laboratorio/salida
 ```
 
 `laboratorio` es una carpeta de práctica dentro del repositorio; no es una parte especial de Linux. Puedes eliminarla y volverla a crear sin afectar `data/` ni los capítulos.
+
+> **Continuidad entre sesiones.** Puedes llegar con evidencia de las Clases 1 o 2 dentro de `laboratorio/`. Este capítulo sólo necesita `laboratorio/salida`, que `mkdir -p` crea sin borrar las demás carpetas. Si `data/dummy_logs.txt` no existe cuando un ejemplo lo solicite, no crees un archivo vacío: confirma que estás en `~/linux-desde-cero` y recupera el repositorio con el instructor.
 
 Los operadores completos se practican en [08-redirecciones-y-tuberias.md](08-redirecciones-y-tuberias.md). Este capítulo establece el modelo mental.
 

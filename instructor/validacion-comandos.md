@@ -2,6 +2,14 @@
 
 Validación realizada el 11 de julio de 2026 para comprobar que el material corresponde con Ubuntu 24.04 LTS sin hacer cambios persistentes en el sistema del instructor.
 
+## Índice
+
+- [Entornos utilizados](#entornos-utilizados)
+- [Resultados](#resultados)
+- [Comandos no ejecutados literalmente](#comandos-no-ejecutados-literalmente)
+- [Adecuaciones derivadas de las pruebas](#adecuaciones-derivadas-de-las-pruebas)
+- [Garantía de seguridad](#garantía-de-seguridad)
+
 ## Entornos utilizados
 
 - Host: Ubuntu 24.04.4 LTS, únicamente para comandos de lectura y archivos temporales bajo `mktemp`.
@@ -33,7 +41,7 @@ Los siguientes casos se validaron por sintaxis, herramientas equivalentes o un e
 
 - Creación de cuenta, instancia, security group e IP pública en AWS: dependen de una cuenta real y pueden generar costos.
 - SSH hacia una EC2 pública: se reprodujo el mismo flujo contra OpenSSH dentro de un contenedor.
-- GNOME/KDE: se validaron comandos, tipos MIME y variables; las acciones de clic deben demostrarse en la VM gráfica del instructor.
+- Escritorios y MIME: se validaron consultas de tipo y asociación; las acciones de clic deben demostrarse en la VM gráfica del instructor.
 - Impresión con `lpr`: el comando existe, pero no se envió un trabajo porque no hay una impresora de laboratorio configurada.
 - Reinicio o modificación de servicios: sólo se consultó ayuda/estado y journal; no se reinició ningún servicio.
 - `rm -i` y `rm -rI`: se revisaron opciones y rutas, sin automatizar confirmaciones destructivas.

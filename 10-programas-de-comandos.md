@@ -1,5 +1,17 @@
 # 10. Programas de comandos con Bash
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [10.1 Comentarios y shebang](#101-comentarios-y-shebang)
+- [10.2 Variables y comillas](#102-variables-y-comillas)
+- [10.3 `echo` y `printf`](#103-echo-y-printf)
+- [10.4 Parámetros y estado](#104-parámetros-y-estado)
+- [Práctica guiada resuelta](#práctica-guiada-resuelta)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 10](#reto-10--resumen-parametrizado)
+
 ## Objetivos
 
 - Crear y ejecutar un script Bash.
@@ -10,6 +22,8 @@
 ## Antes de empezar
 
 Sitúate en la raíz del curso y prepara el laboratorio:
+
+> **Continuidad entre sesiones.** `preparar-lab.sh` crea una copia limpia de fixtures dentro de `laboratorio/data`, pero también elimina y recrea toda la carpeta `laboratorio/`. Ejecútalo sólo si el grupo decidió reiniciar el laboratorio y ya guardó la evidencia de las Clases 1 y 2. Si quieres conservarla, no ejecutes el script; crea sólo `laboratorio/scripts` y usa los datos versionados que indique cada ejercicio.
 
 ```bash
 cd ~/linux-desde-cero

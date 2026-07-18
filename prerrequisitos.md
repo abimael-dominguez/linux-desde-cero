@@ -2,6 +2,17 @@
 
 Esta preparación debe completarse **antes** de la primera clase. En clase se usarán Linux y SSH; no se dedicará tiempo a crear cuentas, configurar AWS CLI o diseñar una VPC.
 
+## Índice
+
+- [Objetivo de verificación](#objetivo-de-verificación)
+- [1. Cliente SSH](#1-cliente-ssh)
+- [2. Crear la instancia](#2-crear-la-instancia)
+- [3. Proteger la clave y conectar](#3-proteger-la-clave-y-conectar)
+- [4. Comprobación resuelta](#4-comprobación-resuelta)
+- [5. Problemas frecuentes](#5-problemas-frecuentes)
+- [6. Costos y limpieza](#6-costos-y-limpieza)
+- [Checklist](#checklist)
+
 ## Objetivo de verificación
 
 La conexión necesita tres datos:

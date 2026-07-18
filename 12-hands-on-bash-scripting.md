@@ -6,6 +6,8 @@ Taller ampliado de Bash con ejercicios resueltos. Conserva temas que pueden exce
 
 Desde la raíz del repositorio:
 
+> **Continuidad entre sesiones.** Este taller usa un laboratorio desechable. Cada ejecución de `preparar-lab.sh` elimina `laboratorio/`, incluidos respaldos, reportes y retos de sesiones anteriores. Antes de ejecutarlo, guarda la evidencia que quieras conservar fuera de `laboratorio/` o consulta con el instructor si la clase continúa un ejercicio previo.
+
 ```bash
 sudo apt update
 sudo apt install -y bc
@@ -66,16 +68,19 @@ Los nombres entre `< >` describen valores que debes sustituir. Los valores entre
 
 ## Índice
 
-1. Pipes y comandos básicos
-2. Edición con `sed`
-3. Variables, argumentos y descriptores
-4. Cálculos con `bc`
-5. Arrays
-6. Condicionales `if`
-7. Bucles `for`
-8. Selección con `case`
-9. Funciones
-10. Cron
+- [Preparación](#preparación)
+- [Cómo leer los argumentos de los scripts](#cómo-leer-los-argumentos-de-los-scripts)
+- [1. Pipes y comandos básicos](#1-pipes-y-comandos-básicos)
+- [2. Edición de archivos con `sed`](#2-edición-de-archivos-con-sed)
+- [3. Variables, argumentos y descriptores](#3-variables-argumentos-y-descriptores)
+- [4. Cálculos con `bc`](#4-cálculos-con-bc)
+- [5. Arrays](#5-arrays)
+- [6. Estructuras de control: `if`](#6-estructuras-de-control-if)
+- [7. Bucles: `for`](#7-bucles-for)
+- [8. Selección con `case`](#8-selección-con-case)
+- [9. Funciones](#9-funciones)
+- [10. Cron jobs](#10-cron-jobs)
+- [Checklist del taller](#checklist-del-taller)
 
 ## 1. Pipes y comandos básicos
 

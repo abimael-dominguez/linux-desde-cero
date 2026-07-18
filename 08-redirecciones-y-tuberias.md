@@ -1,5 +1,17 @@
 # 8. Redirecciones y tuberías
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [8.1 Redirecciones](#81-redirecciones)
+- [8.2 Tuberías](#82-tuberías)
+- [8.3 Bifurcación con `tee`](#83-bifurcación-con-tee)
+- [8.4 Redirección de errores](#84-redirección-de-errores)
+- [Práctica guiada: reporte de incidentes](#práctica-guiada-resuelta--reporte-de-incidentes)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 8](#reto-8--pipeline-auditable)
+
 ## Objetivos
 
 - Redirigir `stdout` y `stderr` por separado o juntos.
@@ -15,6 +27,8 @@ Ejecuta todo desde la raíz del curso. Prepararemos `laboratorio/io` y usaremos 
 cd ~/linux-desde-cero
 mkdir -p laboratorio/io
 ```
+
+> **Continuidad entre sesiones.** `laboratorio/io` es exclusivo de esta parte de la Clase 3 y puede crearse aunque conserves `laboratorio/shell` o evidencia de la Clase 2. `data/dummy_logs.txt` es un archivo versionado de entrada: compruébalo con `ls data/dummy_logs.txt`; si falta, no lo sustituyas por un archivo vacío. Verifica primero `pwd` y recupera el repositorio si fuera necesario.
 
 ## 8.1 Redirecciones
 

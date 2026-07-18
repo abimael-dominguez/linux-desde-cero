@@ -1,5 +1,16 @@
 # Plan docente — Linux desde cero (2026)
 
+## Índice
+
+- [Datos](#datos)
+- [Reglas de conducción](#reglas-de-conducción)
+- [Clase 1](#clase-1--fundamentos-archivos-y-permisos)
+- [Clase 2](#clase-2--shell-útil-y-escritorios)
+- [Clase 3](#clase-3--io-procesos-y-bash)
+- [Clase 4](#clase-4--regex-red-y-copias-remotas)
+- [Evidencias](#evidencias)
+- [Cobertura del temario comercial](#cobertura-del-temario-comercial)
+
 ## Datos
 
 - Sábados 4, 11, 18 y 25 de julio de 2026.
@@ -15,13 +26,22 @@
 - Antes de un comando, nombrar explícitamente qué usuario, grupo, archivo, proceso o servidor se va a crear o modificar.
 - Cuando existan parámetros, presentar primero la sintaxis general y después el ejemplo resuelto con los valores del curso.
 - Pedir al alumno que identifique origen, destino y resultado esperado antes de copiar un bloque.
+- Usar el PDF como guía de consulta, no como una presentación que deba recorrerse linealmente.
+- Aplicar microciclos: contexto, demostración breve, práctica del alumno y comprobación visible.
+- Hacer un semáforo de ritmo después de cada microciclo; si más de 20 % sigue en amarillo o rojo, repetir y recortar un tema opcional.
 - Los ejercicios se resuelven en el capítulo; los retos se intentan antes de consultar [soluciones.md](soluciones.md).
 - Si falla AWS, continuar en WSL/VM/Multipass o contenedor; no gastar la clase creando infraestructura.
-- Antes de cada sesión, ejecutar `bash ejercicios-bash-scripting/preparar-lab.sh`.
+- Antes de cada sesión, verificar la raíz del curso y los archivos de entrada requeridos. Ejecutar `bash ejercicios-bash-scripting/preparar-lab.sh` sólo cuando se busque un laboratorio limpio: el script elimina y recrea `laboratorio/`, por lo que puede borrar evidencia de clases anteriores.
 
 ## Clase 1 — Fundamentos, archivos y permisos
 
-**Archivos:** capítulos [1](../01-introduccion-a-linux.md), [3](../03-estructura-del-sistema-de-archivos-de-linux.md) y 7.1–7.15 de [7](../07-el-shell.md).
+**Material de trabajo:**
+
+- Capítulo [1](../01-introduccion-a-linux.md): Linux, distribuciones, terminal, usuarios, grupos y `sudo`.
+- Capítulo [3](../03-estructura-del-sistema-de-archivos-de-linux.md): tipos de archivo, rutas, jerarquía, enlaces y permisos.
+- Capítulo [7](../07-el-shell.md), secciones 7.1–7.15: navegación y administración segura de archivos desde Bash.
+
+**Conducción detallada:** [planeacion-clase-1.md](planeacion-clase-1.md).
 
 | Hora | Actividad |
 |---|---|
@@ -41,27 +61,42 @@
 
 ## Clase 2 — Shell útil y escritorios
 
-**Archivos:** 7.16–7.21 de [7](../07-el-shell.md), inspección de [3](../03-estructura-del-sistema-de-archivos-de-linux.md) y capítulos [4](../04-x-window.md), [5](../05-gnome.md), [6](../06-kde.md).
+**Material de trabajo:**
+
+- Capítulo [7](../07-el-shell.md), secciones 7.16–7.21: espacio, lectura, búsqueda, respaldos e impresión.
+- Capítulo [3](../03-estructura-del-sistema-de-archivos-de-linux.md), sección 3.5: dispositivos, puntos de montaje y espacio disponible; sólo consulta, sin formatear discos.
+- Capítulo [4](../04-x-window.md): X Window, Wayland y la diferencia entre servidor y escritorio.
+- Capítulo [5](../05-gnome.md): recorrido visual de GNOME, Actividades, Files, herramientas y espacios de trabajo.
+- Capítulo [6](../06-kde.md): recorrido visual de KDE Plasma, Dolphin y herramientas esenciales.
+
+**Conducción detallada:** [planeacion-clase-2.md](planeacion-clase-2.md).
 
 | Hora | Actividad |
 |---|---|
-| 09:00–09:15 | Recuperación activa de navegación y permisos. |
-| 09:15–10:20 | `cat`, `less`, `head`, `tail`, `find`, `du` y `df`. |
-| 10:20–11:00 | `grep`, `tar` y `gzip`. |
+| 09:00–09:30 | Acordar el ritmo y recuperar navegación y permisos con un diagnóstico sin calificación. |
+| 09:30–10:10 | Microciclos de consulta y búsqueda literal: `head`, `tail`, `less` y `grep`. |
+| 10:10–10:45 | Buscar archivos con `find`; comparar `du` y `df`. |
+| 10:45–11:00 | Checkpoint, preguntas y repetición; sin contenido nuevo. |
 | 11:00–11:30 | **Receso**. |
-| 11:30–12:15 | Práctica resuelta de respaldo y restauración. |
-| 12:15–12:40 | `lsblk`, `findmnt`, `df -T`; sin formatear discos. |
-| 12:40–13:10 | Capas gráficas y demostración GNOME. |
-| 13:10–13:35 | Demostración KDE: Dolphin, Konsole y propiedades. |
-| 13:35–13:55 | Misma operación en GUI y CLI. |
-| 13:55–14:00 | Evidencia y cierre. |
+| 11:30–12:30 | Modelo y práctica: crear, listar, restaurar y verificar un `tar.gz`, una línea a la vez. |
+| 12:30–12:45 | Checkpoint y clínica de errores del respaldo. |
+| 12:45–13:05 | `lsblk`, `findmnt`, `df -T`; sólo inspección, sin formatear discos. |
+| 13:05–13:40 | Capas gráficas y recorridos visuales breves de GNOME y KDE Plasma. |
+| 13:40–13:52 | Práctica de búsqueda/restauración y preguntas de cierre sobre KDE. |
+| 13:52–14:00 | Exit ticket, semáforo final y cierre. |
 
 **No recortar:** búsqueda, respaldo y restauración.  
-**Recortar primero:** personalización de escritorios.
+**Recortar primero:** personalización, recorrido detallado de KDE, `pr`/`lpr` y opciones avanzadas de búsqueda.
 
 ## Clase 3 — I/O, procesos y Bash
 
-**Archivos:** capítulos [2](../02-un-enfoque-a-linux.md), [8](../08-redirecciones-y-tuberias.md), [9](../09-ejecucion-de-programas.md), [10](../10-programas-de-comandos.md) y ejercicios seleccionados de [12](../12-hands-on-bash-scripting.md).
+**Material de trabajo:**
+
+- Capítulo [2](../02-un-enfoque-a-linux.md): entrada, salida, errores, terminal y el modelo mental de composición.
+- Capítulo [8](../08-redirecciones-y-tuberias.md): redirecciones, pipes, `tee` y reportes que conservan diagnósticos.
+- Capítulo [9](../09-ejecucion-de-programas.md): procesos, jobs, señales, prioridad, servicios y journal.
+- Capítulo [10](../10-programas-de-comandos.md): scripts Bash, variables, argumentos, validación y estados de salida.
+- Capítulo [12](../12-hands-on-bash-scripting.md), ejercicios seleccionados: práctica guiada de scripting sobre datos del laboratorio.
 
 | Hora | Actividad |
 |---|---|
@@ -79,7 +114,9 @@
 
 ## Clase 4 — Regex, red y copias remotas
 
-**Archivo:** capítulo [11](../11-scp-copias-remotas.md).
+**Material de trabajo:**
+
+- Capítulo [11](../11-scp-copias-remotas.md): compilación, regex, red, SSH, SCP/SFTP y verificación de una entrega remota.
 
 | Hora | Actividad |
 |---|---|
@@ -112,8 +149,8 @@
 | 2.1 | `02-un-enfoque-a-linux.md` | 3 |
 | 3.1–3.6 | `03-estructura-del-sistema-de-archivos-de-linux.md` | 1–2 |
 | 4.1 | `04-x-window.md` | 2 |
-| 5.1–5.7 | `05-gnome.md` | 2 |
-| 6.1–6.14 | `06-kde.md` | 2 |
+| 5.1–5.5 | `05-gnome.md` | 2 |
+| 6.1–6.7 | `06-kde.md` | 2 |
 | 7.1–7.21 | `07-el-shell.md` | 1–2 |
 | 8.1–8.4 | `08-redirecciones-y-tuberias.md` | 3 |
 | 9.1–9.3 | `09-ejecucion-de-programas.md` | 3 |

@@ -4,6 +4,16 @@ Curso práctico de Linux para perfiles junior que necesitan una base sólida ant
 
 La referencia del laboratorio es **Ubuntu 24.04 LTS**. Cuando aporta valor se indican equivalencias para distribuciones de la familia RHEL, sin duplicar todo el curso.
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Cómo usar este repositorio](#cómo-usar-este-repositorio)
+- [Temario](#temario)
+- [Distribución de las cuatro sesiones](#distribución-de-las-cuatro-sesiones)
+- [Preparación rápida](#preparación-rápida)
+- [Convenciones didácticas](#convenciones-didácticas)
+- [Material para el instructor](#material-para-el-instructor)
+
 ## Objetivos
 
 Al finalizar, el alumno podrá:
