@@ -922,6 +922,7 @@
       background: #eef5f8;
       font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
       font-size: .91em;
+      white-space: nowrap;
       font-variant-ligatures: none;
       text-rendering: geometricPrecision;
     }
@@ -989,6 +990,7 @@
       color: inherit;
       background: transparent;
       font: inherit;
+      white-space: pre-wrap;
     }
     .codebox--output {
       border-color: #cfdde4;
@@ -1042,6 +1044,44 @@
       background: #fff3f6;
     }
     article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter .learning-callout {
+      position: relative;
+      padding: 0.15in 0.16in 0.13in;
+      border-left-width: 5px;
+      border-radius: 0 7px 7px 0;
+    }
+    .learning-callout__label {
+      margin-bottom: 0.05in;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    article.chapter .learning-callout--situation {
+      border-left-color: var(--blue);
+      color: #294b64;
+      background: #eaf3f7;
+    }
+    .learning-callout--situation .learning-callout__label { color: var(--blue); }
+    article.chapter .learning-callout--before {
+      border-left-color: #e8a900;
+      color: #5f4a13;
+      background: #fff8df;
+    }
+    .learning-callout--before .learning-callout__label { color: #9b6c00; }
+    article.chapter .learning-callout--check {
+      border-left-color: #2a9d68;
+      color: #245a43;
+      background: #e9f7f0;
+    }
+    .learning-callout--check .learning-callout__label { color: #1d8054; }
+    article.chapter .learning-callout--care {
+      border-left-color: var(--red);
+      color: #70404b;
+      background: #fff1f4;
+    }
+    .learning-callout--care .learning-callout__label { color: #c71841; }
     article.chapter hr {
       margin: 0.26in 0;
       border: 0;
@@ -1175,44 +1215,48 @@
       <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
       <tbody>
   <tr class="">
-    <td class="agenda-time">09:00–09:20</td>
-    <td class="agenda-activity">Verificar el entorno con <code>whoami</code>, <code>hostname</code>, <code>pwd</code> y <code>/etc/os-release</code>.</td>
+    <td class="agenda-time">09:00–09:30</td>
+    <td class="agenda-activity">Diagnóstico y modelo mental: usuario, host, kernel, distribución, terminal y shell.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">09:20–10:00</td>
-    <td class="agenda-activity">Kernel, distribución, shell, terminal y escritorio.</td>
+    <td class="agenda-time">09:30–10:10</td>
+    <td class="agenda-activity">Usuarios, grupos y <code>sudo</code>; lectura de evidencia antes de modificar cuentas.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">10:00–10:40</td>
-    <td class="agenda-activity">Usuarios, grupos y <code>sudo</code>; práctica controlada.</td>
+    <td class="agenda-time">10:10–10:45</td>
+    <td class="agenda-activity">Consulta de paquetes, ayuda y práctica controlada con <code>apt</code>.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">10:40–11:00</td>
-    <td class="agenda-activity">Flujo mínimo de <code>apt</code>.</td>
+    <td class="agenda-time">10:45–11:00</td>
+    <td class="agenda-activity">Checkpoint, preguntas y repetición; sin contenido nuevo.</td>
   </tr>
   <tr class="break-row">
     <td class="agenda-time">11:00–11:30</td>
     <td class="agenda-activity"><strong>Receso.</strong></td>
   </tr>
   <tr class="">
-    <td class="agenda-time">11:30–12:15</td>
-    <td class="agenda-activity">Jerarquía, rutas y tipos de archivo.</td>
+    <td class="agenda-time">11:30–12:00</td>
+    <td class="agenda-activity">Rutas, jerarquía y tipos de archivo; observar antes de actuar.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">12:15–13:05</td>
-    <td class="agenda-activity"><code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>touch</code>, <code>cp</code>, <code>mv</code>, <code>rm</code> y <code>file</code>.</td>
+    <td class="agenda-time">12:00–12:35</td>
+    <td class="agenda-activity"><code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code> y <code>touch</code>, con práctica por comando.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:05–13:40</td>
-    <td class="agenda-activity">Enlaces, permisos, propietario y grupo.</td>
+    <td class="agenda-time">12:35–13:05</td>
+    <td class="agenda-activity"><code>cp</code>, <code>mv</code>, <code>file</code> y enlaces: origen, destino y resultado esperado.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:40–13:55</td>
-    <td class="agenda-activity">Reto 3: directorio compartido.</td>
+    <td class="agenda-time">13:05–13:35</td>
+    <td class="agenda-activity">Permisos y práctica guiada: configuración, script y enlace.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:55–14:00</td>
-    <td class="agenda-activity">Evidencia y cierre.</td>
+    <td class="agenda-time">13:35–13:52</td>
+    <td class="agenda-activity">Reto corto, clínica de errores y evidencia.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:52–14:00</td>
+    <td class="agenda-activity">Exit ticket, semáforo final y cierre.</td>
   </tr></tbody>
     </table>
     <div class="overview-foot">
@@ -1229,7 +1273,7 @@
       <h2>Índice interactivo</h2>
       <p class="toc-description">Selecciona un apartado para ir directamente a su contenido. En cada encabezado encontrarás el enlace para volver aquí.</p>
     </header>
-    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-1"><small>Capítulo 1</small><strong>Introducción a Linux</strong></a><a class="toc-link toc-level-2" href="#c1-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-antes-de-empezar"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-1-que-es-linux"><span>1.1 ¿Qué es Linux?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-comprobar-el-sistema"><span>Comprobar el sistema</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-2-que-son-las-distribuciones"><span>1.2 ¿Qué son las distribuciones?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-administracion-esencial-de-paquetes"><span>Administración esencial de paquetes</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-ayuda-antes-de-ejecutar"><span>Ayuda antes de ejecutar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-3-entorno-de-trabajo-shell-y-entorno-grafico"><span>1.3 Entorno de trabajo: shell y entorno gráfico</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-4-usuarios-y-grupos"><span>1.4 Usuarios y grupos</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-que-hace-getent"><span>¿Qué hace getent?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-crear-un-usuario-de-laboratorio"><span>Crear un usuario de laboratorio</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-sintaxis-general"><span>Sintaxis general</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-ejemplo-resuelto-para-copiar"><span>Ejemplo resuelto para copiar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-practica-guiada-resuelta"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-reto-1-inventario-reproducible"><span>Reto 1 — Inventario reproducible</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-checklist"><span>Checklist</span><b>→</b></a></section></div>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-1"><small>Capítulo 1</small><strong>Introducción a Linux</strong></a><a class="toc-link toc-level-2" href="#c1-indice"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-antes-de-empezar"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-ruta-practica-de-la-clase-1"><span>Ruta práctica de la Clase 1</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-1-que-es-linux"><span>1.1 ¿Qué es Linux?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-comprobar-el-sistema"><span>Comprobar el sistema</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-2-que-son-las-distribuciones"><span>1.2 ¿Qué son las distribuciones?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-administracion-esencial-de-paquetes"><span>Administración esencial de paquetes</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-ayuda-antes-de-ejecutar"><span>Ayuda antes de ejecutar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-3-entorno-de-trabajo-shell-y-entorno-grafico"><span>1.3 Entorno de trabajo: shell y entorno gráfico</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-1-4-usuarios-y-grupos"><span>1.4 Usuarios y grupos</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-que-hace-getent"><span>¿Qué hace getent?</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-crear-un-usuario-de-laboratorio"><span>Crear un usuario de laboratorio</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-sintaxis-general"><span>Sintaxis general</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-ejemplo-resuelto-para-copiar"><span>Ejemplo resuelto para copiar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-practica-guiada-resuelta"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-reto-1-inventario-reproducible"><span>Reto 1 — Inventario reproducible</span><b>→</b></a><a class="toc-link toc-level-3" href="#c1-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c1-checklist"><span>Checklist</span><b>→</b></a></section></div>
     <nav class="toc-nav"><a href="#indice-interactivo-2">Capítulos 3 y 7 →</a></nav>
   </section>
 
@@ -1239,7 +1283,7 @@
       <h2>Índice interactivo</h2>
       <p class="toc-description">Sistema de archivos y comandos esenciales del shell.</p>
     </header>
-    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-3"><small>Capítulo 3</small><strong>Estructura del sistema de archivos</strong></a><a class="toc-link toc-level-2" href="#c3-objetivos-2"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-antes-de-empezar-2"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-1-tipos-de-archivo"><span>3.1 Tipos de archivo</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-2-enlaces"><span>3.2 Enlaces</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-3-rutas-o-paths"><span>3.3 Rutas o paths</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-4-jerarquia-principal"><span>3.4 Jerarquía principal</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-5-acceso-a-sistemas-de-archivos"><span>3.5 Acceso a sistemas de archivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-6-permisos"><span>3.6 Permisos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-practica-guiada-resuelta-2"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-errores-frecuentes-2"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-reto-3-directorio-compartido"><span>Reto 3 — Directorio compartido</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-criterios-de-comprobacion-2"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-checklist-2"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-7"><small>Capítulo 7.1–7.15</small><strong>El shell</strong></a><a class="toc-link toc-level-2" href="#c7-objetivos-3"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-antes-de-empezar-3"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-1-7-3-shell-comandos-y-directorio-personal"><span>7.1–7.3 Shell, comandos y directorio personal</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-4-listar-ls"><span>7.4 Listar: ls</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-5-7-8-directorios-y-navegacion"><span>7.5–7.8 Directorios y navegación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-9-unidades-y-montajes"><span>7.9 Unidades y montajes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-10-copiar-cp"><span>7.10 Copiar: cp</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-11-mover-y-renombrar-mv"><span>7.11 Mover y renombrar: mv</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-12-enlaces-ln"><span>7.12 Enlaces: ln</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-13-borrar-rm"><span>7.13 Borrar: rm</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-14-identificar-file-y-stat"><span>7.14 Identificar: file y stat</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-15-permisos-y-propiedad"><span>7.15 Permisos y propiedad</span><b>→</b></a></section></div>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-3"><small>Capítulo 3</small><strong>Estructura del sistema de archivos</strong></a><a class="toc-link toc-level-2" href="#c3-indice-2"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-objetivos-2"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-antes-de-empezar-2"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-1-tipos-de-archivo"><span>3.1 Tipos de archivo</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-2-enlaces"><span>3.2 Enlaces</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-modelo-mental-nombre-inode-y-contenido"><span>Modelo mental: nombre, inode y contenido</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-ejemplo-guiado"><span>Ejemplo guiado</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-comprueba-que-se-rompe-y-que-permanece"><span>Comprueba qué se rompe y qué permanece</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-3-rutas-o-paths"><span>3.3 Rutas o paths</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-4-jerarquia-principal"><span>3.4 Jerarquía principal</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-5-acceso-a-sistemas-de-archivos"><span>3.5 Acceso a sistemas de archivos</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-antes-de-continuar"><span>Antes de continuar</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-modelo-mental"><span>Modelo mental</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-sintaxis-y-ejemplo-guiado"><span>Sintaxis y ejemplo guiado</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-3-6-permisos"><span>3.6 Permisos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-practica-guiada-resuelta-2"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-errores-frecuentes-2"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-reto-3-directorio-compartido"><span>Reto 3 — Directorio compartido</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-criterios-de-comprobacion-2"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c3-checklist-2"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-7"><small>Capítulo 7.1–7.15</small><strong>El shell</strong></a><a class="toc-link toc-level-2" href="#c7-indice-3"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-objetivos-3"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-antes-de-empezar-3"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-1-7-3-shell-comandos-y-directorio-personal"><span>7.1–7.3 Shell, comandos y directorio personal</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-4-listar-ls"><span>7.4 Listar: ls</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-5-7-8-directorios-y-navegacion"><span>7.5–7.8 Directorios y navegación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-9-unidades-y-montajes"><span>7.9 Unidades y montajes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-10-copiar-cp"><span>7.10 Copiar: cp</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-11-mover-y-renombrar-mv"><span>7.11 Mover y renombrar: mv</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-12-enlaces-ln"><span>7.12 Enlaces: ln</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-13-borrar-rm"><span>7.13 Borrar: rm</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-14-identificar-file-y-stat"><span>7.14 Identificar: file y stat</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-15-permisos-y-propiedad"><span>7.15 Permisos y propiedad</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-antes-de-continuar-con-la-clase-2"><span>Antes de continuar con la Clase 2</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-ruta-practica-de-la-clase-2"><span>Ruta práctica de la Clase 2</span><b>→</b></a></section></div>
     <nav class="toc-nav"><a href="#indice-interactivo">← Capítulo 1</a></nav>
   </section>
 
@@ -1254,7 +1298,20 @@
       <div class="divider-tags"><span>Capítulo 1</span><span>Ubuntu 24.04</span><span>apt</span><span>sudo</span></div>
     </div>
   </section>
-  <article class="chapter chapter-1"><h2 id="c1-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-1"><h2 id="c1-indice">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li><span class="local-reference">Objetivos</span></li>
+<li><span class="local-reference">Antes de empezar</span></li>
+<li><span class="local-reference">Ruta práctica de la Clase 1</span></li>
+<li><span class="local-reference">1.1 ¿Qué es Linux?</span></li>
+<li><span class="local-reference">1.2 ¿Qué son las distribuciones?</span></li>
+<li><span class="local-reference">1.3 Entorno de trabajo: shell y entorno gráfico</span></li>
+<li><span class="local-reference">1.4 Usuarios y grupos</span></li>
+<li><span class="local-reference">Práctica guiada resuelta</span></li>
+<li><span class="local-reference">Errores frecuentes</span></li>
+<li><span class="local-reference">Reto 1</span></li>
+</ul>
+<h2 id="c1-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>Distinguir kernel, distribución, shell, terminal y escritorio.</li>
 <li>Identificar la distribución y el kernel de una máquina.</li>
@@ -1264,21 +1321,41 @@
 <h2 id="c1-antes-de-empezar">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p>Abre una terminal y sitúate en la raíz del curso:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
-test -f README.md &amp;&amp; echo &quot;Directorio correcto&quot;
-</code></pre></figure><p>Si el mensaje no aparece, revisa dónde clonaste el repositorio antes de continuar. En este capítulo instalarás o crearás temporalmente:</p>
+pwd
+ls README.md
+</code></pre></figure><p>Si <code>ls README.md</code> indica que no encuentra el archivo, revisa dónde clonaste el repositorio antes de continuar. En este capítulo instalarás o crearás temporalmente:</p>
 <ul>
 <li>el paquete <code>tree</code>, para visualizar directorios;</li>
 <li>un grupo llamado <code>devops-lab</code>;</li>
 <li>un usuario de práctica llamado <code>alumno</code>;</li>
 <li>la carpeta <code>~/curso-linux/evidencias</code> para guardar resultados.</li>
 </ul>
+<blockquote class="learning-callout learning-callout--before"><div class="learning-callout__label">Antes de ejecutar.</div>
+<p>Esta es la primera sesión. <code>~/curso-linux</code> y <code>laboratorio/</code> son espacios de práctica; puedes crearlos. No crees archivos vacíos dentro de <code>data/</code> para ocultar un error de ruta.</p>
+</blockquote>
+<h2 id="c1-ruta-practica-de-la-clase-1">Ruta práctica de la Clase 1<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ol>
+<li>Identifica qué sistema y usuario estás usando.</li>
+<li>Comprende qué cambia <code>sudo</code> y qué cambia un gestor de paquetes.</li>
+<li>Aprende a recorrer y reconocer rutas antes de modificarlas.</li>
+<li>Crea una estructura segura, copia y renombra archivos.</li>
+<li>Comprueba tipo, enlace, dueño y permisos antes de corregirlos.</li>
+</ol>
 <h2 id="c1-1-1-que-es-linux">1.1 ¿Qué es Linux?<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Una alerta puede mencionar “Linux”, “Ubuntu” o “kernel”. Para operar un servidor con seguridad debes saber si hablan del núcleo que controla recursos o de la distribución que instala y configura herramientas.</p>
+</blockquote>
 <p>Linux es el <strong>kernel</strong>: administra CPU, memoria, dispositivos, procesos y sistemas de archivos. Una distribución combina ese kernel con herramientas, bibliotecas, un gestor de paquetes y decisiones de configuración.</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>hardware → kernel Linux → herramientas del sistema → aplicaciones → usuario
 </code></pre></figure><h3 id="c1-comprobar-el-sistema">Comprobar el sistema<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>uname -r
 cat /etc/os-release
-</code></pre></figure><p class="micro-label">Salida representativa</p>
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>uname -r</code>: <code>-r</code> pide el <em>release</em> o versión del kernel en ejecución.</li>
+<li><code>cat /etc/os-release</code>: no tiene bandera; lee el archivo estándar que describe la distribución.</li>
+</ul>
+<p class="micro-label">Salida representativa</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>6.8.0-xx-generic
 PRETTY_NAME=&quot;Ubuntu 24.04.x LTS&quot;
 ID=ubuntu
@@ -1288,7 +1365,13 @@ VERSION_ID=&quot;24.04&quot;
 <li><code>/etc/os-release</code>: describe la distribución, no el kernel.</li>
 <li><code>-r</code>: solicita el <em>kernel release</em>.</li>
 </ul>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>La primera salida identifica el kernel; las líneas <code>PRETTY_NAME</code> e <code>ID</code> identifican la distribución. No tienen por qué usar el mismo número de versión.</p>
+</blockquote>
 <h2 id="c1-1-2-que-son-las-distribuciones">1.2 ¿Qué son las distribuciones?<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un runbook puede decir <code>apt install</code>, pero otro servidor usar <code>dnf</code>. El objetivo es reconocer el flujo consultar → revisar → instalar, no aprender una lista aislada de comandos.</p>
+</blockquote>
 <p>Las distribuciones comparten el kernel, pero cambian herramientas, versiones, soporte y paquetes.</p>
 <table>
 <thead>
@@ -1323,12 +1406,41 @@ apt search tree
 apt show tree
 sudo apt install tree
 tree --version
-</code></pre></figure><ul>
-<li><code>apt update</code>: actualiza el índice local; no actualiza todavía los programas.</li>
-<li><code>search</code>: busca por nombre y descripción.</li>
-<li><code>show</code>: enseña versión, tamaño y dependencias.</li>
-<li><code>install</code>: instala el paquete solicitado.</li>
-<li><code>sudo</code>: ejecuta sólo ese comando con privilegios administrativos.</li>
+</code></pre></figure><p>Las opciones y subcomandos usados:</p>
+<ul>
+<li>
+<p><code>sudo</code>: ejecuta sólo el comando que sigue con privilegios administrativos.</p>
+</li>
+<li>
+<p><code>apt update</code>: actualiza el catálogo local de paquetes; no actualiza programas instalados.</p>
+</li>
+<li>
+<p><code>apt search &lt;texto&gt;</code>: busca por nombre o descripción.</p>
+</li>
+<li>
+<p><code>apt show &lt;paquete&gt;</code>: muestra versión, tamaño, dependencias y descripción.</p>
+</li>
+<li>
+<p><code>apt install &lt;paquete&gt;</code>: instala el paquete indicado después de revisarlo.</p>
+</li>
+<li>
+<p><code>tree --version</code>: <code>--version</code> confirma qué versión se instaló.</p>
+</li>
+<li>
+<p><code>apt update</code>: actualiza el índice local; no actualiza todavía los programas.</p>
+</li>
+<li>
+<p><code>search</code>: busca por nombre y descripción.</p>
+</li>
+<li>
+<p><code>show</code>: enseña versión, tamaño y dependencias.</p>
+</li>
+<li>
+<p><code>install</code>: instala el paquete solicitado.</p>
+</li>
+<li>
+<p><code>sudo</code>: ejecuta sólo ese comando con privilegios administrativos.</p>
+</li>
 </ul>
 <p>En este capítulo <strong>no eliminamos <code>tree</code> todavía</strong>, porque se utiliza en la práctica final. Cuando termines y sólo si deseas retirarlo, la sintaxis es:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>sudo apt remove tree
@@ -1344,7 +1456,13 @@ command -v uname
 <li><code>type</code>: indica si el nombre es alias, builtin o ejecutable.</li>
 <li><code>command -v</code>: muestra cómo lo resolverá el shell.</li>
 </ul>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p><code>apt upgrade</code> cambia paquetes ya instalados y no forma parte de esta práctica. Primero aprende a consultar qué haría una acción administrativa.</p>
+</blockquote>
 <h2 id="c1-1-3-entorno-de-trabajo-shell-y-entorno-grafico">1.3 Entorno de trabajo: shell y entorno gráfico<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>La terminal es la ventana de texto; Bash es el intérprete que entiende lo que escribes. En una EC2 puedes tener shell sin escritorio, y en GNOME/KDE puedes abrir distintas terminales que usen el mismo shell.</p>
+</blockquote>
 <ul>
 <li><strong>Terminal:</strong> interfaz que recibe texto y muestra resultados.</li>
 <li><strong>Shell:</strong> programa que interpreta comandos; Bash es el principal del curso.</li>
@@ -1363,7 +1481,16 @@ bash
 <li><code>$$</code> es el PID del shell actual.</li>
 <li><code>tty</code> identifica la terminal asociada a la sesión.</li>
 </ul>
+<p>Las piezas que debes reconocer:</p>
+<ul>
+<li><code>$SHELL</code>: variable con el shell configurado para tu usuario.</li>
+<li><code>$$</code>: identificador del shell actual; lo usaremos sólo para observar, no para terminar procesos.</li>
+<li><code>ps -p &lt;PID&gt; -o comm=</code>: <code>-p</code> selecciona un proceso y <code>-o</code> elige la columna mostrada.</li>
+</ul>
 <h2 id="c1-1-4-usuarios-y-grupos">1.4 Usuarios y grupos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Cuando un archivo rechaza acceso, la pregunta no es “¿cómo obtengo permisos totales?”, sino “¿con qué usuario trabajo, a qué grupos pertenezco y qué autorización requiere la tarea?”.</p>
+</blockquote>
 <p>Linux separa identidades y permisos mediante UID y GID.</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>whoami
 id
@@ -1375,6 +1502,13 @@ getent passwd &quot;$USER&quot;
 <li><code>uid</code>: identidad numérica del usuario.</li>
 <li><code>gid</code>: grupo principal.</li>
 <li><code>groups</code>: grupos adicionales; <code>sudo</code> suele conceder administración en Ubuntu.</li>
+</ul>
+<p>Las opciones y consultas usadas:</p>
+<ul>
+<li><code>whoami</code>: muestra el nombre efectivo del usuario actual.</li>
+<li><code>id</code>: muestra UID, GID y grupos en una sola salida.</li>
+<li><code>groups</code>: lista grupos por nombre.</li>
+<li><code>getent passwd &quot;$USER&quot;</code>: consulta el registro de tu usuario; <code>passwd</code> es la base de cuentas y <code>$USER</code> se sustituye por tu nombre de sesión.</li>
 </ul>
 <h3 id="c1-que-hace-getent">¿Qué hace <code>getent</code>?<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <p><code>getent</code> significa <strong>get entries</strong>: obtener registros de las bases de datos que Linux tiene configuradas en <code>/etc/nsswitch.conf</code>.</p>
@@ -1401,14 +1535,11 @@ getent group sudo
 │      └─ la contraseña/hash no se guarda aquí
 └─ nombre de usuario
 </code></pre></figure><p>La <code>x</code> no es la contraseña. Indica que la información protegida se guarda en <code>/etc/shadow</code>, que sólo puede leer <code>root</code>.</p>
-<p>Para comprobar si una cuenta existe sin imprimir información innecesaria:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>if getent passwd alumno &gt; /dev/null; then
-  echo &quot;El usuario alumno existe&quot;
-else
-  echo &quot;El usuario alumno no existe&quot;
-fi
-</code></pre></figure><p><code>getent</code> devuelve estado <code>0</code> cuando encuentra el registro y un estado distinto de cero cuando no lo encuentra. Por eso puede utilizarse directamente como condición de un <code>if</code>.</p>
+<p>Para esta primera clase basta ejecutar <code>getent passwd alumno</code> y leer la salida. Las condiciones, redirecciones y estados de salida se automatizan en la Clase 3.</p>
 <h3 id="c1-crear-un-usuario-de-laboratorio">Crear un usuario de laboratorio<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Crear usuarios y grupos cambia el equipo. La práctica se realiza sólo en una VM o instancia de laboratorio autorizada; si trabajas en un equipo corporativo, observa la demostración y no copies el bloque.</p>
+</blockquote>
 <p>Vamos a crear dos objetos diferentes:</p>
 <table>
 <thead>
@@ -1478,33 +1609,30 @@ drwxr-x--- ... alumno alumno ... /home/alumno
 sudo groupdel devops-lab
 </code></pre></figure><p><code>userdel -r alumno</code> elimina la cuenta <strong>y <code>/home/alumno</code></strong>. Ejecútalo únicamente cuando ya no necesites los archivos de ese usuario. Después se elimina el grupo temporal <code>devops-lab</code>.</p>
 <h2 id="c1-practica-guiada-resuelta">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Objetivo: inspeccionar el host e instalar una herramienta.</p>
-<p>Esta práctica se ejecuta con tu usuario habitual, no con la cuenta <code>alumno</code>. Creará <code>~/curso-linux/evidencias/sistema.txt</code> y después mostrará la estructura con <code>tree</code>.</p>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Antes de administrar un equipo necesitas dejar una evidencia que otra persona pueda leer. En esta primera clase la evidencia se guarda con Text Editor; en la Clase 3 aprenderás a generarla automáticamente desde la terminal.</p>
+</blockquote>
+<p>Objetivo: inspeccionar el host, instalar una herramienta y organizar una evidencia.</p>
+<p>Esta práctica se ejecuta con tu usuario habitual, no con la cuenta <code>alumno</code>. Creará <code>~/curso-linux/evidencias/</code> y después mostrará la estructura con <code>tree</code>.</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-linux/evidencias
-{
-  echo &quot;Usuario: $(whoami)&quot;
-  echo &quot;Kernel: $(uname -r)&quot;
-  grep '^PRETTY_NAME=' /etc/os-release
-  id
-} | tee ~/curso-linux/evidencias/sistema.txt
-
 sudo apt update
 sudo apt install -y tree
 tree ~/curso-linux
-</code></pre></figure><p class="micro-label">Salida representativa</p>
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>mkdir -p</code>: crea las carpetas padre faltantes y no falla si ya existen.</li>
+<li><code>apt install -y</code>: <code>-y</code> confirma automáticamente; úsalo sólo después de revisar el paquete con <code>apt show</code>.</li>
+<li><code>tree &lt;ruta&gt;</code>: muestra una estructura de directorios legible.</li>
+</ul>
+<p>Ahora abre Text Editor, crea <code>~/curso-linux/evidencias/sistema.txt</code> y pega las salidas de <code>whoami</code>, <code>uname -r</code>, <code>cat /etc/os-release</code> e <code>id</code>. Los valores siguen viniendo de comandos; no los inventes ni copies valores de otro equipo.</p>
+<p class="micro-label">Salida representativa</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>/home/ubuntu/curso-linux
 └── evidencias
     └── sistema.txt
-</code></pre></figure><ul>
-<li><code>{ ...; }</code> agrupa comandos en el shell actual.</li>
-<li><code>$(...)</code> sustituye un comando por su salida.</li>
-<li><code>tee</code> muestra y guarda el reporte.</li>
-<li><code>-y</code> confirma la instalación; úsalo sólo si ya revisaste el paquete.</li>
-</ul>
-<p>Comprueba el resultado:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>test -s ~/curso-linux/evidencias/sistema.txt \
-  &amp;&amp; echo &quot;Evidencia creada correctamente&quot;
-</code></pre></figure><h2 id="c1-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+</code></pre></figure><blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>En Files o con <code>ls -l ~/curso-linux/evidencias</code>, verifica que existe <code>sistema.txt</code>. En <code>tree ~/curso-linux</code> debes reconocer la carpeta <code>evidencias</code> y el archivo que acabas de guardar.</p>
+</blockquote>
+<h2 id="c1-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>Confundir Ubuntu con el kernel Linux.</li>
 <li>Trabajar siempre como <code>root</code> en vez de usar <code>sudo</code> por comando.</li>
@@ -1513,7 +1641,7 @@ tree ~/curso-linux
 </ul>
 <h2 id="c1-reto-1-inventario-reproducible">Reto 1 — Inventario reproducible<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p><span class="local-reference">Ver respuesta</span></p>
-<p>Crea <code>~/curso-linux/evidencias/inventario.txt</code> con hostname, distribución, kernel, usuario, grupos y ruta del ejecutable <code>bash</code>. No escribas esos valores a mano.</p>
+<p>Crea <code>~/curso-linux/evidencias/inventario.txt</code> desde Text Editor con hostname, distribución, kernel, usuario, grupos y ruta del ejecutable <code>bash</code>. Obtén cada valor ejecutando el comando correspondiente; no copies valores de otro equipo. La Clase 3 automatizará este mismo inventario desde terminal.</p>
 <h3 id="c1-criterios-de-comprobacion">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <ul>
 <li>El archivo contiene seis datos con etiquetas legibles.</li>
@@ -1541,7 +1669,21 @@ tree ~/curso-linux
       <div class="divider-tags"><span>Capítulo 3</span><span>FHS</span><span>chmod</span><span>chown</span></div>
     </div>
   </section>
-  <article class="chapter chapter-3"><h2 id="c3-objetivos-2">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-3"><h2 id="c3-indice-2">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li><span class="local-reference">Objetivos</span></li>
+<li><span class="local-reference">Antes de empezar</span></li>
+<li><span class="local-reference">3.1 Tipos de archivo</span></li>
+<li><span class="local-reference">3.2 Enlaces</span></li>
+<li><span class="local-reference">3.3 Rutas o paths</span></li>
+<li><span class="local-reference">3.4 Jerarquía principal</span></li>
+<li><span class="local-reference">3.5 Acceso a sistemas de archivos</span></li>
+<li><span class="local-reference">3.6 Permisos</span></li>
+<li><span class="local-reference">Práctica guiada resuelta</span></li>
+<li><span class="local-reference">Errores frecuentes</span></li>
+<li><span class="local-reference">Reto 3</span></li>
+</ul>
+<h2 id="c3-objetivos-2">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>Reconocer tipos de archivos y rutas.</li>
 <li>Navegar la jerarquía principal de Linux.</li>
@@ -1580,7 +1722,13 @@ mkdir -p laboratorio/enlaces
 </tr>
 </tbody>
 </table>
+<blockquote class="learning-callout learning-callout--before"><div class="learning-callout__label">Antes de ejecutar.</div>
+<p><code>laboratorio/enlaces</code> es una carpeta de práctica de Clase 1. Puedes crearla con <code>mkdir -p</code> sin afectar <code>data/</code> ni otros ejercicios. Antes de copiar, mover o borrar, confirma la ruta con <code>pwd</code> y <code>ls</code>.</p>
+</blockquote>
 <h2 id="c3-3-1-tipos-de-archivo">3.1 Tipos de archivo<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un nombre terminado en <code>.conf</code> o <code>.log</code> ayuda a una persona, pero Linux decide cómo tratar un objeto por su tipo y permisos. Antes de modificar un archivo recibido, confirma qué es realmente.</p>
+</blockquote>
 <p>El primer carácter de <code>ls -l</code> indica el tipo:</p>
 <table>
 <thead>
@@ -1625,24 +1773,93 @@ mkdir -p laboratorio/enlaces
 </table>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>file /etc/passwd /bin/ls /dev/null
 ls -ld /etc/passwd /tmp /dev/null
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>file &lt;rutas&gt;</code>: inspecciona contenido y metadatos para estimar el tipo.</li>
+<li><code>ls -l</code>: <code>-l</code> muestra permisos, dueño, grupo y tamaño.</li>
+<li><code>ls -d</code>: <code>-d</code> describe el directorio indicado, en lugar de listar su contenido.</li>
+</ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>/etc/passwd: ASCII text
+/bin/ls: ELF 64-bit LSB pie executable
+/dev/null: character special
+drwxrwxrwt ... /tmp
 </code></pre></figure><p><code>file</code> inspecciona el contenido o metadatos; la extensión no decide el tipo en Linux.</p>
 <h2 id="c3-3-2-enlaces">3.2 Enlaces<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un servicio puede consultar siempre <code>config-actual</code>, aunque la configuración real cambie de versión. Un enlace evita copiar el archivo y permite conservar un nombre estable.</p>
+</blockquote>
+<p>Un enlace <strong>no es una segunda copia</strong>. Es otra forma de llegar al mismo contenido, pero hay dos mecanismos que se comportan de forma distinta.</p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Modelo mental</th>
+<th>Qué ocurre si el nombre original desaparece</th>
+<th>Límite importante</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enlace duro</td>
+<td>Dos nombres apuntan al mismo inode y a los mismos datos.</td>
+<td>El otro nombre sigue funcionando.</td>
+<td>Sólo vive en el mismo sistema de archivos; normalmente no se crea para directorios.</td>
+</tr>
+<tr>
+<td>Enlace simbólico</td>
+<td>Un archivo pequeño guarda la ruta de otro archivo. Es parecido a un acceso directo.</td>
+<td>Queda roto si esa ruta deja de existir.</td>
+<td>Puede apuntar a directorios y cruzar sistemas de archivos.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c3-modelo-mental-nombre-inode-y-contenido">Modelo mental: nombre, inode y contenido<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Un directorio guarda <strong>nombres</strong>. Cada nombre de archivo apunta a un <strong>inode</strong>, la ficha que identifica los datos y sus metadatos en el sistema de archivos. Por eso dos enlaces duros muestran el mismo inode: son dos nombres para los mismos datos. Un enlace simbólico tiene su propio inode y guarda una ruta hacia otro nombre.</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>config.ini ────────┐
+config-duro.ini ───┼──► inode 12345 ───► contenido: version=1
+                   │
+config-actual.ini ─┴──► guarda la ruta &quot;config.ini&quot;
+</code></pre></figure><p>No confundas un enlace duro con un respaldo: ambos nombres comparten los mismos datos. Si se modifica el contenido desde uno, cambia para el otro.</p>
 <p class="micro-label">Sintaxis general</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ln &lt;archivo_existente&gt; &lt;nuevo_enlace_duro&gt;
 ln -s &lt;ruta_objetivo&gt; &lt;nuevo_enlace_simbolico&gt;
-</code></pre></figure><p>Ejemplo resuelto: <code>config.ini</code> será el archivo existente y los otros dos nombres serán los enlaces.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/enlaces
-printf 'version=1\n' &gt; laboratorio/enlaces/config.ini
-ln laboratorio/enlaces/config.ini laboratorio/enlaces/config-duro.ini
-ln -s config.ini laboratorio/enlaces/config-actual.ini
-ls -li laboratorio/enlaces
-</code></pre></figure><ul>
-<li><code>ln origen destino</code>: enlace duro al mismo inode.</li>
-<li><code>ln -s objetivo enlace</code>: enlace simbólico que guarda una ruta.</li>
-<li><code>ls -i</code>: muestra el inode; los enlaces duros comparten número.</li>
-<li>Un enlace simbólico puede cruzar sistemas de archivos, pero puede quedar roto.</li>
+</code></pre></figure><h3 id="c3-ejemplo-guiado">Ejemplo guiado<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Trabaja en una carpeta propia para no mezclar este ejemplo con prácticas anteriores. Si ya existe <code>laboratorio/enlaces/demostracion/</code>, no repitas la creación de enlaces sobre los mismos nombres: continúa en la comprobación o crea otra carpeta de práctica.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/enlaces/demostracion
+touch laboratorio/enlaces/demostracion/config.ini
+</code></pre></figure><p>Abre <code>config.ini</code> con Text Editor y escribe <code>version=1</code>. Así podrás comprobar que los tres nombres llevan al mismo contenido sin introducir redirecciones en esta clase.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ln laboratorio/enlaces/demostracion/config.ini laboratorio/enlaces/demostracion/config-duro.ini
+ln -s config.ini laboratorio/enlaces/demostracion/config-actual.ini
+ls -li laboratorio/enlaces/demostracion
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>mkdir -p &lt;ruta&gt;</code>: crea la carpeta de práctica sin fallar si ya existe.</li>
+<li><code>touch &lt;archivo&gt;</code>: crea el archivo vacío si falta; no borra contenido existente.</li>
+<li><code>ln &lt;origen&gt; &lt;destino&gt;</code>: crea un enlace duro al mismo inode.</li>
+<li><code>ln -s &lt;objetivo&gt; &lt;enlace&gt;</code>: <code>-s</code> crea un enlace simbólico que guarda una ruta.</li>
+<li><code>ls -l</code>: muestra tipo, permisos y el destino de un enlace simbólico; <code>ls -i</code> agrega el inode.</li>
 </ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>12345 -rw-r--r-- ... config-duro.ini
+12345 -rw-r--r-- ... config.ini
+12346 lrwxrwxrwx ... config-actual.ini -&gt; config.ini
+</code></pre></figure><p>Identifica dos cosas: <code>config.ini</code> y <code>config-duro.ini</code> comparten <code>12345</code>, mientras que <code>config-actual.ini</code> empieza con <code>l</code> y muestra <code>-&gt; config.ini</code>. Los números cambiarán en cada equipo; lo importante es qué nombres comparten número.</p>
+<h3 id="c3-comprueba-que-se-rompe-y-que-permanece">Comprueba qué se rompe y qué permanece<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Abre <code>config-duro.ini</code> y <code>config-actual.ini</code> con Text Editor: ambos llevan al mismo contenido. Después, sólo dentro de <code>laboratorio/enlaces/demostracion/</code>, renombra el archivo original y vuelve a listar:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mv laboratorio/enlaces/demostracion/config.ini laboratorio/enlaces/demostracion/config-v1.ini
+ls -li laboratorio/enlaces/demostracion
+</code></pre></figure><p>El enlace duro sigue dando acceso a los datos, porque todavía apunta al inode <code>12345</code>. El enlace simbólico queda roto porque aún guarda la ruta <code>config.ini</code>. Para repararlo, elimina <strong>sólo el enlace simbólico de práctica</strong> y créalo con la nueva ruta:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>rm laboratorio/enlaces/demostracion/config-actual.ini
+ln -s config-v1.ini laboratorio/enlaces/demostracion/config-actual.ini
+ls -li laboratorio/enlaces/demostracion
+</code></pre></figure><blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Ejecuta el <code>rm</code> anterior sólo si la ruta completa es <code>laboratorio/enlaces/demostracion/config-actual.ini</code>. Nunca practiques este comportamiento con archivos de <code>/etc</code>, proyectos reales ni directorios del sistema.</p>
+</blockquote>
 <h2 id="c3-3-3-rutas-o-paths">3.3 Rutas o paths<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>La mayoría de los errores de copia, permisos o borrado empiezan con una ruta mal entendida. Antes de operar, debes saber dónde estás y cómo se interpreta el destino.</p>
+</blockquote>
 <ul>
 <li>Absoluta: comienza en <code>/</code>, por ejemplo <code>/var/log</code>.</li>
 <li>Relativa: comienza en el directorio actual, por ejemplo <code>../data</code>.</li>
@@ -1654,7 +1871,17 @@ ls -li laboratorio/enlaces
 realpath laboratorio/enlaces/config.ini
 basename /var/log/syslog
 dirname /var/log/syslog
-</code></pre></figure><h2 id="c3-3-4-jerarquia-principal">3.4 Jerarquía principal<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+</code></pre></figure><p>Las piezas que debes reconocer:</p>
+<ul>
+<li><code>pwd</code>: muestra la ruta actual.</li>
+<li><code>realpath &lt;ruta&gt;</code>: resuelve una ruta a su forma absoluta.</li>
+<li><code>basename &lt;ruta&gt;</code>: devuelve sólo el último nombre.</li>
+<li><code>dirname &lt;ruta&gt;</code>: devuelve el directorio padre.</li>
+</ul>
+<h2 id="c3-3-4-jerarquia-principal">3.4 Jerarquía principal<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un operador no busca una configuración de servicio en cualquier carpeta: sabe que <code>/etc</code> suele guardar configuración, <code>/var</code> datos que cambian y <code>/home</code> archivos de usuarios. La jerarquía acelera el diagnóstico.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1698,22 +1925,62 @@ dirname /var/log/syslog
 </tbody>
 </table>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ls -lah /
-cat /proc/meminfo | head
+head -n 5 /proc/meminfo
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>ls -l</code>: muestra detalles; <code>-a</code> incluye nombres ocultos; <code>-h</code> hace legibles tamaños.</li>
+<li><code>head -n 5 &lt;archivo&gt;</code>: <code>-n 5</code> limita la salida a cinco líneas.</li>
+</ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>drwxr-xr-x ... home
+drwxr-xr-x ... etc
+drwxr-xr-x ... var
+MemTotal:       ... kB
+MemAvailable:   ... kB
 </code></pre></figure><h2 id="c3-3-5-acceso-a-sistemas-de-archivos">3.5 Acceso a sistemas de archivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>En este curso se inspeccionan montajes; no se formatean discos.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>En soporte o DevOps alguien puede decir “el disco <code>/dev/nvme0n1p1</code> está lleno”, mientras que una aplicación sólo conoce rutas como <code>/var/log</code> o <code>/home</code>. Un montaje es la relación entre ambos mundos: conecta un dispositivo o sistema de archivos con una ruta dentro del único árbol de Linux.</p>
+</blockquote>
+<h3 id="c3-antes-de-continuar">Antes de continuar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Este apartado pertenece a la Clase 2. Trabaja desde la raíz del curso, aunque conserves carpetas de la Clase 1 en <code>laboratorio/</code>:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+pwd
+</code></pre></figure><p>No necesitas crear discos ni particiones para este ejercicio. Los comandos consultan el estado actual del equipo. Si <code>laboratorio/</code> no existe, podrás crearlo más adelante con <code>mkdir -p laboratorio</code>; no recrees a mano archivos versionados de <code>data/</code>.</p>
+<h3 id="c3-modelo-mental">Modelo mental<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Piensa en un montaje como una puerta: el <strong>origen</strong> es el dispositivo o sistema de archivos, el <strong>destino</strong> es la carpeta por la que lo usas y el <strong>tipo</strong> indica cómo organiza sus datos. No trabajes con letras de unidad como en otros sistemas; pregunta siempre “¿en qué ruta está montado?”.</p>
+<p>En este curso se inspeccionan montajes; no se formatean discos ni se modifican particiones.</p>
+<h3 id="c3-sintaxis-y-ejemplo-guiado">Sintaxis y ejemplo guiado<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>lsblk -f                 # dispositivos, tipo y punto de montaje
+findmnt &lt;ruta&gt;           # qué origen está montado en una ruta
+df -hT &lt;ruta&gt;            # capacidad del sistema de archivos de esa ruta
+</code></pre></figure><figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
 findmnt /
 df -hT /
 </code></pre></figure><p class="micro-label">Salida representativa</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>TARGET SOURCE    FSTYPE OPTIONS
 /      /dev/...  ext4   rw,relatime
-</code></pre></figure><ul>
-<li><code>lsblk -f</code>: dispositivos, sistema de archivos, etiquetas y montajes.</li>
+</code></pre></figure><p>Lee la salida en este orden:</p>
+<ol>
+<li><code>lsblk -f</code> muestra discos y particiones. Busca las columnas <code>FSTYPE</code> y <code>MOUNTPOINTS</code>; no cambies nada desde esa pantalla.</li>
+<li><code>findmnt /</code> responde qué está montado exactamente en la raíz <code>/</code>.</li>
+<li><code>df -hT /</code> responde cuánto espacio queda para las rutas que viven bajo esa raíz.</li>
+</ol>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Si una aplicación guarda logs en <code>/var/log</code>, prueba <code>findmnt /var/log</code> y <code>df -hT /var/log</code>. Puede pertenecer al mismo montaje que <code>/</code> o a uno independiente; la salida, no una suposición, te da la respuesta.</p>
+</blockquote>
+<ul>
+<li><code>lsblk -f</code>: dispositivos, sistema de archivos, etiquetas y puntos de montaje.</li>
 <li><code>findmnt</code>: relación entre destino y origen.</li>
 <li><code>df -hT</code>: espacio disponible y tipo; <code>-h</code> usa unidades legibles y <code>-T</code> agrega el tipo.</li>
-<li>ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario trabaja con la misma jerarquía.</li>
+<li>ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario sigue trabajando mediante rutas.</li>
 </ul>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Comandos como <code>mkfs</code>, <code>fdisk</code>, <code>parted</code> o <code>mount</code> pueden cambiar almacenamiento. No son parte de esta práctica. Primero identifica origen, destino y consecuencia antes de ejecutar una operación sobre discos.</p>
+</blockquote>
 <h2 id="c3-3-6-permisos">3.6 Permisos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un archivo de configuración no debe ejecutarse y un script no debe ser modificable por cualquiera. Los permisos expresan esa intención; <code>777</code> no es una solución universal.</p>
+</blockquote>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rwxr-x--- 1 alumno devops 1200 jul 4 10:00 deploy.sh
 │└┬┘└┬┘└┬┘   dueño  grupo
 │ │  │  └─ otros: ---
@@ -1753,14 +2020,19 @@ df -hT /
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>touch laboratorio/enlaces/deploy.sh
 chmod u=rwx,g=rx,o= laboratorio/enlaces/deploy.sh
 chmod 750 laboratorio/enlaces/deploy.sh
-sudo chown &quot;$USER&quot;:&quot;$(id -gn)&quot; laboratorio/enlaces/deploy.sh
 ls -l laboratorio/enlaces/deploy.sh
-</code></pre></figure><p>En <code>chown</code>, <code>$USER</code> se sustituye automáticamente por tu usuario actual y <code>$(id -gn)</code> por tu grupo principal. Por ejemplo, si ambos se llaman <code>ubuntu</code>, el comando efectivo equivale a:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>sudo chown ubuntu:ubuntu laboratorio/enlaces/deploy.sh
-</code></pre></figure><p>No copies <code>ubuntu:ubuntu</code> si tu cuenta tiene otro nombre; la versión con <code>$USER</code> se adapta sola.</p>
+</code></pre></figure><p>Las opciones y modos usados:</p>
 <ul>
+<li><code>chmod u=rwx,g=rx,o=</code>: asigna permisos simbólicos para dueño, grupo y otros.</li>
+<li><code>chmod 750</code>: forma octal de <code>rwxr-x---</code>.</li>
+<li><code>ls -l</code>: permite comprobar el modo antes y después.</li>
+</ul>
+<p><code>chown</code> y <code>chgrp</code> cambian dueño o grupo y se usan sólo cuando el responsable de la ruta lo requiere. Los practicaremos con una VM autorizada; no copies nombres de usuario de otro equipo.</p>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rwxr-x--- ... usuario grupo ... laboratorio/enlaces/deploy.sh
+</code></pre></figure><ul>
 <li><code>chmod</code>: cambia bits de permiso.</li>
-<li><code>chown usuario:grupo</code>: cambia dueño y grupo.</li>
+<li><code>chown usuario:grupo</code>: cambia dueño y grupo cuando existe una necesidad autorizada.</li>
 <li><code>chgrp</code>: cambia sólo el grupo.</li>
 <li><code>750</code> equivale a <code>rwxr-x---</code>.</li>
 </ul>
@@ -1771,20 +2043,19 @@ ls -l laboratorio/enlaces/deploy.sh
 ├── config/app.env
 └── logs/
 </code></pre></figure><figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/proyecto/{config,logs,bin}
-printf 'PORT=8080\n' &gt; laboratorio/proyecto/config/app.env
-printf '#!/usr/bin/env bash\necho &quot;servicio listo&quot;\n' &gt; laboratorio/proyecto/bin/status.sh
+touch laboratorio/proyecto/config/app.env
+touch laboratorio/proyecto/bin/status.sh
 chmod 640 laboratorio/proyecto/config/app.env
 chmod 750 laboratorio/proyecto/bin/status.sh
 ln -s ../config/app.env laboratorio/proyecto/bin/config-actual
-laboratorio/proyecto/bin/status.sh
 ls -l laboratorio/proyecto/config laboratorio/proyecto/bin
-</code></pre></figure><p>Salida principal:</p>
-<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>servicio listo
--rwxr-x--- ... status.sh
+</code></pre></figure><p>Abre <code>status.sh</code> con Text Editor y escribe <code>echo &quot;servicio listo&quot;</code>. Guarda antes de intentar ejecutarlo. Esta primera clase evita redirecciones; en Clase 3 aprenderás a crear ese contenido desde terminal.</p>
+<p>Salida principal:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rwxr-x--- ... status.sh
 lrwxrwxrwx ... config-actual -&gt; ../config/app.env
 -rw-r----- ... app.env
 </code></pre></figure><p>El enlace muestra <code>rwx</code> por sí mismo; el acceso efectivo depende del objetivo y de los directorios de la ruta.</p>
-<p>Si ves <code>Permission denied</code> al ejecutar <code>status.sh</code>, confirma primero <code>pwd</code> y luego ejecuta <code>ls -l laboratorio/proyecto/bin/status.sh</code>.</p>
+<p>Para ejecutar el script después de guardarlo, usa <code>laboratorio/proyecto/bin/status.sh</code>. Si ves <code>Permission denied</code>, confirma primero <code>pwd</code> y luego ejecuta <code>ls -l laboratorio/proyecto/bin/status.sh</code>.</p>
 <h2 id="c3-errores-frecuentes-2">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>Aplicar <code>chmod -R 777</code> para ocultar un problema.</li>
@@ -1795,6 +2066,7 @@ lrwxrwxrwx ... config-actual -&gt; ../config/app.env
 <h2 id="c3-reto-3-directorio-compartido">Reto 3 — Directorio compartido<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p><span class="local-reference">Ver respuesta</span></p>
 <p>Crea <code>laboratorio/compartido</code> para un equipo: dueño con control total, grupo con lectura/escritura/acceso y otros sin acceso. Dentro crea <code>app.env</code> como configuración no ejecutable, <code>check.sh</code> como script ejecutable y <code>check-actual</code> como enlace simbólico al script.</p>
+<p>Usa <code>touch</code> para crear los dos archivos y Text Editor para escribir <code>echo &quot;servicio listo&quot;</code> dentro de <code>check.sh</code>. No uses redirecciones todavía; se explican en la Clase 3.</p>
 <h3 id="c3-criterios-de-comprobacion-2">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <ul>
 <li>Los modos reflejan necesidades distintas para directorio, configuración y script.</li>
@@ -1822,7 +2094,31 @@ lrwxrwxrwx ... config-actual -&gt; ../config/app.env
       <div class="divider-tags"><span>Capítulo 7.1–7.15</span><span>bash</span><span>cp · mv · rm</span><span>file · stat</span></div>
     </div>
   </section>
-  <article class="chapter chapter-7"><h2 id="c7-objetivos-3">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-7"><h2 id="c7-indice-3">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li><span class="local-reference">Objetivos</span></li>
+<li><span class="local-reference">Antes de empezar</span></li>
+<li><span class="local-reference">7.1–7.3 Shell, comandos y directorio personal</span></li>
+<li><span class="local-reference">7.4 Listar</span></li>
+<li><span class="local-reference">7.5–7.8 Directorios y navegación</span></li>
+<li><span class="local-reference">7.9 Unidades y montajes</span></li>
+<li><span class="local-reference">7.10 Copiar</span></li>
+<li><span class="local-reference">7.11 Mover y renombrar</span></li>
+<li><span class="local-reference">7.12 Enlaces</span></li>
+<li><span class="local-reference">7.13 Borrar</span></li>
+<li><span class="local-reference">7.14 Identificar</span></li>
+<li><span class="local-reference">7.15 Permisos y propiedad</span></li>
+<li><span class="local-reference">Ruta práctica de la Clase 2</span></li>
+<li><span class="local-reference">7.16 Espacio</span></li>
+<li><span class="local-reference">7.17–7.18 Visualizar</span></li>
+<li><span class="local-reference">7.19 Buscar</span></li>
+<li><span class="local-reference">7.20 Empaquetar y comprimir</span></li>
+<li><span class="local-reference">7.21 Impresión</span></li>
+<li><span class="local-reference">Práctica guiada: respaldo de evidencia</span></li>
+<li><span class="local-reference">Errores frecuentes</span></li>
+<li><span class="local-reference">Reto 7</span></li>
+</ul>
+<h2 id="c7-objetivos-3">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>Navegar y administrar archivos desde Bash.</li>
 <li>Consultar ayuda y verificar el efecto de cada comando.</li>
@@ -1830,12 +2126,16 @@ lrwxrwxrwx ... config-actual -&gt; ../config/app.env
 <li>Aplicar opciones de seguridad antes de borrar o sobrescribir.</li>
 </ul>
 <h2 id="c7-antes-de-empezar-3">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Este capítulo forma una secuencia: cada apartado reutiliza archivos del anterior. Empieza desde la raíz del curso y prepara una copia limpia de los datos:</p>
+<p>Este capítulo forma una secuencia: cada apartado reutiliza archivos del anterior. Al iniciar la <strong>Clase 1</strong>, empieza desde la raíz del curso y prepara una copia limpia de los datos:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
 bash ejercicios-bash-scripting/preparar-lab.sh
 mkdir -p laboratorio/shell/{entrada,salida,backup}
 </code></pre></figure><p>Trabajaremos con <code>modelo.txt</code> como archivo original, <code>backup-modelo.txt</code> como copia y <code>modelo-validado.txt</code> como nombre nuevo. No uses archivos personales para estas prácticas.</p>
+<p><code>preparar-lab.sh</code> elimina y recrea <code>laboratorio/</code>. Úsalo al iniciar la Clase 1 o cuando el instructor indique un reinicio deliberado. Si ya estás en la Clase 2 y quieres conservar evidencia previa, ve al apartado “Antes de continuar con la Clase 2” y no ejecutes este reinicio.</p>
 <h2 id="c7-7-1-7-3-shell-comandos-y-directorio-personal">7.1–7.3 Shell, comandos y directorio personal<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>La terminal no es un lugar para memorizar hechizos: es una conversación con el sistema. El shell decide qué programa ejecuta y conserva tu contexto, por ejemplo la carpeta actual.</p>
+</blockquote>
 <p>Bash interpreta palabras, expansiones, redirecciones y operadores. Un comando puede ser <strong>builtin del shell</strong> o un <strong>ejecutable externo</strong>:</p>
 <table>
 <thead>
@@ -1890,7 +2190,12 @@ which grep     # /usr/bin/grep (ignora el alias, devuelve el binario)
 which echo     # /usr/bin/echo (ignora el builtin, devuelve el binario externo)
 which mkdir    # /usr/bin/mkdir (externo puro, sin alias ni builtin)
 which cd       # (sin salida — cd es builtin, no tiene archivo ejecutable)
-</code></pre></figure><p>Directorio personal y navegación básica:</p>
+</code></pre></figure><p>Las opciones usadas:</p>
+<ul>
+<li><code>type -a &lt;nombre&gt;</code>: muestra todas las formas en que el shell puede resolver un nombre.</li>
+<li><code>which &lt;nombre&gt;</code>: busca un ejecutable en <code>PATH</code>; úsalo como pista, no para sustituir a <code>type</code> al investigar aliases o builtins.</li>
+</ul>
+<p>Directorio personal y navegación básica:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>echo &quot;$HOME&quot;
 cd
 pwd
@@ -1898,16 +2203,25 @@ pwd
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>/home/ubuntu
 /home/ubuntu
 </code></pre></figure><h2 id="c7-7-4-listar-ls">7.4 Listar: <code>ls</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Antes de copiar, mover o borrar, lista la ruta exacta. <code>ls</code> responde qué hay y, con opciones, quién es dueño, cuánto mide y cuándo cambió.</p>
+</blockquote>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ls -lah
-ls -lt laboratorio | head
+ls -lt laboratorio
 </code></pre></figure><ul>
 <li><code>-l</code>: formato largo.</li>
 <li><code>-a</code>: incluye nombres que comienzan con <code>.</code>.</li>
 <li><code>-h</code>: tamaños legibles junto con <code>-l</code>.</li>
 <li><code>-t</code>: ordena por modificación.</li>
 </ul>
-<p>No analices <code>ls</code> en scripts complejos: nombres con espacios o saltos de línea requieren herramientas como <code>find</code>.</p>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>drwxr-xr-x ... usuario grupo ... laboratorio
+-rw-r--r-- ... usuario grupo ... archivo.txt
+</code></pre></figure><p>No analices <code>ls</code> en scripts complejos: nombres con espacios o saltos de línea requieren herramientas como <code>find</code>.</p>
 <h2 id="c7-7-5-7-8-directorios-y-navegacion">7.5–7.8 Directorios y navegación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Una operación segura empieza por la carpeta correcta. <code>cd</code> cambia el contexto de la terminal; por eso siempre confirmas con <code>pwd</code> antes de actuar.</p>
+</blockquote>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell/{entrada,salida,backup}
 cd laboratorio/shell/entrada
 pwd
@@ -1920,16 +2234,25 @@ rmdir laboratorio/shell/backup
 <li><code>cd -</code>: regresa a la ruta anterior.</li>
 <li><code>pwd</code>: muestra la ruta efectiva actual.</li>
 </ul>
-<h2 id="c7-7-9-unidades-y-montajes">7.9 Unidades y montajes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Salida representativa después de <code>cd laboratorio/shell/entrada</code>:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>/home/usuario/linux-desde-cero/laboratorio/shell/entrada
+</code></pre></figure><h2 id="c7-7-9-unidades-y-montajes">7.9 Unidades y montajes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p>Linux presenta los sistemas de archivos dentro de una sola jerarquía:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
 findmnt /
-</code></pre></figure><p>No accedas a “una unidad” por letra; identifica su punto de montaje.</p>
+</code></pre></figure><ul>
+<li><code>lsblk -f</code>: <code>-f</code> agrega tipo de sistema de archivos, etiqueta y punto de montaje.</li>
+<li><code>findmnt /</code>: pregunta qué está montado en la ruta raíz.</li>
+</ul>
+<p>No accedas a “una unidad” por letra; identifica su punto de montaje.</p>
 <h2 id="c7-7-10-copiar-cp">7.10 Copiar: <code>cp</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Antes de cambiar una configuración o un artefacto, haces una copia. La regla es siempre la misma: primer argumento = origen, segundo argumento = destino.</p>
+</blockquote>
 <p class="micro-label">Sintaxis general</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cp [opciones] &lt;origen&gt; &lt;destino&gt;
-</code></pre></figure><p>En el ejemplo resuelto, <code>modelo.txt</code> es el origen. El primer <code>printf</code> crea ese archivo; no necesitas crearlo antes.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'accuracy=0.93\n' &gt; laboratorio/shell/entrada/modelo.txt
+</code></pre></figure><p>En el ejemplo resuelto, <code>modelo.txt</code> es el origen. Créalo vacío con <code>touch</code>; si quieres contenido, ábrelo con Text Editor y escribe <code>accuracy=0.93</code>.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>touch laboratorio/shell/entrada/modelo.txt
 cp -v laboratorio/shell/entrada/modelo.txt laboratorio/shell/backup-modelo.txt
 cp -a laboratorio/shell/entrada laboratorio/shell/entrada-copia
 </code></pre></figure><ul>
@@ -1937,16 +2260,33 @@ cp -a laboratorio/shell/entrada laboratorio/shell/entrada-copia
 <li><code>-a</code>: copia recursivamente preservando metadatos apropiados.</li>
 <li>Para evitar sobrescritura accidental puede usarse <code>cp -i</code>.</li>
 </ul>
-<h2 id="c7-7-11-mover-y-renombrar-mv">7.11 Mover y renombrar: <code>mv</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Salida representativa de <code>cp -v</code>:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>'laboratorio/shell/entrada/modelo.txt' -&gt; 'laboratorio/shell/backup-modelo.txt'
+</code></pre></figure><h2 id="c7-7-11-mover-y-renombrar-mv">7.11 Mover y renombrar: <code>mv</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Renombrar una copia deja claro cuál configuración o versión es la vigente sin cambiar su contenido.</p>
+</blockquote>
 <p>Sintaxis general: <code>mv &lt;origen&gt; &lt;destino&gt;</code>. Aquí renombraremos la copia <code>backup-modelo.txt</code> como <code>modelo-validado.txt</code>; el archivo original <code>entrada/modelo.txt</code> permanece intacto.</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mv -i laboratorio/shell/backup-modelo.txt laboratorio/shell/modelo-validado.txt
 </code></pre></figure><p>Dentro del mismo sistema de archivos, renombrar suele ser inmediato. Entre sistemas puede implicar copiar y eliminar.</p>
+<ul>
+<li><code>-i</code>: solicita confirmación antes de sobrescribir un destino existente.</li>
+</ul>
 <h2 id="c7-7-12-enlaces-ln">7.12 Enlaces: <code>ln</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un enlace simbólico permite usar un nombre estable como <code>modelo-actual</code> sin duplicar el archivo. Es una referencia, no una segunda copia.</p>
+</blockquote>
+<p>La diferencia entre enlace duro, enlace simbólico e inode se trabaja paso a paso en la sección 3.2. Aquí sólo aplicas un enlace simbólico relativo dentro del laboratorio del shell.</p>
 <p>El objetivo se escribe como <code>entrada/modelo.txt</code> porque el enlace estará dentro de <code>laboratorio/shell</code>. Esa ruta se interpreta desde la ubicación del enlace, no desde tu terminal.</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ln -s entrada/modelo.txt laboratorio/shell/modelo-actual
 readlink laboratorio/shell/modelo-actual
 </code></pre></figure><p><code>-s</code> crea un enlace simbólico; <code>readlink</code> muestra su objetivo almacenado.</p>
-<h2 id="c7-7-13-borrar-rm">7.13 Borrar: <code>rm</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>entrada/modelo.txt
+</code></pre></figure><h2 id="c7-7-13-borrar-rm">7.13 Borrar: <code>rm</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Borrar es la única operación de este bloque que no tiene recuperación general en terminal. Por eso se practica sólo dentro de <code>laboratorio/shell/</code> y con confirmaciones.</p>
+</blockquote>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>rm -i laboratorio/shell/modelo-validado.txt
 rm -rI laboratorio/shell/entrada-copia
 </code></pre></figure><ul>
@@ -1956,7 +2296,12 @@ rm -rI laboratorio/shell/entrada-copia
 </ul>
 <p>Antes de un <code>rm -r</code>, ejecuta <code>ls</code> sobre la misma ruta. No uses <code>-f</code> como solución automática.</p>
 <p>Ambos comandos pedirán confirmación. Responde <code>y</code> sólo después de comprobar que las rutas comienzan con <code>laboratorio/shell/</code>.</p>
-<h2 id="c7-7-14-identificar-file-y-stat">7.14 Identificar: <code>file</code> y <code>stat</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Salida representativa de una confirmación:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>rm: remove regular file 'laboratorio/shell/modelo-validado.txt'?
+</code></pre></figure><h2 id="c7-7-14-identificar-file-y-stat">7.14 Identificar: <code>file</code> y <code>stat</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Si un archivo no se comporta como esperas, primero identifica su tipo, tamaño y permisos. La extensión no basta para diagnosticarlo.</p>
+</blockquote>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>file laboratorio/shell/entrada/modelo.txt
 stat -c '%F | %s bytes | %a | %n' laboratorio/shell/entrada/modelo.txt
 </code></pre></figure><p class="micro-label">Salida representativa</p>
@@ -1968,16 +2313,46 @@ regular file | 14 bytes | 644 | laboratorio/shell/entrada/modelo.txt
 <li><code>%a</code>: modo octal.</li>
 <li><code>%n</code>: nombre.</li>
 </ul>
+<p>Las opciones usadas:</p>
+<ul>
+<li><code>stat -c '&lt;formato&gt;'</code>: <code>-c</code> define qué campos mostrar.</li>
+<li><code>%F</code>, <code>%s</code>, <code>%a</code> y <code>%n</code>: tipo, bytes, permisos octales y nombre.</li>
+</ul>
 <h2 id="c7-7-15-permisos-y-propiedad">7.15 Permisos y propiedad<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Los permisos expresan quién puede leer, modificar o ejecutar. Cambiarlos debe ser una decisión basada en el uso del archivo, no un intento de hacer desaparecer un error.</p>
+</blockquote>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>chmod 640 laboratorio/shell/entrada/modelo.txt
-chgrp &quot;$(id -gn)&quot; laboratorio/shell/entrada/modelo.txt
-sudo chown &quot;$USER&quot;:&quot;$(id -gn)&quot; laboratorio/shell/entrada/modelo.txt
+ls -l laboratorio/shell/entrada/modelo.txt
 </code></pre></figure><ul>
 <li><code>chmod</code>: modo.</li>
-<li><code>chgrp</code>: grupo.</li>
-<li><code>chown</code>: dueño y opcionalmente grupo.</li>
+<li><code>chmod 640</code>: dueño con lectura/escritura, grupo con lectura y otros sin acceso.</li>
+<li><code>ls -l</code>: confirma el modo aplicado.</li>
 </ul>
-<p><code>$USER</code> y <code>$(id -gn)</code> se resuelven automáticamente. Si el usuario y grupo son <code>ubuntu</code>, el último comando equivale a <code>sudo chown ubuntu:ubuntu ...</code>.</p>
+<p><code>chgrp</code> y <code>chown</code> cambian grupo o dueño y se usan sólo con autorización sobre la ruta. En esta primera clase se observan y se explican; no copies un nombre de usuario o grupo de otra máquina.</p>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rw-r----- ... usuario grupo ... laboratorio/shell/entrada/modelo.txt
+</code></pre></figure><h2 id="c7-antes-de-continuar-con-la-clase-2">Antes de continuar con la Clase 2<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Esta sesión empieza <strong>después</strong> de navegación, archivos y permisos. Por eso puedes encontrar trabajo de la Clase 1 dentro de <code>laboratorio/</code>. No hace falta borrarlo ni volver a crearlo para usar esta guía.</p>
+<blockquote class="learning-callout learning-callout--before"><div class="learning-callout__label">Antes de ejecutar.</div>
+<p>Sitúate en la raíz del curso y comprueba los dos archivos de lectura de esta clase. Son fixtures del repositorio: si faltan, no los crees vacíos; recupera el repositorio o pide apoyo al instructor.</p>
+</blockquote>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+pwd
+ls data/dummy_logs.txt data/specials.txt
+</code></pre></figure><p>El directorio <code>laboratorio/</code> sí es tu área de práctica. Puedes crear una carpeta nueva sin tocar los ejercicios anteriores:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell
+</code></pre></figure><p>Si conservas <code>laboratorio/shell/entrada/modelo.txt</code> o <code>laboratorio/proyecto/</code> de la Clase 1, úsalos como evidencia de tu avance. Esta clase no depende de ellos. <strong>No ejecutes <code>preparar-lab.sh</code> sólo para empezar la Clase 2:</strong> ese script reinicia <code>laboratorio/</code> y elimina evidencia previa.</p>
+<h2 id="c7-ruta-practica-de-la-clase-2">Ruta práctica de la Clase 2<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>La numeración del temario conserva <code>du</code> y <code>df</code> primero, pero en clase conviene aprender en este orden:</p>
+<ol>
+<li>leer un archivo sin modificarlo (<code>head</code>, <code>tail</code>, <code>less</code>);</li>
+<li>buscar una pista o un archivo (<code>grep</code>, <code>find</code>);</li>
+<li>decidir si falta espacio (<code>du</code>, <code>df</code>);</li>
+<li>crear y comprobar un respaldo (<code>tar</code>, <code>gzip</code>, <code>sha256sum</code>);</li>
+<li>relacionar archivos, montajes y escritorio gráfico.</li>
+</ol>
+<p>Los mismos comandos sirven en distintos roles. Un técnico de soporte busca un archivo de un usuario; alguien de backend revisa configuración y logs antes de desplegar; una persona de operaciones investiga un incidente sin modificar el servidor.</p>
 </article>
 
   <section class="section-divider closing">

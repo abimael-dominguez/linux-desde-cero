@@ -101,11 +101,23 @@ function renderChapter(file, stopAt, chapterKey) {
     inline.children.push(backLink);
   }
 
-  return md.renderer.render(tokens, md.options, env)
+  const rendered = md.renderer.render(tokens, md.options, env)
     .replaceAll('<p>Salida representativa:</p>', '<p class="micro-label">Salida representativa</p>')
     .replaceAll('<p>Sintaxis general:</p>', '<p class="micro-label">Sintaxis general</p>')
     .replaceAll('<p>Ejemplos resueltos:</p>', '<p class="micro-label">Ejemplos resueltos</p>')
     .replaceAll('<p>Ejemplo resuelto para copiar:</p>', '<p class="micro-label">Ejemplo resuelto para copiar</p>');
+
+  const callouts = [
+    ['Situación real.', 'situation'],
+    ['Antes de ejecutar.', 'before'],
+    ['Comprueba.', 'check'],
+    ['Cuidado.', 'care'],
+  ];
+
+  return callouts.reduce((html, [label, kind]) => html.replaceAll(
+    `<blockquote>\n<p><strong>${label}</strong> `,
+    `<blockquote class="learning-callout learning-callout--${kind}"><div class="learning-callout__label">${label}</div>\n<p>`,
+  ), rendered);
 }
 
 const chapter1 = renderChapter('01-introduccion-a-linux.md', undefined, 'c1');
@@ -131,16 +143,17 @@ const tocChapter3 = tocGroup(tocChapters[1]);
 const tocChapter7 = tocGroup(tocChapters[2]);
 
 const agenda = [
-  ['09:00–09:20', 'Verificar el entorno con <code>whoami</code>, <code>hostname</code>, <code>pwd</code> y <code>/etc/os-release</code>.'],
-  ['09:20–10:00', 'Kernel, distribución, shell, terminal y escritorio.'],
-  ['10:00–10:40', 'Usuarios, grupos y <code>sudo</code>; práctica controlada.'],
-  ['10:40–11:00', 'Flujo mínimo de <code>apt</code>.'],
+  ['09:00–09:30', 'Diagnóstico y modelo mental: usuario, host, kernel, distribución, terminal y shell.'],
+  ['09:30–10:10', 'Usuarios, grupos y <code>sudo</code>; lectura de evidencia antes de modificar cuentas.'],
+  ['10:10–10:45', 'Consulta de paquetes, ayuda y práctica controlada con <code>apt</code>.'],
+  ['10:45–11:00', 'Checkpoint, preguntas y repetición; sin contenido nuevo.'],
   ['11:00–11:30', '<strong>Receso.</strong>', 'break-row'],
-  ['11:30–12:15', 'Jerarquía, rutas y tipos de archivo.'],
-  ['12:15–13:05', '<code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>touch</code>, <code>cp</code>, <code>mv</code>, <code>rm</code> y <code>file</code>.'],
-  ['13:05–13:40', 'Enlaces, permisos, propietario y grupo.'],
-  ['13:40–13:55', 'Reto 3: directorio compartido.'],
-  ['13:55–14:00', 'Evidencia y cierre.'],
+  ['11:30–12:00', 'Rutas, jerarquía y tipos de archivo; observar antes de actuar.'],
+  ['12:00–12:35', '<code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code> y <code>touch</code>, con práctica por comando.'],
+  ['12:35–13:05', '<code>cp</code>, <code>mv</code>, <code>file</code> y enlaces: origen, destino y resultado esperado.'],
+  ['13:05–13:35', 'Permisos y práctica guiada: configuración, script y enlace.'],
+  ['13:35–13:52', 'Reto corto, clínica de errores y evidencia.'],
+  ['13:52–14:00', 'Exit ticket, semáforo final y cierre.'],
 ];
 
 const agendaRows = agenda.map(([time, activity, rowClass = '']) => `
@@ -1073,6 +1086,7 @@ const html = `<!doctype html>
       background: #eef5f8;
       font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
       font-size: .91em;
+      white-space: nowrap;
       font-variant-ligatures: none;
       text-rendering: geometricPrecision;
     }
@@ -1140,6 +1154,7 @@ const html = `<!doctype html>
       color: inherit;
       background: transparent;
       font: inherit;
+      white-space: pre-wrap;
     }
     .codebox--output {
       border-color: #cfdde4;
@@ -1193,6 +1208,44 @@ const html = `<!doctype html>
       background: #fff3f6;
     }
     article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter .learning-callout {
+      position: relative;
+      padding: 0.15in 0.16in 0.13in;
+      border-left-width: 5px;
+      border-radius: 0 7px 7px 0;
+    }
+    .learning-callout__label {
+      margin-bottom: 0.05in;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    article.chapter .learning-callout--situation {
+      border-left-color: var(--blue);
+      color: #294b64;
+      background: #eaf3f7;
+    }
+    .learning-callout--situation .learning-callout__label { color: var(--blue); }
+    article.chapter .learning-callout--before {
+      border-left-color: #e8a900;
+      color: #5f4a13;
+      background: #fff8df;
+    }
+    .learning-callout--before .learning-callout__label { color: #9b6c00; }
+    article.chapter .learning-callout--check {
+      border-left-color: #2a9d68;
+      color: #245a43;
+      background: #e9f7f0;
+    }
+    .learning-callout--check .learning-callout__label { color: #1d8054; }
+    article.chapter .learning-callout--care {
+      border-left-color: var(--red);
+      color: #70404b;
+      background: #fff1f4;
+    }
+    .learning-callout--care .learning-callout__label { color: #c71841; }
     article.chapter hr {
       margin: 0.26in 0;
       border: 0;

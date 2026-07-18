@@ -1,5 +1,18 @@
 # 1. Introducción a Linux
 
+## Índice
+
+- [Objetivos](#objetivos)
+- [Antes de empezar](#antes-de-empezar)
+- [Ruta práctica de la Clase 1](#ruta-práctica-de-la-clase-1)
+- [1.1 ¿Qué es Linux?](#11-qué-es-linux)
+- [1.2 ¿Qué son las distribuciones?](#12-qué-son-las-distribuciones)
+- [1.3 Entorno de trabajo: shell y entorno gráfico](#13-entorno-de-trabajo-shell-y-entorno-gráfico)
+- [1.4 Usuarios y grupos](#14-usuarios-y-grupos)
+- [Práctica guiada resuelta](#práctica-guiada-resuelta)
+- [Errores frecuentes](#errores-frecuentes)
+- [Reto 1](#reto-1--inventario-reproducible)
+
 ## Objetivos
 
 - Distinguir kernel, distribución, shell, terminal y escritorio.
@@ -13,17 +26,30 @@ Abre una terminal y sitúate en la raíz del curso:
 
 ```bash
 cd ~/linux-desde-cero
-test -f README.md && echo "Directorio correcto"
+pwd
+ls README.md
 ```
 
-Si el mensaje no aparece, revisa dónde clonaste el repositorio antes de continuar. En este capítulo instalarás o crearás temporalmente:
+Si `ls README.md` indica que no encuentra el archivo, revisa dónde clonaste el repositorio antes de continuar. En este capítulo instalarás o crearás temporalmente:
 
 - el paquete `tree`, para visualizar directorios;
 - un grupo llamado `devops-lab`;
 - un usuario de práctica llamado `alumno`;
 - la carpeta `~/curso-linux/evidencias` para guardar resultados.
 
+> **Antes de ejecutar.** Esta es la primera sesión. `~/curso-linux` y `laboratorio/` son espacios de práctica; puedes crearlos. No crees archivos vacíos dentro de `data/` para ocultar un error de ruta.
+
+## Ruta práctica de la Clase 1
+
+1. Identifica qué sistema y usuario estás usando.
+2. Comprende qué cambia `sudo` y qué cambia un gestor de paquetes.
+3. Aprende a recorrer y reconocer rutas antes de modificarlas.
+4. Crea una estructura segura, copia y renombra archivos.
+5. Comprueba tipo, enlace, dueño y permisos antes de corregirlos.
+
 ## 1.1 ¿Qué es Linux?
+
+> **Situación real.** Una alerta puede mencionar “Linux”, “Ubuntu” o “kernel”. Para operar un servidor con seguridad debes saber si hablan del núcleo que controla recursos o de la distribución que instala y configura herramientas.
 
 Linux es el **kernel**: administra CPU, memoria, dispositivos, procesos y sistemas de archivos. Una distribución combina ese kernel con herramientas, bibliotecas, un gestor de paquetes y decisiones de configuración.
 
@@ -38,6 +64,11 @@ uname -r
 cat /etc/os-release
 ```
 
+Las opciones usadas:
+
+- `uname -r`: `-r` pide el *release* o versión del kernel en ejecución.
+- `cat /etc/os-release`: no tiene bandera; lee el archivo estándar que describe la distribución.
+
 Salida representativa:
 
 ```text
@@ -51,7 +82,11 @@ VERSION_ID="24.04"
 - `/etc/os-release`: describe la distribución, no el kernel.
 - `-r`: solicita el *kernel release*.
 
+> **Comprueba.** La primera salida identifica el kernel; las líneas `PRETTY_NAME` e `ID` identifican la distribución. No tienen por qué usar el mismo número de versión.
+
 ## 1.2 ¿Qué son las distribuciones?
+
+> **Situación real.** Un runbook puede decir `apt install`, pero otro servidor usar `dnf`. El objetivo es reconocer el flujo consultar → revisar → instalar, no aprender una lista aislada de comandos.
 
 Las distribuciones comparten el kernel, pero cambian herramientas, versiones, soporte y paquetes.
 
@@ -72,6 +107,15 @@ apt show tree
 sudo apt install tree
 tree --version
 ```
+
+Las opciones y subcomandos usados:
+
+- `sudo`: ejecuta sólo el comando que sigue con privilegios administrativos.
+- `apt update`: actualiza el catálogo local de paquetes; no actualiza programas instalados.
+- `apt search <texto>`: busca por nombre o descripción.
+- `apt show <paquete>`: muestra versión, tamaño, dependencias y descripción.
+- `apt install <paquete>`: instala el paquete indicado después de revisarlo.
+- `tree --version`: `--version` confirma qué versión se instaló.
 
 - `apt update`: actualiza el índice local; no actualiza todavía los programas.
 - `search`: busca por nombre y descripción.
@@ -101,7 +145,11 @@ command -v uname
 - `type`: indica si el nombre es alias, builtin o ejecutable.
 - `command -v`: muestra cómo lo resolverá el shell.
 
+> **Cuidado.** `apt upgrade` cambia paquetes ya instalados y no forma parte de esta práctica. Primero aprende a consultar qué haría una acción administrativa.
+
 ## 1.3 Entorno de trabajo: shell y entorno gráfico
+
+> **Situación real.** La terminal es la ventana de texto; Bash es el intérprete que entiende lo que escribes. En una EC2 puedes tener shell sin escritorio, y en GNOME/KDE puedes abrir distintas terminales que usen el mismo shell.
 
 - **Terminal:** interfaz que recibe texto y muestra resultados.
 - **Shell:** programa que interpreta comandos; Bash es el principal del curso.
@@ -126,7 +174,15 @@ bash
 - `$$` es el PID del shell actual.
 - `tty` identifica la terminal asociada a la sesión.
 
+Las piezas que debes reconocer:
+
+- `$SHELL`: variable con el shell configurado para tu usuario.
+- `$$`: identificador del shell actual; lo usaremos sólo para observar, no para terminar procesos.
+- `ps -p <PID> -o comm=`: `-p` selecciona un proceso y `-o` elige la columna mostrada.
+
 ## 1.4 Usuarios y grupos
+
+> **Situación real.** Cuando un archivo rechaza acceso, la pregunta no es “¿cómo obtengo permisos totales?”, sino “¿con qué usuario trabajo, a qué grupos pertenezco y qué autorización requiere la tarea?”.
 
 Linux separa identidades y permisos mediante UID y GID.
 
@@ -146,6 +202,13 @@ uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),27(sudo)
 - `uid`: identidad numérica del usuario.
 - `gid`: grupo principal.
 - `groups`: grupos adicionales; `sudo` suele conceder administración en Ubuntu.
+
+Las opciones y consultas usadas:
+
+- `whoami`: muestra el nombre efectivo del usuario actual.
+- `id`: muestra UID, GID y grupos en una sola salida.
+- `groups`: lista grupos por nombre.
+- `getent passwd "$USER"`: consulta el registro de tu usuario; `passwd` es la base de cuentas y `$USER` se sustituye por tu nombre de sesión.
 
 ### ¿Qué hace `getent`?
 
@@ -187,19 +250,11 @@ ubuntu:x:1000:1000:Ubuntu:/home/ubuntu:/bin/bash
 
 La `x` no es la contraseña. Indica que la información protegida se guarda en `/etc/shadow`, que sólo puede leer `root`.
 
-Para comprobar si una cuenta existe sin imprimir información innecesaria:
-
-```bash
-if getent passwd alumno > /dev/null; then
-  echo "El usuario alumno existe"
-else
-  echo "El usuario alumno no existe"
-fi
-```
-
-`getent` devuelve estado `0` cuando encuentra el registro y un estado distinto de cero cuando no lo encuentra. Por eso puede utilizarse directamente como condición de un `if`.
+Para esta primera clase basta ejecutar `getent passwd alumno` y leer la salida. Las condiciones, redirecciones y estados de salida se automatizan en la Clase 3.
 
 ### Crear un usuario de laboratorio
+
+> **Cuidado.** Crear usuarios y grupos cambia el equipo. La práctica se realiza sólo en una VM o instancia de laboratorio autorizada; si trabajas en un equipo corporativo, observa la demostración y no copies el bloque.
 
 Vamos a crear dos objetos diferentes:
 
@@ -277,23 +332,26 @@ sudo groupdel devops-lab
 
 ## Práctica guiada resuelta
 
-Objetivo: inspeccionar el host e instalar una herramienta.
+> **Situación real.** Antes de administrar un equipo necesitas dejar una evidencia que otra persona pueda leer. En esta primera clase la evidencia se guarda con Text Editor; en la Clase 3 aprenderás a generarla automáticamente desde la terminal.
 
-Esta práctica se ejecuta con tu usuario habitual, no con la cuenta `alumno`. Creará `~/curso-linux/evidencias/sistema.txt` y después mostrará la estructura con `tree`.
+Objetivo: inspeccionar el host, instalar una herramienta y organizar una evidencia.
+
+Esta práctica se ejecuta con tu usuario habitual, no con la cuenta `alumno`. Creará `~/curso-linux/evidencias/` y después mostrará la estructura con `tree`.
 
 ```bash
 mkdir -p ~/curso-linux/evidencias
-{
-  echo "Usuario: $(whoami)"
-  echo "Kernel: $(uname -r)"
-  grep '^PRETTY_NAME=' /etc/os-release
-  id
-} | tee ~/curso-linux/evidencias/sistema.txt
-
 sudo apt update
 sudo apt install -y tree
 tree ~/curso-linux
 ```
+
+Las opciones usadas:
+
+- `mkdir -p`: crea las carpetas padre faltantes y no falla si ya existen.
+- `apt install -y`: `-y` confirma automáticamente; úsalo sólo después de revisar el paquete con `apt show`.
+- `tree <ruta>`: muestra una estructura de directorios legible.
+
+Ahora abre Text Editor, crea `~/curso-linux/evidencias/sistema.txt` y pega las salidas de `whoami`, `uname -r`, `cat /etc/os-release` e `id`. Los valores siguen viniendo de comandos; no los inventes ni copies valores de otro equipo.
 
 Salida representativa:
 
@@ -303,17 +361,7 @@ Salida representativa:
     └── sistema.txt
 ```
 
-- `{ ...; }` agrupa comandos en el shell actual.
-- `$(...)` sustituye un comando por su salida.
-- `tee` muestra y guarda el reporte.
-- `-y` confirma la instalación; úsalo sólo si ya revisaste el paquete.
-
-Comprueba el resultado:
-
-```bash
-test -s ~/curso-linux/evidencias/sistema.txt \
-  && echo "Evidencia creada correctamente"
-```
+> **Comprueba.** En Files o con `ls -l ~/curso-linux/evidencias`, verifica que existe `sistema.txt`. En `tree ~/curso-linux` debes reconocer la carpeta `evidencias` y el archivo que acabas de guardar.
 
 ## Errores frecuentes
 
@@ -326,7 +374,7 @@ test -s ~/curso-linux/evidencias/sistema.txt \
 
 [Ver respuesta](instructor/soluciones.md#respuesta-reto-1)
 
-Crea `~/curso-linux/evidencias/inventario.txt` con hostname, distribución, kernel, usuario, grupos y ruta del ejecutable `bash`. No escribas esos valores a mano.
+Crea `~/curso-linux/evidencias/inventario.txt` desde Text Editor con hostname, distribución, kernel, usuario, grupos y ruta del ejecutable `bash`. Obtén cada valor ejecutando el comando correspondiente; no copies valores de otro equipo. La Clase 3 automatizará este mismo inventario desde terminal.
 
 ### Criterios de comprobación
 
