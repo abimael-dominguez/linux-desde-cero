@@ -2,7 +2,7 @@
 
 Curso práctico de Linux para perfiles junior que necesitan una base sólida antes de avanzar hacia administración de sistemas, DevOps, desarrollo o Machine Learning Engineering.
 
-La referencia del laboratorio es **Ubuntu 24.04 LTS**. Cuando aporta valor se indican equivalencias para distribuciones de la familia RHEL, sin duplicar todo el curso.
+La referencia del laboratorio es **Ubuntu LTS**. Cuando aporta valor se indican equivalencias para distribuciones de la familia RHEL, sin duplicar todo el curso. La guía de infraestructura permite elegir una AMI Ubuntu Server LTS de Canonical o una imagen basada en Ubuntu que el instructor haya verificado para el curso.
 
 ## Índice
 
@@ -11,6 +11,7 @@ La referencia del laboratorio es **Ubuntu 24.04 LTS**. Cuando aporta valor se in
 - [Temario](#temario)
 - [Distribución de las cuatro sesiones](#distribución-de-las-cuatro-sesiones)
 - [Preparación rápida](#preparación-rápida)
+- [Infraestructura AWS](#infraestructura-aws)
 - [Convenciones didácticas](#convenciones-didácticas)
 - [Material para el instructor](#material-para-el-instructor)
 
@@ -103,7 +104,7 @@ La agenda minuto a minuto está en [instructor/plan-curso-linux-desde-cero-2026.
 ## Preparación rápida
 
 1. Completar [prerrequisitos.md](prerrequisitos.md) antes de la primera sesión.
-2. Clonar el repositorio en Ubuntu.
+2. Confirmar que el repositorio existe en Ubuntu; clonarlo sólo si todavía falta.
 3. Preparar una copia desechable de los datos:
 
 ```bash
@@ -111,6 +112,10 @@ bash ejercicios-bash-scripting/preparar-lab.sh
 ```
 
 4. Trabajar dentro de `laboratorio/`. Para reiniciar los ejercicios, volver a ejecutar el script.
+
+## Infraestructura AWS
+
+La preparación inicial se limita a cargar el template Ubuntu del curso en CloudFormation y conectarse con VS Code Remote-SSH. Sigue [infraestructura-aws/](infraestructura-aws/README.md). La segunda EC2 se crea con otro template sólo al practicar SSH entre dos hosts Linux; AWS CLI local no es requisito.
 
 ## Convenciones didácticas
 
