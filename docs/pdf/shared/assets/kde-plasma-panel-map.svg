@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa visual del panel de KDE Plasma</title>
+  <desc id="desc">Representación del escritorio Plasma con llamados al botón K de Kickoff, tareas, bandeja del sistema y reloj.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#182c4c"/><stop offset=".52" stop-color="#3d567a"/><stop offset="1" stop-color="#d06b4e"/></linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#263442"/><stop offset="1" stop-color="#151d27"/></linearGradient>
+  </defs>
+  <rect width="1200" height="560" rx="22" fill="url(#sky)"/>
+  <path d="M0 360C220 230 350 420 580 320S920 220 1200 370V0H0Z" fill="#28394e" opacity=".72"/>
+  <path d="M0 440C250 310 410 500 660 398s310-170 540-56v218H0Z" fill="#d46d4c" opacity=".75"/>
+  <rect x="26" y="432" width="1148" height="96" rx="12" fill="url(#panel)"/>
+  <rect x="48" y="446" width="66" height="66" rx="10" fill="#e8f1f6"/>
+  <text x="81" y="492" fill="#263442" font-family="Arial, sans-serif" font-size="39" font-weight="700" text-anchor="middle">K</text>
+  <rect x="138" y="455" width="54" height="48" rx="7" fill="#5c8db5"/><rect x="203" y="455" width="54" height="48" rx="7" fill="#6f7d8b"/><rect x="268" y="455" width="54" height="48" rx="7" fill="#6f7d8b"/><rect x="333" y="455" width="54" height="48" rx="7" fill="#6f7d8b"/>
+  <circle cx="908" cy="480" r="17" fill="#7fc7e8"/><path d="M900 480h16M908 472v16" stroke="#172431" stroke-width="3"/>
+  <path d="M950 467h22v26h-22z" fill="none" stroke="#e8f1f6" stroke-width="3"/><path d="M955 462h12" stroke="#e8f1f6" stroke-width="3"/>
+  <path d="M995 488q12-20 24 0" fill="none" stroke="#e8f1f6" stroke-width="4"/><path d="M1002 494h10" stroke="#e8f1f6" stroke-width="4"/>
+  <text x="1097" y="490" fill="#eef5fa" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">14:03</text>
+  <g font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#142330">
+    <rect x="55" y="55" width="226" height="54" rx="27" fill="#fff"/><text x="168" y="89" text-anchor="middle">1 · Kickoff</text>
+    <rect x="355" y="140" width="224" height="54" rx="27" fill="#fff"/><text x="467" y="174" text-anchor="middle">2 · Tareas abiertas</text>
+    <rect x="800" y="76" width="245" height="54" rx="27" fill="#fff"/><text x="922" y="110" text-anchor="middle">3 · Bandeja</text>
+    <rect x="1000" y="270" width="142" height="54" rx="27" fill="#fff"/><text x="1071" y="304" text-anchor="middle">4 · Reloj</text>
+  </g>
+  <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M168 109C150 225 84 325 81 442"/><path d="M467 194c-70 107-184 138-230 255"/><path d="M922 130c0 125 1 210 0 327"/><path d="M1071 324c20 55 24 89 23 132"/></g>
+  <g fill="#fff"><circle cx="81" cy="446" r="7"/><circle cx="166" cy="456" r="7"/><circle cx="922" cy="457" r="7"/><circle cx="1094" cy="456" r="7"/></g>
+</svg>

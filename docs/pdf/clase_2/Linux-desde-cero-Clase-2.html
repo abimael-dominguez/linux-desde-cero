@@ -888,6 +888,23 @@
       text-decoration-color: rgba(10,120,170,.45);
       text-underline-offset: 2px;
     }
+    article.chapter img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      max-height: 430px;
+      margin: 0.16in auto 0.05in;
+      border: 1px solid #d7e1e8;
+      border-radius: 10px;
+      background: #fff;
+    }
+    article.chapter img + em {
+      display: block;
+      max-width: 720px;
+      margin: 0 auto 0.15in;
+      color: #526575;
+      font-size: 8.6pt;
+    }
     .local-reference {
       display: inline-block;
       padding: 2px 7px;
@@ -923,6 +940,7 @@
       background: #eef5f8;
       font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
       font-size: .91em;
+      white-space: nowrap;
       font-variant-ligatures: none;
       text-rendering: geometricPrecision;
     }
@@ -990,6 +1008,7 @@
       color: inherit;
       background: transparent;
       font: inherit;
+      white-space: pre-wrap;
     }
     .codebox--output {
       border-color: #cfdde4;
@@ -1043,6 +1062,44 @@
       background: #fff3f6;
     }
     article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter .learning-callout {
+      position: relative;
+      padding: 0.15in 0.16in 0.13in;
+      border-left-width: 5px;
+      border-radius: 0 7px 7px 0;
+    }
+    .learning-callout__label {
+      margin-bottom: 0.05in;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    article.chapter .learning-callout--situation {
+      border-left-color: var(--blue);
+      color: #294b64;
+      background: #eaf3f7;
+    }
+    .learning-callout--situation .learning-callout__label { color: var(--blue); }
+    article.chapter .learning-callout--before {
+      border-left-color: #e8a900;
+      color: #5f4a13;
+      background: #fff8df;
+    }
+    .learning-callout--before .learning-callout__label { color: #9b6c00; }
+    article.chapter .learning-callout--check {
+      border-left-color: #2a9d68;
+      color: #245a43;
+      background: #e9f7f0;
+    }
+    .learning-callout--check .learning-callout__label { color: #1d8054; }
+    article.chapter .learning-callout--care {
+      border-left-color: var(--red);
+      color: #70404b;
+      background: #fff1f4;
+    }
+    .learning-callout--care .learning-callout__label { color: #c71841; }
     article.chapter hr {
       margin: 0.26in 0;
       border: 0;
@@ -1176,50 +1233,54 @@
       <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
       <tbody>
   <tr class="">
-    <td class="agenda-time">09:00–09:15</td>
-    <td class="agenda-activity">Recuperación activa de navegación y permisos.</td>
+    <td class="agenda-time">09:00–09:30</td>
+    <td class="agenda-activity">Acuerdo de ritmo y recuperación activa de navegación y permisos.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">09:15–10:20</td>
-    <td class="agenda-activity"><code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>, <code>find</code>, <code>du</code> y <code>df</code>.</td>
+    <td class="agenda-time">09:30–10:10</td>
+    <td class="agenda-activity">Microciclos: <code>head</code>, <code>tail</code>, <code>less</code> y <code>grep</code>.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">10:20–11:00</td>
-    <td class="agenda-activity"><code>grep</code>, <code>tar</code> y <code>gzip</code>.</td>
+    <td class="agenda-time">10:10–10:45</td>
+    <td class="agenda-activity">Buscar con <code>find</code>; comparar <code>du</code> y <code>df</code>.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">10:45–11:00</td>
+    <td class="agenda-activity">Checkpoint, preguntas y repetición; sin contenido nuevo.</td>
   </tr>
   <tr class="break-row">
     <td class="agenda-time">11:00–11:30</td>
     <td class="agenda-activity"><strong>Receso.</strong></td>
   </tr>
   <tr class="">
-    <td class="agenda-time">11:30–12:15</td>
-    <td class="agenda-activity">Práctica resuelta de respaldo y restauración.</td>
+    <td class="agenda-time">11:30–12:30</td>
+    <td class="agenda-activity">Crear, listar, restaurar y verificar un <code>tar.gz</code>.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">12:15–12:40</td>
-    <td class="agenda-activity"><code>lsblk</code>, <code>findmnt</code>, <code>df -T</code>; sin formatear discos.</td>
+    <td class="agenda-time">12:30–12:45</td>
+    <td class="agenda-activity">Checkpoint y clínica de errores del respaldo.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">12:40–13:10</td>
-    <td class="agenda-activity">Capas gráficas y demostración GNOME.</td>
+    <td class="agenda-time">12:45–13:05</td>
+    <td class="agenda-activity"><code>lsblk</code>, <code>findmnt</code>, <code>df -T</code>; sólo inspección.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:10–13:35</td>
-    <td class="agenda-activity">Demostración KDE: Dolphin, Konsole y propiedades.</td>
+    <td class="agenda-time">13:05–13:40</td>
+    <td class="agenda-activity">Capas gráficas y recorridos visuales breves de GNOME y KDE Plasma.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:35–13:55</td>
-    <td class="agenda-activity">Misma operación en GUI y CLI.</td>
+    <td class="agenda-time">13:40–13:52</td>
+    <td class="agenda-activity">Práctica de búsqueda y restauración; preguntas de cierre sobre KDE.</td>
   </tr>
   <tr class="">
-    <td class="agenda-time">13:55–14:00</td>
-    <td class="agenda-activity">Evidencia y cierre.</td>
+    <td class="agenda-time">13:52–14:00</td>
+    <td class="agenda-activity">Exit ticket, semáforo final y cierre.</td>
   </tr></tbody>
     </table>
     <div class="overview-foot">
       <div class="overview-note">
         <p><strong>No recortar:</strong> búsqueda, respaldo y restauración.</p>
-        <p><strong>Recortar primero:</strong> personalización de escritorios.</p>
+        <p><strong>Recortar primero:</strong> personalización, recorrido detallado de KDE y opciones avanzadas.</p>
       </div>
     </div>
   </section>
@@ -1230,7 +1291,7 @@
       <h2>Índice interactivo</h2>
       <p class="toc-description">Selecciona un apartado para ir directamente a su contenido. En cada encabezado encontrarás el enlace para volver aquí.</p>
     </header>
-    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-7"><small>Capítulo 7.16–7.21</small><strong>Shell útil</strong></a><a class="toc-link toc-level-2" href="#c7-7-16-espacio-du-y-df"><span>7.16 Espacio: du y df</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-17-7-18-visualizar-cat-head-tail-less-y-pr"><span>7.17–7.18 Visualizar: cat, head, tail, less y pr</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-19-buscar-grep-y-find"><span>7.19 Buscar: grep y find</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-20-empaquetar-y-comprimir-tar-gzip"><span>7.20 Empaquetar y comprimir: tar/gzip</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-21-impresion-lpr"><span>7.21 Impresión: lpr</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-practica-guiada-resuelta-respaldo-de-logs"><span>Práctica guiada resuelta — Respaldo de logs</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-reto-7-snapshot-de-evidencias"><span>Reto 7 — Snapshot de evidencias</span><b>→</b></a><a class="toc-link toc-level-3" href="#c7-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-checklist"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-3"><small>Capítulo 3.5</small><strong>Acceso a sistemas de archivos</strong></a><a class="toc-link toc-level-2" href="#c3-3-5-acceso-a-sistemas-de-archivos"><span>3.5 Acceso a sistemas de archivos</span><b>→</b></a></section></div>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-7"><small>Capítulo 7.16–7.21</small><strong>Shell útil</strong></a><a class="toc-link toc-level-2" href="#c7-antes-de-continuar-con-la-clase-2"><span>Antes de continuar con la Clase 2</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-ruta-practica-de-la-clase-2"><span>Ruta práctica de la Clase 2</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-16-espacio-du-y-df"><span>7.16 Espacio: du y df</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-17-7-18-visualizar-cat-head-tail-less-y-pr"><span>7.17–7.18 Visualizar: cat, head, tail, less y pr</span><b>→</b></a><a class="toc-link toc-level-3" href="#c7-opcional-tipo-mime-y-aplicacion-predeterminada"><span>Opcional — tipo MIME y aplicación predeterminada</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-19-buscar-grep-y-find"><span>7.19 Buscar: grep y find</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-20-empaquetar-y-comprimir-tar-gzip"><span>7.20 Empaquetar y comprimir: tar/gzip</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-21-impresion-lpr"><span>7.21 Impresión: lpr</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-practica-guiada-resuelta-respaldo-de-evidencia-de-un-incidente"><span>Práctica guiada resuelta — Respaldo de evidencia de un incidente</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-reto-7-snapshot-de-evidencias"><span>Reto 7 — Snapshot de evidencias</span><b>→</b></a><a class="toc-link toc-level-3" href="#c7-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-checklist"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-3"><small>Capítulo 3.5</small><strong>Acceso a sistemas de archivos</strong></a><a class="toc-link toc-level-2" href="#c3-3-5-acceso-a-sistemas-de-archivos"><span>3.5 Acceso a sistemas de archivos</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-antes-de-continuar"><span>Antes de continuar</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-modelo-mental"><span>Modelo mental</span><b>→</b></a><a class="toc-link toc-level-3" href="#c3-sintaxis-y-ejemplo-guiado"><span>Sintaxis y ejemplo guiado</span><b>→</b></a></section></div>
     <nav class="toc-nav"><a href="#indice-interactivo-2">Capítulos 4 y 5 →</a></nav>
   </section>
 
@@ -1238,9 +1299,9 @@
     <header class="toc-header">
       <div class="toc-kicker">Navegación · 2 de 3</div>
       <h2>Índice interactivo</h2>
-      <p class="toc-description">Capas gráficas, GNOME y operaciones equivalentes entre GUI y terminal.</p>
+      <p class="toc-description">Capas gráficas y recorridos visuales de GNOME y KDE Plasma.</p>
     </header>
-    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-4"><small>Capítulo 4</small><strong>X Window y Wayland</strong></a><a class="toc-link toc-level-2" href="#c4-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-antes-de-empezar"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-4-1-x-window"><span>4.1 X Window</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-identificar-una-sesion"><span>Identificar una sesión</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-servidor-frente-a-escritorio"><span>Servidor frente a escritorio</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-practica-guiada-resuelta"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-errores-frecuentes-2"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-reto-4-mapa-de-la-sesion-grafica"><span>Reto 4 — Mapa de la sesión gráfica</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-criterios-de-comprobacion-2"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-checklist-2"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-5"><small>Capítulo 5</small><strong>GNOME</strong></a><a class="toc-link toc-level-2" href="#c5-objetivos-2"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-antes-de-empezar-2"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-1-iniciacion-a-gnome"><span>5.1 Iniciación a GNOME</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-2-aplicaciones-auxiliares"><span>5.2 Aplicaciones auxiliares</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-3-files-nautilus"><span>5.3 Files/Nautilus</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-4-busqueda"><span>5.4 Búsqueda</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-5-terminales"><span>5.5 Terminales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-6-multimedia"><span>5.6 Multimedia</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-7-instalacion-y-configuracion"><span>5.7 Instalación y configuración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-practica-guiada-resuelta-2"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-errores-frecuentes-3"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-reto-5-gui-y-cli-equivalentes"><span>Reto 5 — GUI y CLI equivalentes</span><b>→</b></a><a class="toc-link toc-level-3" href="#c5-criterios-de-comprobacion-3"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-checklist-3"><span>Checklist</span><b>→</b></a></section></div>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-4"><small>Capítulo 4</small><strong>X Window y Wayland</strong></a><a class="toc-link toc-level-2" href="#c4-indice"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-antes-de-continuar-2"><span>Antes de continuar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-4-1-x-window-y-wayland"><span>4.1 X Window y Wayland</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-modelo-mental-quien-hace-que"><span>Modelo mental: quién hace qué</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-identificar-una-sesion"><span>Identificar una sesión</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-servidor-frente-a-escritorio"><span>Servidor frente a escritorio</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-practica-guiada-resuelta-mapa-de-tu-sesion"><span>Práctica guiada resuelta — Mapa de tu sesión</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-errores-frecuentes-2"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-reto-4-mapa-de-la-sesion-grafica"><span>Reto 4 — Mapa de la sesión gráfica</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-criterios-de-comprobacion-2"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-checklist-2"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-5"><small>Capítulo 5</small><strong>GNOME</strong></a><a class="toc-link toc-level-2" href="#c5-indice-2"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-3" href="#c5-instalar-ubuntu-gnome-en-una-vm-opcional"><span>Instalar Ubuntu GNOME en una VM (opcional)</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-antes-de-la-demostracion"><span>Antes de la demostración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-ruta-corta-para-mostrar-en-clase"><span>Ruta corta para mostrar en clase</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-1-mapa-de-gnome"><span>5.1 Mapa de GNOME</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-2-files"><span>5.2 Files</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-3-herramientas-esenciales"><span>5.3 Herramientas esenciales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-4-aplicaciones-populares-opcional"><span>5.4 Aplicaciones populares (opcional)</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-5-espacios-de-trabajo-opcional"><span>5.5 Espacios de trabajo (opcional)</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-gnome-y-kde-diferencia-de-enfoque"><span>GNOME y KDE: diferencia de enfoque</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-glosario-rapido-de-gnome"><span>Glosario rápido de GNOME</span><b>→</b></a></section></div>
     <nav class="toc-nav"><a href="#indice-interactivo">← Shell</a><a href="#indice-interactivo-3">KDE →</a></nav>
   </section>
 
@@ -1248,9 +1309,9 @@
     <header class="toc-header">
       <div class="toc-kicker">Navegación · 3 de 3</div>
       <h2>Índice interactivo</h2>
-      <p class="toc-description">KDE Plasma, Dolphin, Konsole, propiedades y diagnóstico desde el escritorio.</p>
+      <p class="toc-description">KDE Plasma como recorrido visual: Panel, Kickoff, Dolphin y herramientas esenciales.</p>
     </header>
-    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-6"><small>Capítulo 6</small><strong>KDE Plasma</strong></a><a class="toc-link toc-level-2" href="#c6-objetivos-3"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-antes-de-empezar-3"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-1-partes-de-la-pantalla"><span>6.1 Partes de la pantalla</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-2-administracion-de-archivos-con-dolphin"><span>6.2 Administración de archivos con Dolphin</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-3-navegacion-y-contenido"><span>6.3 Navegación y contenido</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-4-crear-directorios"><span>6.4 Crear directorios</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-5-copiar-borrar-y-mover"><span>6.5 Copiar, borrar y mover</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-6-enlaces"><span>6.6 Enlaces</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-7-tipos-mime"><span>6.7 Tipos MIME</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-8-propiedades-y-permisos"><span>6.8 Propiedades y permisos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-9-6-10-aplicaciones-esenciales"><span>6.9–6.10 Aplicaciones esenciales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-11-6-14-configuracion"><span>6.11–6.14 Configuración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-practica-guiada-resuelta-3"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-errores-frecuentes-4"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-reto-6-diagnostico-desde-dolphin"><span>Reto 6 — Diagnóstico desde Dolphin</span><b>→</b></a><a class="toc-link toc-level-3" href="#c6-criterios-de-comprobacion-4"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-checklist-4"><span>Checklist</span><b>→</b></a></section></div>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-6"><small>Capítulo 6</small><strong>KDE Plasma</strong></a><a class="toc-link toc-level-2" href="#c6-indice-3"><span>Índice</span><b>→</b></a><a class="toc-link toc-level-3" href="#c6-instalarla-en-una-vm-practica-opcional"><span>Instalarla en una VM (práctica opcional)</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-objetivos-2"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-antes-de-la-demostracion-2"><span>Antes de la demostración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-ruta-corta-para-mostrar-en-clase-2"><span>Ruta corta para mostrar en clase</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-1-partes-de-la-pantalla"><span>6.1 Partes de la pantalla</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-2-dolphin-file-manager"><span>6.2 Dolphin File Manager</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-3-apps-esenciales-de-kde"><span>6.3 Apps esenciales de KDE</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-4-herramientas-de-productividad"><span>6.4 Herramientas de productividad</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-5-kmenuedit-opcional"><span>6.5 KMenuEdit (opcional)</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-6-configuracion-avanzada-del-sistema"><span>6.6 Configuración avanzada del sistema</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-7-personalizar-el-panel"><span>6.7 Personalizar el panel</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-kde-vs-gnome-diferencias-clave"><span>KDE vs GNOME: diferencias clave</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-glosario-rapido-de-kde"><span>Glosario rápido de KDE</span><b>→</b></a></section></div>
     <nav class="toc-nav"><a href="#indice-interactivo-2">← Capítulos 4 y 5</a></nav>
   </section>
 
@@ -1265,98 +1326,269 @@
       <div class="divider-tags"><span>Capítulo 7.16–7.21</span><span>grep · find</span><span>tar · gzip</span><span>du · df</span></div>
     </div>
   </section>
-  <article class="chapter chapter-7"><h2 id="c7-7-16-espacio-du-y-df">7.16 Espacio: <code>du</code> y <code>df</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>du -sh laboratorio data
-du -h --max-depth=1 data | sort -h
-df -hT .
-</code></pre></figure><ul>
-<li><code>du</code>: suma bloques usados por archivos visibles desde una ruta.</li>
-<li><code>df</code>: informa capacidad del sistema de archivos.</li>
-<li><code>-s</code>: total resumido.</li>
-<li><code>--max-depth=1</code>: desglose inmediato.</li>
+  <article class="chapter chapter-7"><h2 id="c7-antes-de-continuar-con-la-clase-2">Antes de continuar con la Clase 2<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Esta sesión empieza <strong>después</strong> de navegación, archivos y permisos. Por eso puedes encontrar trabajo de la Clase 1 dentro de <code>laboratorio/</code>. No hace falta borrarlo ni volver a crearlo para usar esta guía.</p>
+<blockquote class="learning-callout learning-callout--before"><div class="learning-callout__label">Antes de ejecutar.</div>
+<p>Sitúate en la raíz del curso y comprueba los dos archivos de lectura de esta clase. Son fixtures del repositorio: si faltan, no los crees vacíos; recupera el repositorio o pide apoyo al instructor.</p>
+</blockquote>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+pwd
+ls data/dummy_logs.txt data/specials.txt
+</code></pre></figure><p>El directorio <code>laboratorio/</code> sí es tu área de práctica. Puedes crear una carpeta nueva sin tocar los ejercicios anteriores:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell
+</code></pre></figure><p>Si conservas <code>laboratorio/shell/entrada/modelo.txt</code> o <code>laboratorio/proyecto/</code> de la Clase 1, úsalos como evidencia de tu avance. Esta clase no depende de ellos. <strong>No ejecutes <code>preparar-lab.sh</code> sólo para empezar la Clase 2:</strong> ese script reinicia <code>laboratorio/</code> y elimina evidencia previa.</p>
+<h2 id="c7-ruta-practica-de-la-clase-2">Ruta práctica de la Clase 2<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>La numeración del temario conserva <code>du</code> y <code>df</code> primero, pero en clase conviene aprender en este orden:</p>
+<ol>
+<li>leer un archivo sin modificarlo (<code>head</code>, <code>tail</code>, <code>less</code>);</li>
+<li>buscar una pista o un archivo (<code>grep</code>, <code>find</code>);</li>
+<li>decidir si falta espacio (<code>du</code>, <code>df</code>);</li>
+<li>crear y comprobar un respaldo (<code>tar</code>, <code>gzip</code>, <code>sha256sum</code>);</li>
+<li>relacionar archivos, montajes y escritorio gráfico.</li>
+</ol>
+<p>Los mismos comandos sirven en distintos roles. Un técnico de soporte busca un archivo de un usuario; alguien de backend revisa configuración y logs antes de desplegar; una persona de operaciones investiga un incidente sin modificar el servidor.</p>
+<h2 id="c7-7-16-espacio-du-y-df">7.16 Espacio: <code>du</code> y <code>df</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un servicio empieza a fallar porque el disco está lleno. Antes de borrar algo, necesitas responder dos preguntas distintas: “¿qué carpeta creció?” y “¿cuánto espacio queda en el sistema de archivos?”.</p>
+</blockquote>
+<p><code>du</code> significa <em>disk usage</em>: mide cuánto ocupan los archivos visibles dentro de una <strong>ruta</strong>. <code>df</code> significa <em>disk free</em>: muestra la capacidad y el espacio disponible del <strong>sistema de archivos</strong> donde vive una ruta. No son comandos rivales; responden preguntas diferentes.</p>
+<h4>Antes de ejecutar</h4>
+<p>Los comandos de este apartado sólo consultan información. La ruta <code>data</code> es un directorio del curso; <code>.</code> significa “el directorio en el que estoy ahora”. Confirma primero que estás en la raíz con <code>pwd</code>.</p>
+<h4>Sintaxis que debes reconocer</h4>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>du [opciones] &lt;ruta&gt;
+df [opciones] &lt;ruta&gt;
+</code></pre></figure><p>En <code>du -sh data</code>, <code>-s</code> pide un total resumido y <code>-h</code> usa unidades legibles, como KB, MB o GB. En <code>df -hT .</code>, <code>-h</code> vuelve legibles los tamaños y <code>-T</code> agrega el tipo de sistema de archivos, por ejemplo <code>ext4</code>.</p>
+<p>Banderas de consulta rápida:</p>
+<ul>
+<li><code>du -s</code>: muestra sólo el total de una ruta.</li>
+<li><code>du -h</code> y <code>df -h</code>: usan unidades legibles.</li>
+<li><code>du --max-depth=1</code>: separa el tamaño por carpetas inmediatas.</li>
+<li><code>df -T</code>: muestra el tipo de sistema de archivos.</li>
 </ul>
-<p>Los totales pueden diferir por archivos eliminados aún abiertos, metadatos y espacio reservado.</p>
+<h4>Ejemplo guiado</h4>
+<p>Ejecuta una línea y léela antes de continuar:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>du -sh data
+du -h --max-depth=1 data
+df -hT .
+</code></pre></figure><p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>180K    data
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/...       ext4   40G   12G   26G  32% /
+</code></pre></figure><p>La primera línea responde cuánto ocupa todo <code>data</code>. La segunda separa el total por las carpetas inmediatamente dentro de <code>data</code>; úsala para encontrar qué zona merece investigación. La tercera muestra el tamaño total, usado y disponible del disco que contiene el directorio actual.</p>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Si <code>du -sh data</code> muestra poco espacio usado y <code>df -hT .</code> muestra el disco casi lleno, el problema puede estar fuera de <code>data</code>: logs de otro servicio, cachés, archivos de otro usuario o espacio reservado por el sistema.</p>
+</blockquote>
+<p>Los números pueden diferir por metadatos, archivos eliminados que un proceso todavía mantiene abiertos y espacio reservado. No concluyas que un comando “falló” sólo porque sus totales no son idénticos.</p>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Ver el disco lleno no autoriza a borrar con <code>rm -rf</code>. Primero identifica la ruta, confirma dueño y permisos, y pide autorización cuando la información pertenezca a otro servicio o usuario.</p>
+</blockquote>
 <h2 id="c7-7-17-7-18-visualizar-cat-head-tail-less-y-pr">7.17–7.18 Visualizar: <code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code> y <code>pr</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cat data/dummy_logs.txt
-head -n 3 data/dummy_logs.txt
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>En una guardia recibes un log grande. No necesitas abrirlo con un editor ni imprimirlo todo: primero quieres una muestra inicial, las últimas líneas o una búsqueda segura sin modificar el archivo.</p>
+</blockquote>
+<p>Todos estos comandos <strong>leen</strong> el archivo. Elige el que responde tu pregunta:</p>
+<table>
+<thead>
+<tr>
+<th>Comando</th>
+<th>Pregunta que responde</th>
+<th>Cuándo usarlo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat</code></td>
+<td>“¿Qué contiene completo este archivo pequeño?”</td>
+<td>configuración corta o archivo de prueba</td>
+</tr>
+<tr>
+<td><code>head</code></td>
+<td>“¿Cómo empieza?”</td>
+<td>encabezados, formato o primeras líneas</td>
+</tr>
+<tr>
+<td><code>tail</code></td>
+<td>“¿Qué ocurrió al final?”</td>
+<td>eventos recientes de un log</td>
+</tr>
+<tr>
+<td><code>less</code></td>
+<td>“¿Cómo exploro sin editar?”</td>
+<td>archivos medianos o grandes</td>
+</tr>
+</tbody>
+</table>
+<h4>Ejemplo guiado</h4>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>head -n 3 data/dummy_logs.txt
 tail -n 2 data/dummy_logs.txt
 less data/dummy_logs.txt
-</code></pre></figure><ul>
-<li><code>cat</code>: salida completa; ideal para archivos pequeños o pipelines.</li>
-<li><code>head</code>/<code>tail</code>: primeras/últimas líneas.</li>
-<li><code>less</code>: navegación y búsqueda interactiva con <code>/patrón</code>; sal con <code>q</code>.</li>
-<li><code>more</code> y <code>pr</code> se conservan por compatibilidad con el temario, pero <code>less</code> y formatos específicos suelen ser más útiles.</li>
+</code></pre></figure><p>En <code>head -n 3</code>, <code>-n 3</code> significa “muestra tres líneas”. <code>tail -n 2</code> muestra las dos últimas. Dentro de <code>less</code>, escribe <code>/ERROR</code> y presiona Enter para buscar; presiona <code>n</code> para la siguiente coincidencia y <code>q</code> para salir. <code>less</code> no modifica el archivo.</p>
+<p>Banderas y teclas de consulta rápida:</p>
+<ul>
+<li><code>head -n &lt;líneas&gt;</code>: limita la lectura inicial.</li>
+<li><code>tail -n &lt;líneas&gt;</code>: limita la lectura final.</li>
+<li><code>/texto</code> dentro de <code>less</code>: busca texto; <code>n</code> repite la búsqueda y <code>q</code> sale.</li>
 </ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>2026-07-04 09:00:01 INFO User abimael logged in
+2026-07-04 09:01:15 ERROR Disk full on /dev/xvda1
+</code></pre></figure><p><code>cat data/dummy_logs.txt</code> también funcionará porque el archivo de práctica es pequeño. En un log de producción evita usar <code>cat</code> por costumbre: inundar la terminal dificulta detectar lo importante.</p>
+<p><code>more</code> y <code>pr</code> aparecen en temarios históricos. <code>more</code> es un visor más limitado; <code>pr</code> prepara texto para impresión. Para administrar servidores actuales, aprende primero <code>less</code>.</p>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Explica con tus palabras por qué usarías <code>tail</code> para un incidente reciente y <code>less</code> para investigar varias coincidencias sin editar nada.</p>
+</blockquote>
+<h3 id="c7-opcional-tipo-mime-y-aplicacion-predeterminada">Opcional — tipo MIME y aplicación predeterminada<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Un tipo MIME describe qué clase de contenido tiene un archivo, por ejemplo <code>text/plain</code> o <code>application/pdf</code>. No es algo propio de KDE: los escritorios Linux usan esta convención para decidir qué aplicación propone abrir un archivo. Esta consulta es útil en soporte cuando un archivo se abre con una aplicación inesperada.</p>
+<p>Ejecuta estas consultas sólo si estás en una sesión gráfica. No cambian ninguna asociación:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>file --mime-type data/dummy_logs.txt
+xdg-mime query filetype data/dummy_logs.txt
+xdg-mime query default text/plain
+</code></pre></figure><ul>
+<li><code>file --mime-type &lt;archivo&gt;</code>: <code>--mime-type</code> pide sólo el tipo detectado por <code>file</code>.</li>
+<li><code>xdg-mime query filetype &lt;archivo&gt;</code>: pregunta al entorno qué tipo MIME asigna al archivo.</li>
+<li><code>xdg-mime query default &lt;tipo&gt;</code>: pregunta qué aplicación está registrada para abrir ese tipo.</li>
+</ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>data/dummy_logs.txt: text/plain
+text/plain
+org.kde.kate.desktop
+</code></pre></figure><p>Las dos primeras líneas deben identificar <code>text/plain</code>. La última puede ser <code>org.kde.kate.desktop</code>, otra aplicación o no mostrar nada si no hay una asociación gráfica en esa sesión. Es una consulta; no intentes corregir una asociación durante esta clase.</p>
 <h2 id="c7-7-19-buscar-grep-y-find">7.19 Buscar: <code>grep</code> y <code>find</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Un ticket dice “hay errores de autenticación” o “no encuentro el archivo de configuración”. Antes de cambiar algo debes separar dos preguntas: <code>grep</code> busca <strong>texto dentro de archivos</strong>; <code>find</code> busca <strong>archivos y directorios por sus características</strong>.</p>
+</blockquote>
+<h4><code>grep</code>: encontrar una pista dentro de un archivo</h4>
+<p class="micro-label">Sintaxis general</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>grep [opciones] '&lt;texto a buscar&gt;' &lt;archivo&gt;
+</code></pre></figure><p>Las comillas simples conservan el texto tal como lo escribiste. En esta clase buscamos texto literal; las expresiones regulares avanzadas se trabajan en la Clase 4.</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>grep -n 'ERROR' data/dummy_logs.txt
-grep -Ei 'warn|error' data/dummy_logs.txt
+grep -ni 'warn' data/dummy_logs.txt
 grep -F '[INFO]' data/specials.txt
-find data -maxdepth 2 -type f -name '*.csv' -size +0c
-</code></pre></figure><ul>
-<li><code>-n</code>: número de línea.</li>
-<li><code>-E</code>: expresiones regulares extendidas; sustituye al nombre histórico <code>egrep</code>.</li>
-<li><code>-F</code>: búsqueda literal; sustituye al nombre histórico <code>fgrep</code>.</li>
-<li><code>-i</code>: ignora mayúsculas/minúsculas.</li>
-<li><code>find -type f</code>: sólo archivos; <code>-name</code>: patrón de nombre; <code>-size +0c</code>: no vacíos.</li>
+</code></pre></figure><p><code>-n</code> agrega el número de línea, útil para reportar una evidencia. <code>-i</code> ignora mayúsculas y minúsculas. <code>-F</code> dice “trata el patrón literalmente”: los corchetes de <code>[INFO]</code> no se interpretan como una regla especial.</p>
+<p>Banderas de consulta rápida:</p>
+<ul>
+<li><code>grep -n</code>: agrega número de línea.</li>
+<li><code>grep -i</code>: ignora mayúsculas y minúsculas.</li>
+<li><code>grep -F</code>: busca el texto literalmente.</li>
 </ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>2:2026-07-04 09:01:15 ERROR Disk full on /dev/xvda1
+5:2026-07-04 09:04:50 ERROR Network unreachable
+</code></pre></figure><h4><code>find</code>: localizar archivos por nombre o tipo</h4>
+<p class="micro-label">Sintaxis general</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>find &lt;dónde_buscar&gt; [condiciones]
+</code></pre></figure><figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>find data -maxdepth 2 -type f -name '*.csv'
+</code></pre></figure><p>Aquí <code>data</code> es el lugar donde comienzas a buscar; <code>-maxdepth 2</code> limita la exploración a dos niveles; <code>-type f</code> evita devolver directorios; <code>-name '*.csv'</code> pide nombres que terminen en <code>.csv</code>. Las comillas evitan que el shell intente expandir <code>*.csv</code> antes de que <code>find</code> lo use.</p>
+<p>Banderas de consulta rápida:</p>
+<ul>
+<li><code>find &lt;ruta&gt;</code>: punto de inicio de la búsqueda.</li>
+<li><code>-maxdepth 2</code>: limita niveles recorridos.</li>
+<li><code>-type f</code>: devuelve sólo archivos regulares.</li>
+<li><code>-name '&lt;patrón&gt;'</code>: filtra por nombre.</li>
+</ul>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>data/basketball_scores.csv
+data/hire_data/hiring_01.csv
+</code></pre></figure><blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Si buscas la palabra <code>ERROR</code> dentro de un log usa <code>grep</code>. Si buscas todos los CSV que existen bajo <code>data</code>, usa <code>find</code>. Di qué parte es la entrada y cuál es el resultado esperado antes de ejecutarlos.</p>
+</blockquote>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>En una búsqueda inicial evita acciones que modifiquen resultados, como opciones de borrado. Primero lista y revisa; actuar sobre resultados masivos es un paso posterior que requiere confirmación.</p>
+</blockquote>
 <h2 id="c7-7-20-empaquetar-y-comprimir-tar-gzip">7.20 Empaquetar y comprimir: <code>tar</code>/<code>gzip</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>tar -czf laboratorio/shell/datos.tar.gz data/dummy_logs.txt data/specials.txt
-tar -tzf laboratorio/shell/datos.tar.gz
-mkdir -p laboratorio/shell/restaurado
-tar -xzf laboratorio/shell/datos.tar.gz -C laboratorio/shell/restaurado
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Antes de escalar un incidente o entregar evidencia a otro equipo, necesitas mandar varios archivos sin alterar los originales. Un respaldo útil se puede crear, listar, restaurar en otro lugar y comprobar.</p>
+</blockquote>
+<p><code>tar</code> reúne varios archivos en un solo paquete. <code>gzip</code> comprime ese paquete para ocupar menos. El nombre <code>.tar.gz</code> comunica ambas cosas: primero se agrupó con <code>tar</code>, después se comprimió con gzip.</p>
+<h4>Sintaxis que debes reconocer</h4>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>tar -czf &lt;paquete.tar.gz&gt; &lt;archivos de entrada&gt;
+tar -tzf &lt;paquete.tar.gz&gt;
+tar -xzf &lt;paquete.tar.gz&gt; -C &lt;directorio de restauración&gt;
 </code></pre></figure><ul>
-<li><code>-c</code>: crear; <code>-t</code>: listar; <code>-x</code>: extraer.</li>
-<li><code>-z</code>: usar gzip.</li>
-<li><code>-f</code>: el argumento siguiente es el archivo.</li>
-<li><code>-C</code>: cambia el destino antes de extraer.</li>
+<li><code>-c</code>: crear un paquete.</li>
+<li><code>-t</code>: listar lo que contiene, sin extraerlo.</li>
+<li><code>-x</code>: extraer o restaurar.</li>
+<li><code>-z</code>: usar compresión gzip.</li>
+<li><code>-f</code>: el siguiente argumento es el nombre del paquete.</li>
+<li><code>-C</code>: restaurar dentro de otro directorio.</li>
 </ul>
-<p>Verifica el contenido con <code>-t</code> antes de extraer archivos recibidos.</p>
+<p>Salida representativa al listar el paquete:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>data/dummy_logs.txt
+data/specials.txt
+</code></pre></figure><h4>Ejemplo guiado</h4>
+<p>Primero crea una carpeta segura para la restauración. Si ya existe porque repetiste el ejercicio, <code>mkdir -p</code> no borra nada.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell/restaurado
+</code></pre></figure><p>Ahora crea el paquete. Las entradas son los dos archivos originales; el primer nombre es el nuevo archivo que se creará.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>tar -czf laboratorio/shell/respaldo-clase2.tar.gz data/dummy_logs.txt data/specials.txt
+</code></pre></figure><p>Lista el paquete <strong>antes</strong> de extraerlo. Debes ver <code>data/dummy_logs.txt</code> y <code>data/specials.txt</code>.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>tar -tzf laboratorio/shell/respaldo-clase2.tar.gz
+</code></pre></figure><p>Restaura en una ruta diferente para no sobrescribir los originales:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>tar -xzf laboratorio/shell/respaldo-clase2.tar.gz -C laboratorio/shell/restaurado
+</code></pre></figure><h4>Verificar con <code>sha256sum</code></h4>
+<p>Un hash es una huella calculada a partir del contenido de un archivo. Si dos archivos tienen el mismo contenido, sus hashes SHA-256 coinciden. No necesitas memorizar criptografía para usarlo como comprobación.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>sha256sum data/dummy_logs.txt laboratorio/shell/restaurado/data/dummy_logs.txt
+sha256sum data/specials.txt laboratorio/shell/restaurado/data/specials.txt
+</code></pre></figure><p>Cada línea empieza con un hash largo. En cada pareja, los dos hashes deben ser iguales. Eso indica que la copia restaurada conserva el mismo contenido que el original.</p>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>8b3130...  data/dummy_logs.txt
+8b3130...  laboratorio/shell/restaurado/data/dummy_logs.txt
+</code></pre></figure><blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Nunca extraigas a ciegas un paquete recibido. Primero usa <code>tar -tzf</code> para saber qué contiene y elige un directorio de restauración que no pise archivos de trabajo.</p>
+</blockquote>
 <h2 id="c7-7-21-impresion-lpr">7.21 Impresión: <code>lpr</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>El temario incluye impresión Unix. En un equipo configurado con CUPS:</p>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>En soporte local puede ser necesario enviar un documento a una impresora compartida. En servidores, contenedores y EC2 normalmente no hay impresora configurada; no es un error que estos comandos no tengan salida útil allí.</p>
+</blockquote>
+<p>En un equipo con CUPS e impresora configurada:</p>
 <figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lpstat -p
 lpr documento.pdf
 lpq
-</code></pre></figure><p>En servidores y EC2 normalmente no hay impresora; se presenta como referencia, no como laboratorio.</p>
-<h2 id="c7-practica-guiada-resuelta-respaldo-de-logs">Práctica guiada resuelta — Respaldo de logs<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Esta práctica toma <code>data/dummy_logs.txt</code>, extrae las tres líneas <code>WARN</code>/<code>ERROR</code>, crea un paquete y lo restaura sin tocar el archivo original.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell/reporte laboratorio/shell/restauracion
-grep -En 'WARN|ERROR' data/dummy_logs.txt &gt; laboratorio/shell/reporte/incidentes.txt
-wc -l laboratorio/shell/reporte/incidentes.txt
-tar -czf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell reporte
-tar -tzf laboratorio/shell/incidentes.tar.gz
-tar -xzf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell/restauracion
-cmp laboratorio/shell/reporte/incidentes.txt \
-    laboratorio/shell/restauracion/reporte/incidentes.txt
-</code></pre></figure><p><code>cmp</code> no produce salida cuando ambos archivos son idénticos y termina con código 0.</p>
-<p>Por eso, <strong>no ver nada después de <code>cmp</code> significa éxito</strong>. Para hacerlo visible:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cmp laboratorio/shell/reporte/incidentes.txt \
-    laboratorio/shell/restauracion/reporte/incidentes.txt \
-  &amp;&amp; echo &quot;Restauración verificada&quot;
-</code></pre></figure><h2 id="c7-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+</code></pre></figure><p><code>lpstat -p</code> muestra las impresoras conocidas. <code>lpr documento.pdf</code> envía el archivo indicado a la cola predeterminada. <code>lpq</code> consulta trabajos pendientes. Antes de enviar algo, confirma qué impresora es la predeterminada y que el documento no contiene información sensible.</p>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Si <code>lpstat -p</code> no muestra impresoras en una EC2, la decisión correcta es no instalar una GUI ni servicios de impresión sólo para “hacer que el ejemplo funcione”. Esta sección es referencia de soporte de escritorio.</p>
+</blockquote>
+<h2 id="c7-practica-guiada-resuelta-respaldo-de-evidencia-de-un-incidente">Práctica guiada resuelta — Respaldo de evidencia de un incidente<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Una aplicación produjo mensajes de nivel <code>ERROR</code> y necesitas entregar al siguiente turno una copia de los logs de práctica. Esta práctica no modifica los originales y no utiliza redirecciones ni pipes: esos mecanismos se estudian en la Clase 3.</p>
+<ol>
+<li>Comprueba que existen los dos archivos de entrada con el bloque de “Antes de continuar”.</li>
+<li>Crea <code>laboratorio/shell/restaurado</code> si no existe.</li>
+<li>Crea el paquete, lista su contenido, restaura en otra ruta y compara los hashes.</li>
+</ol>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell/restaurado
+tar -czf laboratorio/shell/respaldo-clase2.tar.gz data/dummy_logs.txt data/specials.txt
+tar -tzf laboratorio/shell/respaldo-clase2.tar.gz
+tar -xzf laboratorio/shell/respaldo-clase2.tar.gz -C laboratorio/shell/restaurado
+sha256sum data/dummy_logs.txt laboratorio/shell/restaurado/data/dummy_logs.txt
+sha256sum data/specials.txt laboratorio/shell/restaurado/data/specials.txt
+</code></pre></figure><p>La evidencia mínima es: el nombre del paquete, su listado y dos parejas de hashes iguales. Si un hash no coincide, no entregues el respaldo como válido; vuelve a revisar la ruta de restauración y el archivo comparado.</p>
+<h2 id="c7-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>Usar rutas relativas sin comprobar <code>pwd</code>.</li>
-<li>Omitir comillas alrededor de variables con rutas.</li>
-<li>Confundir glob del shell (<code>*.csv</code>) con regex.</li>
-<li>Empaquetar datos y asumir que existen sin listar el archivo resultante.</li>
-<li>Usar <code>rm -rf</code> o <code>chmod 777</code> para evitar diagnosticar.</li>
+<li>Medir una carpeta con <code>du</code> y asumir que eso describe todo el disco; para eso consulta <code>df</code>.</li>
+<li>Usar <code>cat</code> por costumbre sobre un archivo grande en vez de <code>head</code>, <code>tail</code> o <code>less</code>.</li>
+<li>Confundir buscar texto (<code>grep</code>) con localizar archivos (<code>find</code>).</li>
+<li>Tratar <code>*.csv</code> como una regex; en este caso es un patrón de nombre que recibe <code>find</code>.</li>
+<li>Extraer un <code>tar.gz</code> sin haberlo listado o restaurarlo sobre los originales.</li>
+<li>Borrar, cambiar permisos o instalar paquetes para resolver una duda que sólo requiere inspección.</li>
 </ul>
 <h2 id="c7-reto-7-snapshot-de-evidencias">Reto 7 — Snapshot de evidencias<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p><span class="local-reference">Ver respuesta</span></p>
-<p>Trabaja dentro de <code>laboratorio/reto7</code>. Busca en <code>data/</code> archivos de texto o CSV no vacíos, genera <code>inventario.txt</code> con ruta y tamaño, empaqueta el inventario junto con <code>data/dummy_logs.txt</code> y restaura el paquete dentro de <code>laboratorio/reto7/restaurado</code>.</p>
+<p>Imagina que debes entregar evidencia a un compañero de soporte. Dentro de <code>laboratorio/reto7</code>, localiza con <code>find</code> dos archivos de texto o CSV no vacíos bajo <code>data/</code>. Elige dos, crea un único paquete, lista su contenido, restáuralo dentro de <code>laboratorio/reto7/restaurado</code> y compara los hashes de los originales y las copias.</p>
+<p>Si <code>laboratorio/reto7</code> no existe, créalo con <code>mkdir -p laboratorio/reto7/restaurado</code>. Si <code>data/</code> o los archivos que elegiste no existen, no crees sustitutos vacíos: vuelve al bloque “Antes de continuar”.</p>
 <h3 id="c7-criterios-de-comprobacion">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <ul>
-<li>El inventario se genera con comandos, no manualmente.</li>
+<li>Los dos archivos se localizan con <code>find</code>, no recorriendo carpetas manualmente.</li>
 <li>El paquete puede listarse sin extraerse.</li>
 <li>La restauración no sobrescribe los originales.</li>
-<li>Se demuestra que el inventario restaurado coincide con el original.</li>
+<li>Dos pares de <code>sha256sum</code> demuestran que cada archivo restaurado coincide con su original.</li>
+<li>El alumno puede explicar qué archivo era entrada, cuál fue el paquete y dónde quedó la restauración.</li>
 </ul>
 <h2 id="c7-checklist">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>[ ] Navego con rutas absolutas y relativas.</li>
-<li>[ ] Copio, muevo, enlazo y borro con verificación.</li>
-<li>[ ] Consulto tipo, permisos, propietario y espacio.</li>
-<li>[ ] Busco por contenido y por metadatos.</li>
-<li>[ ] Creo, inspecciono y restauro un <code>tar.gz</code>.</li>
+<li>[ ] Puedo explicar cuándo usaría <code>du</code> y cuándo <code>df</code> en un incidente.</li>
+<li>[ ] Elijo <code>head</code>, <code>tail</code> o <code>less</code> según la pregunta que necesito responder.</li>
+<li>[ ] Distingo buscar texto con <code>grep</code> de localizar archivos con <code>find</code>.</li>
+<li>[ ] Creo, listo, restauro y verifico un <code>tar.gz</code> sin tocar los originales.</li>
+<li>[ ] Sé qué rutas son datos versionados del curso y cuáles son mi laboratorio de práctica.</li>
 </ul>
 </article>
 
@@ -1372,19 +1604,45 @@ cmp laboratorio/shell/reporte/incidentes.txt \
     </div>
   </section>
   <article class="chapter chapter-3"><h2 id="c3-3-5-acceso-a-sistemas-de-archivos">3.5 Acceso a sistemas de archivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>En este curso se inspeccionan montajes; no se formatean discos.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>En soporte o DevOps alguien puede decir “el disco <code>/dev/nvme0n1p1</code> está lleno”, mientras que una aplicación sólo conoce rutas como <code>/var/log</code> o <code>/home</code>. Un montaje es la relación entre ambos mundos: conecta un dispositivo o sistema de archivos con una ruta dentro del único árbol de Linux.</p>
+</blockquote>
+<h3 id="c3-antes-de-continuar">Antes de continuar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Este apartado pertenece a la Clase 2. Trabaja desde la raíz del curso, aunque conserves carpetas de la Clase 1 en <code>laboratorio/</code>:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+pwd
+</code></pre></figure><p>No necesitas crear discos ni particiones para este ejercicio. Los comandos consultan el estado actual del equipo. Si <code>laboratorio/</code> no existe, podrás crearlo más adelante con <code>mkdir -p laboratorio</code>; no recrees a mano archivos versionados de <code>data/</code>.</p>
+<h3 id="c3-modelo-mental">Modelo mental<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Piensa en un montaje como una puerta: el <strong>origen</strong> es el dispositivo o sistema de archivos, el <strong>destino</strong> es la carpeta por la que lo usas y el <strong>tipo</strong> indica cómo organiza sus datos. No trabajes con letras de unidad como en otros sistemas; pregunta siempre “¿en qué ruta está montado?”.</p>
+<p>En este curso se inspeccionan montajes; no se formatean discos ni se modifican particiones.</p>
+<h3 id="c3-sintaxis-y-ejemplo-guiado">Sintaxis y ejemplo guiado<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>lsblk -f                 # dispositivos, tipo y punto de montaje
+findmnt &lt;ruta&gt;           # qué origen está montado en una ruta
+df -hT &lt;ruta&gt;            # capacidad del sistema de archivos de esa ruta
+</code></pre></figure><figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
 findmnt /
 df -hT /
 </code></pre></figure><p class="micro-label">Salida representativa</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>TARGET SOURCE    FSTYPE OPTIONS
 /      /dev/...  ext4   rw,relatime
-</code></pre></figure><ul>
-<li><code>lsblk -f</code>: dispositivos, sistema de archivos, etiquetas y montajes.</li>
+</code></pre></figure><p>Lee la salida en este orden:</p>
+<ol>
+<li><code>lsblk -f</code> muestra discos y particiones. Busca las columnas <code>FSTYPE</code> y <code>MOUNTPOINTS</code>; no cambies nada desde esa pantalla.</li>
+<li><code>findmnt /</code> responde qué está montado exactamente en la raíz <code>/</code>.</li>
+<li><code>df -hT /</code> responde cuánto espacio queda para las rutas que viven bajo esa raíz.</li>
+</ol>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Si una aplicación guarda logs en <code>/var/log</code>, prueba <code>findmnt /var/log</code> y <code>df -hT /var/log</code>. Puede pertenecer al mismo montaje que <code>/</code> o a uno independiente; la salida, no una suposición, te da la respuesta.</p>
+</blockquote>
+<ul>
+<li><code>lsblk -f</code>: dispositivos, sistema de archivos, etiquetas y puntos de montaje.</li>
 <li><code>findmnt</code>: relación entre destino y origen.</li>
 <li><code>df -hT</code>: espacio disponible y tipo; <code>-h</code> usa unidades legibles y <code>-T</code> agrega el tipo.</li>
-<li>ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario trabaja con la misma jerarquía.</li>
+<li>ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario sigue trabajando mediante rutas.</li>
 </ul>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Comandos como <code>mkfs</code>, <code>fdisk</code>, <code>parted</code> o <code>mount</code> pueden cambiar almacenamiento. No son parte de esta práctica. Primero identifica origen, destino y consecuencia antes de ejecutar una operación sobre discos.</p>
+</blockquote>
 </article>
 
   <section class="section-divider" id="capitulo-4">
@@ -1398,74 +1656,146 @@ df -hT /
       <div class="divider-tags"><span>Capítulo 4</span><span>X.Org</span><span>Wayland</span><span>sesión gráfica</span></div>
     </div>
   </section>
-  <article class="chapter chapter-4"><h2 id="c4-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-4"><h2 id="c4-indice">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>Distinguir shell, terminal, servidor gráfico, compositor y escritorio.</li>
-<li>Identificar la sesión gráfica sin memorizar componentes históricos.</li>
-<li>Entender por qué un servidor EC2 normalmente no incluye GUI.</li>
+<li><span class="local-reference">Objetivos</span></li>
+<li><span class="local-reference">Antes de continuar</span></li>
+<li><span class="local-reference">4.1 X Window y Wayland</span></li>
+<li><span class="local-reference">Práctica guiada: mapa de tu sesión</span></li>
+<li><span class="local-reference">Errores frecuentes</span></li>
+<li><span class="local-reference">Reto 4</span></li>
 </ul>
-<h2 id="c4-antes-de-empezar">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Este capítulo se practica en una VM con escritorio abierto, no en la terminal SSH de EC2. Abre GNOME Terminal o Konsole dentro de la VM.</p>
-<p>Las variables empiezan con <code>$</code> porque su valor lo proporciona la sesión gráfica. No debes sustituirlas manualmente.</p>
-<h2 id="c4-4-1-x-window">4.1 X Window<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>X Window System define un modelo de ventanas y entrada que tradicionalmente se implementa con <a href="http://X.Org" target="_blank">X.Org</a>. En escritorios actuales también es común Wayland, un protocolo más reciente en el que el compositor asume más responsabilidades.</p>
+<h2 id="c4-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Distinguir Linux, shell, terminal, protocolo gráfico, compositor y escritorio.</li>
+<li>Identificar la sesión gráfica sin memorizar componentes históricos.</li>
+<li>Decidir cuándo un servidor necesita GUI y cuándo conviene administrarlo por SSH.</li>
+</ul>
+<h2 id="c4-antes-de-continuar-2">Antes de continuar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Este capítulo se trabaja en una VM con escritorio abierto, no en la terminal SSH de EC2. La EC2 sigue siendo útil para los comandos de servidor; la VM gráfica sirve para observar cómo una aplicación llega a una pantalla.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+pwd
+</code></pre></figure><p>No necesitas archivos de la Clase 1 para esta demostración. Si <code>laboratorio/</code> existe, conserva su contenido. El reto de este capítulo crea <code>laboratorio/sesion-grafica.txt</code> desde un editor gráfico; si la carpeta no existe, puedes crearla con <code>mkdir -p laboratorio</code>.</p>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>No instales GNOME, KDE ni un servidor gráfico en una EC2 sólo para seguir la práctica. Si no tienes VM gráfica, observa la demostración del instructor y usa el diagrama.</p>
+</blockquote>
+<h2 id="c4-4-1-x-window-y-wayland">4.1 X Window y Wayland<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Una persona de soporte usa una aplicación con ventanas en su laptop, mientras que una persona de operaciones administra por SSH un servidor sin pantalla. Ambos usan Linux, pero no necesitan la misma capa gráfica.</p>
+</blockquote>
+<p>Linux es el kernel y el sistema base. Un escritorio como GNOME o KDE Plasma organiza ventanas, menús y configuración. <a href="http://X.Org" target="_blank">X.Org</a> y Wayland son formas de comunicar aplicaciones gráficas con la pantalla, teclado y ratón. No son sinónimos.</p>
 <figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>aplicación → toolkit → X.Org o compositor Wayland → kernel/controladores → pantalla
                          ↑
                   teclado y ratón
-</code></pre></figure><p>GNOME y KDE Plasma son <strong>entornos de escritorio</strong>; no son sinónimos de X Window.</p>
+</code></pre></figure><h3 id="c4-modelo-mental-quien-hace-que">Modelo mental: quién hace qué<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Responsabilidad</th>
+<th>Ejemplo práctico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aplicación</td>
+<td>Hace el trabajo visible</td>
+<td>navegador, editor, Files/Dolphin</td>
+</tr>
+<tr>
+<td>Toolkit</td>
+<td>Dibuja controles y ventanas</td>
+<td>GTK o Qt</td>
+</tr>
+<tr>
+<td><a href="http://X.Org" target="_blank">X.Org</a> o Wayland</td>
+<td>Protocolo/canal gráfico</td>
+<td>comunica app, entrada y pantalla</td>
+</tr>
+<tr>
+<td>Compositor</td>
+<td>Ordena ventanas y efectos</td>
+<td>GNOME Shell o KWin</td>
+</tr>
+<tr>
+<td>Escritorio</td>
+<td>Experiencia completa de usuario</td>
+<td>GNOME o KDE Plasma</td>
+</tr>
+<tr>
+<td>Shell/terminal</td>
+<td>Ejecuta comandos de texto</td>
+<td>Bash en GNOME Terminal o Konsole</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>GNOME y KDE no reemplazan a Linux; son entornos de escritorio. Una terminal puede existir dentro de ambos y también en un servidor sin escritorio.</p>
+</blockquote>
 <h3 id="c4-identificar-una-sesion">Identificar una sesión<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
-<p>Ejecuta esto en la terminal de una VM gráfica:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'Tipo: %s\n' &quot;${XDG_SESSION_TYPE:-no definido}&quot;
-printf 'Escritorio: %s\n' &quot;${XDG_CURRENT_DESKTOP:-no definido}&quot;
-printf 'Display X11: %s\n' &quot;${DISPLAY:-no definido}&quot;
-printf 'Display Wayland: %s\n' &quot;${WAYLAND_DISPLAY:-no definido}&quot;
-</code></pre></figure><p class="micro-label">Salida representativa</p>
-<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>Tipo: wayland
-Escritorio: ubuntu:GNOME
-Display X11: :0
-Display Wayland: wayland-0
-</code></pre></figure><ul>
-<li><code>XDG_SESSION_TYPE</code>: protocolo principal de la sesión.</li>
-<li><code>DISPLAY</code>: dirección usada por clientes X11, incluso mediante compatibilidad.</li>
-<li><code>WAYLAND_DISPLAY</code>: socket del compositor Wayland.</li>
-<li>Los valores cambian según la VM y la sesión elegida.</li>
-<li><code>${VARIABLE:-no definido}</code> muestra un texto comprensible cuando la variable no existe.</li>
-</ul>
+<p>Abre GNOME Terminal o Konsole <strong>dentro de la VM gráfica</strong>. Las variables que empiezan con <code>$</code> son valores que la sesión ya conoce; no sustituyas tú el signo <code>$</code>.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>echo &quot;$XDG_SESSION_TYPE&quot;
+echo &quot;$XDG_CURRENT_DESKTOP&quot;
+</code></pre></figure><p>La primera línea suele mostrar <code>wayland</code> o <code>x11</code>. La segunda puede mostrar <code>GNOME</code>, <code>KDE</code>, <code>ubuntu:GNOME</code> u otro nombre. Los valores cambian según la distribución y la sesión elegida al iniciar.</p>
+<h4>Qué significa una salida vacía</h4>
+<p>Si una variable no muestra nada, probablemente ejecutaste el comando desde SSH, una consola virtual o una sesión sin escritorio. Eso no indica que Linux esté roto: indica que no hay una sesión gráfica que describir.</p>
 <h3 id="c4-servidor-frente-a-escritorio">Servidor frente a escritorio<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
-<p>Una instancia EC2 para terminal no necesita GUI: reduce paquetes, memoria y superficie de ataque. El curso usa una VM gráfica del instructor para demostrar GNOME/KDE y EC2 para administración real por SSH.</p>
-<h2 id="c4-practica-guiada-resuelta">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>En la VM gráfica:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>session_id=${XDG_SESSION_ID:-$(loginctl | awk -v user=&quot;$USER&quot; '$3 == user {print $1; exit}')}
-loginctl show-session &quot;$session_id&quot; -p Type -p Desktop -p Remote 2&gt;/dev/null || true
-ps -e | grep -E 'gnome-shell|kwin_wayland|Xorg' || true
-</code></pre></figure><p>La primera línea obtiene el ID de la sesión y lo guarda en <code>session_id</code>. La segunda consulta esa sesión. <code>|| true</code> evita presentar como fallo grave la ausencia de un proceso opcional.</p>
-<p>Interpretación:</p>
-<ul>
-<li><code>Type</code> confirma <code>x11</code> o <code>wayland</code>.</li>
-<li><code>Desktop</code> identifica el entorno cuando está disponible.</li>
-<li><code>Remote=yes</code> indica una sesión remota.</li>
-<li>La lista de procesos ayuda a reconocer GNOME Shell, KWin o <a href="http://X.Org" target="_blank">X.Org</a>.</li>
-</ul>
+<p>Un servidor de aplicación normalmente se administra por SSH porque no necesita ventanas para atender peticiones. Evitar una GUI reduce paquetes instalados, memoria usada, actualizaciones y superficie de ataque. Una estación de soporte o desarrollo sí puede usar GUI para editar, revisar archivos o ejecutar herramientas visuales.</p>
+<table>
+<thead>
+<tr>
+<th>Si necesitas…</th>
+<th>Usa principalmente…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operar una EC2, revisar logs, cambiar configuración</td>
+<td>SSH y terminal</td>
+</tr>
+<tr>
+<td>asistir a una persona local, mover documentos, ajustar pantalla</td>
+<td>escritorio gráfico</td>
+</tr>
+<tr>
+<td>automatizar despliegues o tareas repetibles</td>
+<td>comandos y scripts reproducibles</td>
+</tr>
+</tbody>
+</table>
+<h2 id="c4-practica-guiada-resuelta-mapa-de-tu-sesion">Práctica guiada resuelta — Mapa de tu sesión<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ol>
+<li>En la VM gráfica, abre una terminal.</li>
+<li>Ejecuta las dos líneas de identificación.</li>
+<li>Abre el menú de aplicaciones y localiza una aplicación visible, por ejemplo Files o Konsole.</li>
+<li>Abre un editor de texto gráfico, escribe protocolo, escritorio y dos aplicaciones visibles, y guarda el archivo como <code>~/linux-desde-cero/laboratorio/sesion-grafica.txt</code>.</li>
+</ol>
+<p>El archivo es una evidencia humana, no una salida que debas generar con redirecciones. Si <code>laboratorio/</code> no existe, crea la carpeta desde Files o ejecuta:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio
+</code></pre></figure><blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>En tu evidencia debe quedar clara esta frase: “Mi aplicación se muestra mediante una sesión gráfica; mi servidor EC2 no necesita esa sesión para ejecutar servicios”.</p>
+</blockquote>
 <h2 id="c4-errores-frecuentes-2">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>Intentar ejecutar una aplicación gráfica en una sesión SSH sin display.</li>
-<li>Llamar “Linux” al escritorio completo.</li>
-<li>Instalar un escritorio pesado en un servidor sólo para administrar archivos.</li>
+<li>Intentar abrir una aplicación gráfica desde SSH sin una sesión de display.</li>
+<li>Llamar “Linux” únicamente al escritorio que se ve en pantalla.</li>
+<li>Instalar un escritorio pesado en un servidor para evitar aprender SSH.</li>
+<li>Memorizar nombres de procesos en vez de comprender la función de cada capa.</li>
 </ul>
 <h2 id="c4-reto-4-mapa-de-la-sesion-grafica">Reto 4 — Mapa de la sesión gráfica<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <p><span class="local-reference">Ver respuesta</span></p>
-<p>Desde la VM del instructor, crea <code>laboratorio/sesion-grafica.txt</code>. Registra protocolo, escritorio, compositor o servidor gráfico y dos aplicaciones visibles. Explica la función de cada capa en una frase.</p>
+<p>Desde la VM del instructor, crea o completa <code>~/linux-desde-cero/laboratorio/sesion-grafica.txt</code> con protocolo, escritorio, dos aplicaciones visibles y una frase sobre cada capa. Si el archivo de evidencia no existe, créalo desde el editor gráfico; si <code>laboratorio/</code> no existe, créalo primero.</p>
 <h3 id="c4-criterios-de-comprobacion-2">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
 <ul>
-<li>Diferencia protocolo, escritorio y aplicación.</li>
-<li>Los valores se obtienen de la sesión, no se inventan.</li>
+<li>Distingue protocolo, escritorio y aplicación.</li>
+<li>Los valores se observan en la sesión, no se inventan.</li>
 <li>Explica por qué la EC2 del laboratorio no requiere GUI.</li>
 </ul>
 <h2 id="c4-checklist-2">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
 <li>[ ] Distingo <a href="http://X.Org" target="_blank">X.Org</a>, Wayland, GNOME y KDE.</li>
-<li>[ ] Puedo identificar el tipo de sesión.</li>
-<li>[ ] Comprendo la diferencia entre servidor y desktop.</li>
+<li>[ ] Sé reconocer si estoy en una sesión gráfica o en SSH.</li>
+<li>[ ] Puedo justificar por qué un servidor puede operar sin escritorio.</li>
 </ul>
 </article>
 
@@ -1476,91 +1806,243 @@ ps -e | grep -E 'gnome-shell|kwin_wayland|Xorg' || true
       <div class="divider-number">04</div>
       <div class="divider-kicker">Escritorio</div>
       <h2>GNOME</h2>
-      <p class="divider-description">Activities, Files, búsqueda, terminal y la misma operación expresada de forma verificable en CLI.</p>
-      <div class="divider-tags"><span>Capítulo 5</span><span>Files · Nautilus</span><span>Terminal</span><span>Settings</span></div>
+      <p class="divider-description">Actividades, Files, herramientas esenciales y espacios de trabajo para comprender el flujo de GNOME.</p>
+      <div class="divider-tags"><span>Capítulo 5</span><span>Activities</span><span>Files · Nautilus</span><span>Workspaces</span></div>
     </div>
   </section>
-  <article class="chapter chapter-5"><h2 id="c5-objetivos-2">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-5"><p><strong>GNOME</strong> es un entorno de escritorio: organiza ventanas, aplicaciones, notificaciones y espacios de trabajo sobre Linux. En Ubuntu Desktop, GNOME es la interfaz que verás; no reemplaza al kernel, al sistema de archivos ni a Bash.</p>
+<blockquote>
+<p><strong>Entorno de demostración.</strong> La VM del instructor usa Ubuntu 24.04 LTS con GNOME. Los iconos o nombres menores pueden variar según la versión, pero la ruta de trabajo es la misma.</p>
+</blockquote>
+<h2 id="c5-indice-2">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>Reconocer los elementos principales de GNOME.</li>
-<li>Administrar archivos con Files/Nautilus y relacionar acciones con comandos.</li>
-<li>Usar terminal, búsqueda y configuración básica.</li>
-<li>Comprender el proceso de instalación sin consumir la clase descargando un escritorio.</li>
+<li><span class="local-reference">Instalar Ubuntu GNOME en una VM (opcional)</span></li>
+<li><span class="local-reference">5.1 Mapa de GNOME</span></li>
+<li><span class="local-reference">5.2 Files</span></li>
+<li><span class="local-reference">5.3 Herramientas esenciales</span></li>
+<li><span class="local-reference">5.4 Aplicaciones populares (opcional)</span></li>
+<li><span class="local-reference">5.5 Espacios de trabajo (opcional)</span></li>
+<li><span class="local-reference">GNOME y KDE: diferencia de enfoque</span></li>
+<li><span class="local-reference">Glosario rápido de GNOME</span></li>
 </ul>
-<h2 id="c5-antes-de-empezar-2">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Usa la VM gráfica del instructor o una Ubuntu Desktop. Los ejemplos crearán <code>~/curso-gui</code>; <code>~</code> representa el home del usuario que inició la sesión gráfica.</p>
-<p>Prepara la carpeta de práctica:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/entrada
-</code></pre></figure><p><code>mkdir -p</code> conserva lo que ya exista. Si repetiste la práctica, puedes usar otros nombres o revisar los archivos antes de sobrescribirlos.</p>
-<h2 id="c5-5-1-iniciacion-a-gnome">5.1 Iniciación a GNOME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>GNOME prioriza un flujo simple basado en Activities, búsqueda, espacios de trabajo y aplicaciones integradas. Ubuntu Desktop incluye una adaptación de GNOME.</p>
-<p>Elementos para la demostración:</p>
-<ul>
-<li>Activities Overview;</li>
-<li>panel superior y notificaciones;</li>
-<li>dock;</li>
-<li>espacios de trabajo;</li>
-<li>configuración rápida.</li>
-</ul>
-<h2 id="c5-5-2-aplicaciones-auxiliares">5.2 Aplicaciones auxiliares<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Las aplicaciones útiles para este curso son Files, Terminal, Text Editor, Settings y System Monitor. El objetivo es ubicar herramientas, no recorrer todo el catálogo.</p>
-<h2 id="c5-5-3-files-nautilus">5.3 Files/Nautilus<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Demostración en la VM:</p>
+<h3 id="c5-instalar-ubuntu-gnome-en-una-vm-opcional">Instalar Ubuntu GNOME en una VM (opcional)<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Para reproducir el recorrido en casa, usa <a href="https://releases.ubuntu.com/noble/ubuntu-24.04.4-desktop-amd64.iso" target="_blank">Ubuntu 24.04.4 Desktop para 64 bits (<code>amd64</code>)</a>. Es una imagen reciente de Ubuntu con GNOME; una revisión menor diferente de 24.04 puede cambiar iconos o textos, no la idea de la demostración.</p>
 <ol>
-<li>Crear <code>~/curso-gui/entrada</code>.</li>
-<li>Mostrar archivos ocultos con <code>Ctrl+H</code>.</li>
-<li>Copiar, mover, renombrar y eliminar un archivo.</li>
-<li>Abrir Properties y revisar tipo, tamaño y permisos.</li>
-<li>Repetir en terminal:</li>
+<li>Instala <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">VirtualBox</a> para Windows, macOS o Linux.</li>
+<li>Descarga la ISO oficial de Ubuntu indicada arriba (aproximadamente 6.2 GB).</li>
+<li>En VirtualBox elige <strong>Nueva</strong> y crea <code>Ubuntu-GNOME</code>: tipo <strong>Linux</strong>, versión <strong>Ubuntu (64-bit)</strong>, al menos <strong>4 GB de RAM</strong>, <strong>2 CPU</strong> y un disco virtual <strong>VDI</strong> dinámico de <strong>30 GB</strong>.</li>
+<li>En <strong>Configuración → Almacenamiento</strong>, selecciona la unidad óptica vacía, carga la ISO e inicia la VM. Elige <strong>Install Ubuntu</strong>.</li>
+<li>Instala únicamente en el disco virtual creado por VirtualBox (por ejemplo, <code>VBOX HARDDISK</code>), reinicia y retira la ISO cuando la VM lo solicite.</li>
 </ol>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/entrada
-printf 'estado=ok\n' &gt; ~/curso-gui/entrada/servicio.conf
-cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/copia.conf
-mv ~/curso-gui/copia.conf ~/curso-gui/config-actual.conf
-ls -lah ~/curso-gui
-</code></pre></figure><p><code>servicio.conf</code> es el archivo original, <code>copia.conf</code> es una copia temporal y <code>config-actual.conf</code> es el nombre final después de moverla.</p>
-<h2 id="c5-5-4-busqueda">5.4 Búsqueda<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>La búsqueda gráfica es apropiada cuando se exploran documentos. Para búsquedas reproducibles o servidores se usan comandos:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>find ~/curso-gui -type f -name '*.conf'
-grep -R &quot;estado=&quot; ~/curso-gui
-</code></pre></figure><h2 id="c5-5-5-terminales">5.5 Terminales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>GNOME Terminal, Console y XTerm son emuladores de terminal. El shell puede ser Bash en cualquiera de ellos.</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'Terminal: %s\nShell: %s\n' &quot;$TERM&quot; &quot;$SHELL&quot;
-</code></pre></figure><p><code>$TERM</code> describe capacidades de terminal; no debe usarse para decidir qué shell está activo.</p>
-<h2 id="c5-5-6-multimedia">5.6 Multimedia<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>El temario original incluye multimedia. Para este curso basta explicar que audio, video y cámaras dependen de servicios, permisos y aplicaciones del escritorio. No se dedicará una práctica a reproductores.</p>
-<h2 id="c5-5-7-instalacion-y-configuracion">5.7 Instalación y configuración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>La VM del instructor se prepara antes de clase. En Ubuntu se inspeccionan primero los paquetes disponibles:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>apt search ubuntu-desktop
-apt show ubuntu-desktop-minimal
-</code></pre></figure><p><code>apt search</code> y <code>apt show</code> sólo consultan información. No instalan GNOME. La instalación real se prepara antes de clase porque puede descargar muchos paquetes y cambiar la pantalla de inicio de sesión.</p>
-<p>La instalación de un escritorio descarga muchos paquetes y requiere reinicio/selección de sesión; no debe iniciarse en una EC2 de laboratorio. Durante la demostración se configuran pantalla, teclado, red, usuarios y accesibilidad desde Settings.</p>
-<h2 id="c5-practica-guiada-resuelta-2">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Compara una operación gráfica con su evidencia CLI:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>stat ~/curso-gui/config-actual.conf
-sha256sum ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
-</code></pre></figure><p>Si los hashes coinciden, la copia conserva el mismo contenido aunque el nombre y metadatos puedan ser distintos.</p>
-<h2 id="c5-errores-frecuentes-3">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Esta práctica es opcional. No selecciones un disco físico ni reemplaces el sistema operativo de tu equipo para completar la Clase 2.</p>
+</blockquote>
+<h2 id="c5-antes-de-la-demostracion">Antes de la demostración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El instructor muestra GNOME desde Ubuntu Desktop o una VM preparada. Observa primero: no necesitas instalar otro escritorio, cambiar la red ni modificar configuraciones globales.</p>
+<h2 id="c5-ruta-corta-para-mostrar-en-clase">Ruta corta para mostrar en clase<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ol>
+<li><strong>Actividades:</strong> abrir la vista general con el botón <strong>Actividades</strong> o la tecla <code>Super</code>.</li>
+<li><strong>Files:</strong> reconocer Lugares, búsqueda, ubicación y vistas.</li>
+<li><strong>Herramientas esenciales:</strong> Screenshot, Text Editor y System Monitor.</li>
+<li><strong>Espacios de trabajo:</strong> sólo si queda tiempo.</li>
+<li><strong>Comparación con KDE:</strong> distinguir enfoque de interfaz, no “dos Linux distintos”.</li>
+</ol>
+<h2 id="c5-5-1-mapa-de-gnome">5.1 Mapa de GNOME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>GNOME concentra el trabajo en <strong>Actividades</strong>. Desde ahí se buscan aplicaciones, se ven las ventanas abiertas y se cambia de espacio de trabajo. Es distinto del menú por categorías de KDE Plasma, pero ambos permiten llegar a las mismas aplicaciones Linux.</p>
+<p><img src="../shared/assets/gnome-overview-map.svg" alt="Mapa visual de GNOME: Actividades, dock y configuración rápida."></p>
+<p><em>Mapa visual: usa <strong>Actividades</strong> o <code>Super</code> para abrir la vista general. La configuración rápida sólo se observa durante la demostración.</em></p>
+<table>
+<thead>
+<tr>
+<th>Elemento</th>
+<th>Dónde se reconoce</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actividades</strong></td>
+<td>Esquina superior izquierda o tecla <code>Super</code></td>
+<td>Abrir la vista general, buscar aplicaciones y ver espacios de trabajo.</td>
+</tr>
+<tr>
+<td><strong>Dock</strong></td>
+<td>Barra lateral o inferior, según la distribución</td>
+<td>Acceso rápido a aplicaciones frecuentes y ventanas abiertas.</td>
+</tr>
+<tr>
+<td><strong>Configuración rápida</strong></td>
+<td>Menú de iconos de red, volumen y energía</td>
+<td>Consultar estado y controles inmediatos de la sesión.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>No cambies red, brillo, energía o sesión en una máquina compartida sólo para explorar el menú.</p>
+</blockquote>
+<h2 id="c5-5-2-files">5.2 Files<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><strong>Files</strong> (también llamado Nautilus) es el gestor de archivos de GNOME. Esta demostración no repite crear, copiar, mover o cambiar permisos: esas operaciones ya se aprendieron en Clase 1. Aquí importa reconocer cómo GNOME presenta las rutas y cómo se encuentra información visualmente.</p>
+<p><img src="../shared/assets/gnome-files-map.svg" alt="Mapa visual de Files en GNOME: Lugares, ubicación, búsqueda y vista."></p>
+<p><em>Mapa visual de Files: identifica primero <strong>Lugares</strong>, la <strong>ubicación</strong>, <strong>Buscar</strong> y los botones de <strong>vista</strong>.</em></p>
 <ul>
-<li>Confundir el gestor de archivos con el sistema de archivos.</li>
-<li>Creer que mover a Trash elimina inmediatamente y sin recuperación.</li>
-<li>Cambiar permisos gráficamente sin interpretar usuario, grupo y otros.</li>
+<li><strong>Lugares:</strong> permite ir a Inicio, Recientes, Descargas, Documentos y otras ubicaciones.</li>
+<li><strong>Ubicación:</strong> muestra dónde estás; con <code>Ctrl+L</code> puedes escribir o copiar una ruta cuando necesites documentarla.</li>
+<li><strong>Buscar:</strong> usa el botón de búsqueda o <code>Ctrl+F</code> para encontrar elementos dentro de la ubicación abierta.</li>
+<li><strong>Vista:</strong> alterna entre iconos y lista para priorizar vista previa o detalles.</li>
 </ul>
-<h2 id="c5-reto-5-gui-y-cli-equivalentes">Reto 5 — GUI y CLI equivalentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p><span class="local-reference">Ver respuesta</span></p>
-<p>Trabaja dentro de <code>~/curso-gui/reto5</code>. Realiza tres operaciones en Files y documenta en <code>evidencia.txt</code> los comandos equivalentes. Incluye una prueba que confirme contenido y otra que confirme permisos.</p>
-<h3 id="c5-criterios-de-comprobacion-3">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
-<ul>
-<li>Incluye crear, mover o copiar y cambiar permisos.</li>
-<li>Usa una evidencia verificable, no sólo capturas.</li>
-<li>Explica qué metadato cambió en cada operación.</li>
-</ul>
-<h2 id="c5-checklist-3">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<ul>
-<li>[ ] Reconozco Activities, Files, Terminal y Settings.</li>
-<li>[ ] Relaciono operaciones gráficas con comandos.</li>
-<li>[ ] Sé por qué la instalación se demuestra en una VM preparada.</li>
-</ul>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Files no tiene una vista dividida equivalente a Dolphin. Si necesitas comparar origen y destino durante una demostración, usa dos ventanas o elige Dolphin; no presentes una limitación como si fuera un error del alumno.</p>
+</blockquote>
+<h2 id="c5-5-3-herramientas-esenciales">5.3 Herramientas esenciales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Herramienta</th>
+<th>Qué mostrar</th>
+<th>Cuándo ayuda</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📸 <strong>Screenshot</strong></td>
+<td>Seleccionar una región o ventana</td>
+<td>Documentar un ticket o una evidencia visual.</td>
+</tr>
+<tr>
+<td>📝 <strong>Text Editor</strong></td>
+<td>Abrir un archivo de texto y sus números de línea</td>
+<td>Leer notas o configuración de práctica.</td>
+</tr>
+<tr>
+<td>📊 <strong>System Monitor</strong></td>
+<td>Procesos y uso de CPU o memoria</td>
+<td>Orientar una consulta local antes de investigar con más detalle.</td>
+</tr>
+<tr>
+<td>🔎 <strong>Búsqueda de Actividades</strong></td>
+<td>Escribir el nombre de una aplicación</td>
+<td>Abrir una herramienta sin recorrer menús.</td>
+</tr>
+<tr>
+<td>🧮 <strong>Calculator (opcional)</strong></td>
+<td>Cambiar a modo Programador</td>
+<td>Convertir un valor entre decimal, hexadecimal y binario durante una demostración técnica.</td>
+</tr>
+</tbody>
+</table>
+<p>Estas herramientas sirven para observar y documentar. Los comandos de búsqueda, procesos, archivos y permisos se conservan en sus capítulos de terminal.</p>
+<h2 id="c5-5-4-aplicaciones-populares-opcional">5.4 Aplicaciones populares (opcional)<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Estas aplicaciones no son parte de GNOME, pero se usan con frecuencia sobre Ubuntu Desktop. Se muestran sólo si ya están instaladas en la VM del instructor; no se instalan durante la clase.</p>
+<table>
+<thead>
+<tr>
+<th>Aplicación</th>
+<th>Qué mostrar en un minuto</th>
+<th>Uso habitual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📹 <strong>OBS Studio</strong></td>
+<td>Escena, fuentes y botón de grabación</td>
+<td>Grabar una demostración de pantalla o una incidencia reproducible.</td>
+</tr>
+<tr>
+<td>🎙️ <strong>Audacity</strong></td>
+<td>Pista de audio y medidor de entrada</td>
+<td>Grabar o limpiar audio para material de capacitación.</td>
+</tr>
+<tr>
+<td>🎨 <strong>GIMP</strong></td>
+<td>Capas y herramienta de anotación</td>
+<td>Preparar una captura con marcas antes de documentar un ticket.</td>
+</tr>
+<tr>
+<td>📊 <strong>GNU Octave</strong></td>
+<td>Consola y una gráfica de ejemplo preparada</td>
+<td>Cálculo numérico y prototipos académicos o de ingeniería.</td>
+</tr>
+<tr>
+<td>🖥️ <strong>Remmina</strong></td>
+<td>Tipo de conexión RDP/VNC/SSH</td>
+<td>Acceder a una estación remota autorizada desde soporte.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>No inicies grabaciones, conexiones remotas ni cambios de audio en equipos ajenos. El objetivo es reconocer la herramienta y cuándo sería apropiada.</p>
+</blockquote>
+<h2 id="c5-5-5-espacios-de-trabajo-opcional">5.5 Espacios de trabajo (opcional)<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>En <strong>Actividades</strong>, GNOME muestra espacios de trabajo para separar tareas: por ejemplo, documentación en uno y una terminal o navegador en otro. Arrastra una ventana a otro espacio o usa la vista general para cambiar entre ellos.</p>
+<p>Es opcional porque depende del flujo de cada persona. La idea importante es que mover una ventana de espacio no la cierra ni cambia sus archivos.</p>
+<h2 id="c5-gnome-y-kde-diferencia-de-enfoque">GNOME y KDE: diferencia de enfoque<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>GNOME</th>
+<th>KDE Plasma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Punto de partida</td>
+<td>Actividades y búsqueda</td>
+<td>Kickoff y panel</td>
+</tr>
+<tr>
+<td>Organización</td>
+<td>Vista general y espacios de trabajo</td>
+<td>Paneles, widgets y lanzadores visibles</td>
+</tr>
+<tr>
+<td>Archivos</td>
+<td>Files, interfaz más simple</td>
+<td>Dolphin, panel dividido y más vistas</td>
+</tr>
+<tr>
+<td>Personalización</td>
+<td>Menos opciones expuestas</td>
+<td>Más opciones en la propia interfaz</td>
+</tr>
+</tbody>
+</table>
+<p>GNOME y KDE cambian la experiencia visual, no los conceptos Linux que ya aprendiste: rutas, usuarios, permisos y comandos siguen siendo los mismos.</p>
+<h2 id="c5-glosario-rapido-de-gnome">Glosario rápido de GNOME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Término</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GNOME Shell</strong></td>
+<td>Componente que muestra el panel superior, Actividades, notificaciones y la vista general.</td>
+</tr>
+<tr>
+<td><strong>Actividades</strong></td>
+<td>Puerta de entrada para buscar aplicaciones, ver ventanas y cambiar de espacio de trabajo.</td>
+</tr>
+<tr>
+<td><strong>Dock</strong></td>
+<td>Barra de accesos a aplicaciones frecuentes y ventanas abiertas.</td>
+</tr>
+<tr>
+<td><strong>Configuración rápida</strong></td>
+<td>Menú de controles inmediatos de red, sonido, energía y sesión.</td>
+</tr>
+<tr>
+<td><strong>Files / Nautilus</strong></td>
+<td>Gestor de archivos de GNOME.</td>
+</tr>
+<tr>
+<td><strong>Espacio de trabajo</strong></td>
+<td>Área separada para organizar ventanas sin cerrar aplicaciones.</td>
+</tr>
+</tbody>
+</table>
 </article>
 
   <section class="section-divider" id="capitulo-6">
@@ -1570,108 +2052,317 @@ sha256sum ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
       <div class="divider-number">05</div>
       <div class="divider-kicker">Escritorio</div>
       <h2>KDE Plasma</h2>
-      <p class="divider-description">Dolphin, Konsole, tipos MIME, propiedades, permisos y diagnóstico desde una interfaz gráfica moderna.</p>
-      <div class="divider-tags"><span>Capítulo 6</span><span>Dolphin</span><span>Konsole</span><span>System Settings</span></div>
+      <p class="divider-description">Panel, Kickoff, Dolphin y herramientas esenciales para comprender una interfaz Plasma moderna.</p>
+      <div class="divider-tags"><span>Capítulo 6</span><span>Dolphin</span><span>Herramientas KDE</span></div>
     </div>
   </section>
-  <article class="chapter chapter-6"><h2 id="c6-objetivos-3">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+  <article class="chapter chapter-6"><p><strong>KDE Plasma</strong> es un entorno de escritorio: la capa visual que aporta panel, menú de aplicaciones, ventanas, widgets y herramientas gráficas para trabajar sobre Linux. No es otra distribución ni otro kernel; <strong>Kubuntu</strong> combina Ubuntu como sistema base con KDE Plasma como interfaz.</p>
+<p>Recorrido práctico hands-on para conocer esta interfaz. Compararemos Plasma con GNOME y relacionaremos las acciones visuales con los conceptos Linux ya aprendidos, sin repetir comandos de terminal.</p>
+<h2 id="c6-indice-3">Índice<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
 <ul>
-<li>Reconocer Plasma, Dolphin, Konsole y System Settings.</li>
-<li>Relacionar administración gráfica de archivos con comandos Linux.</li>
-<li>Contextualizar los nombres históricos del temario.</li>
+<li><span class="local-reference">Instalarla en una VM (práctica opcional)</span></li>
+<li><span class="local-reference">6.1 Partes de la pantalla</span></li>
+<li><span class="local-reference">6.2 Dolphin File Manager</span></li>
+<li><span class="local-reference">6.3 Apps esenciales de KDE</span></li>
+<li><span class="local-reference">6.4 Herramientas de productividad</span></li>
+<li><span class="local-reference">6.5 KMenuEdit (opcional)</span></li>
+<li><span class="local-reference">6.6 Configuración avanzada del sistema</span></li>
+<li><span class="local-reference">6.7 Personalizar el panel</span></li>
+<li><span class="local-reference">KDE vs GNOME: diferencias clave</span></li>
+<li><span class="local-reference">Glosario rápido de KDE</span></li>
 </ul>
-<h2 id="c6-antes-de-empezar-3">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Este capítulo continúa con los archivos creados en GNOME. Si abriste este documento directamente, prepara el mismo punto de partida desde Konsole:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/{entrada,kde-demo}
-printf 'estado=ok\n' &gt; ~/curso-gui/entrada/servicio.conf
-cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
-</code></pre></figure><p>Después existirán <code>servicio.conf</code>, <code>config-actual.conf</code> y el directorio vacío <code>kde-demo</code>.</p>
+<blockquote>
+<p><strong>Imagen usada en la demostración.</strong> La VM del instructor usa <strong><code>kubuntu-16.04.6-desktop-amd64.iso</code></strong> (Kubuntu 16.04.6 Desktop para 64 bits), con KDE Plasma. Los nombres exactos de algunos menús pueden variar con la versión; busca la función descrita, no una etiqueta idéntica.</p>
+</blockquote>
+<h3 id="c6-instalarla-en-una-vm-practica-opcional">Instalarla en una VM (práctica opcional)<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ol>
+<li>Instala <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">VirtualBox</a> para tu sistema anfitrión (Windows, macOS o Linux).</li>
+<li>Descarga <a href="https://cdimage.ubuntu.com/kubuntu/releases/16.04/release/kubuntu-16.04.6-desktop-amd64.iso" target="_blank">la ISO oficial de Kubuntu 16.04.6 para <code>amd64</code></a> —ocupa aproximadamente 1.6 GB—.</li>
+<li>En VirtualBox elige <strong>Nueva</strong> y crea <code>Kubuntu-KDE</code>: tipo <strong>Linux</strong>, versión <strong>Ubuntu (64-bit)</strong>, al menos <strong>2 GB de RAM</strong>, <strong>2 CPU</strong> y un disco virtual <strong>VDI</strong> dinámico de <strong>25 GB</strong>.</li>
+<li>En <strong>Configuración → Almacenamiento</strong>, selecciona la unidad óptica vacía y carga la ISO descargada. Inicia la VM y elige <strong>Install Kubuntu</strong>.</li>
+<li>En la pantalla de destino, selecciona instalar sobre el <strong>disco virtual</strong> creado por VirtualBox (por ejemplo, <code>VBOX HARDDISK</code>). Finaliza el asistente, reinicia y retira la ISO cuando la VM lo pida.</li>
+</ol>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>Kubuntu 16.04 es una versión histórica sin soporte de seguridad. Úsala sólo en una VM de práctica aislada. No selecciones un disco físico ni reemplaces el sistema operativo de tu equipo para completar la Clase 2.</p>
+</blockquote>
+<h2 id="c6-objetivos-2">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Ubicar panel, Kickoff, bandeja y widgets.</li>
+<li>Explorar Dolphin: Lugares, vistas, <code>F3</code> y <code>F4</code>.</li>
+<li>Identificar herramientas básicas de KDE.</li>
+<li>Distinguir KDE Plasma de GNOME.</li>
+</ul>
+<h2 id="c6-antes-de-la-demostracion-2">Antes de la demostración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El instructor muestra una VM de KDE Plasma. Sólo observa: no necesitas instalar KDE ni modificar tu equipo.</p>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>No cambies red, permisos, asociaciones de archivos, panel ni sesión. El instructor usa cambios reversibles en la VM.</p>
+</blockquote>
+<h2 id="c6-ruta-corta-para-mostrar-en-clase-2">Ruta corta para mostrar en clase<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ol>
+<li><strong>Panel y Kickoff:</strong> ubicar la lógica general de Plasma.</li>
+<li><strong>Dolphin:</strong> mostrar lugares, vistas, panel dividido, ruta y terminal integrada como característica de interfaz.</li>
+<li><strong>Herramientas esenciales:</strong> Spectacle, Ark, Okular, Kate y KFind.</li>
+<li><strong>Comparación final con GNOME:</strong> identificar qué cambia en la experiencia, no en Linux.</li>
+</ol>
+<p>Los apartados restantes quedan como exploración guiada: se muestran si hay tiempo o si responden a una necesidad del grupo.</p>
 <h2 id="c6-6-1-partes-de-la-pantalla">6.1 Partes de la pantalla<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>KDE Plasma suele presentar panel, lanzador, bandeja, escritorio, widgets y actividades. Es altamente configurable, pero en este curso sólo se recorren elementos que ayudan a trabajar.</p>
-<h2 id="c6-6-2-administracion-de-archivos-con-dolphin">6.2 Administración de archivos con Dolphin<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>KFM fue un gestor antiguo de KDE. Su equivalente actual es Dolphin.</p>
-<p>Funciones de la demostración:</p>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Una persona de soporte debe orientarse rápidamente en una estación que usa Plasma. Antes de abrir herramientas, identifica qué parte lanza aplicaciones, qué parte muestra tareas y dónde aparecen red, volumen o notificaciones.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Qué mostrar</th>
+<th>Ruta o acción en Plasma</th>
+<th>Qué debe observar el alumno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Panel</td>
+<td>Barra normalmente inferior</td>
+<td>Contiene lanzador, tareas abiertas, widgets y bandeja; es configurable.</td>
+</tr>
+<tr>
+<td>Kickoff</td>
+<td>Botón con la <strong>K</strong> al extremo izquierdo del panel inferior</td>
+<td>Abre categorías y búsqueda; el icono puede variar con el tema.</td>
+</tr>
+<tr>
+<td>Escritorio</td>
+<td>Área central</td>
+<td>Puede contener archivos y widgets; no es una carpeta distinta del sistema.</td>
+</tr>
+<tr>
+<td>Bandeja del sistema</td>
+<td>Extremo del panel</td>
+<td>Red, sonido, batería, actualizaciones y notificaciones.</td>
+</tr>
+<tr>
+<td>Editar panel</td>
+<td>Clic derecho en panel → modo de edición</td>
+<td>La posición y los elementos del panel pueden cambiarse.</td>
+</tr>
+<tr>
+<td>Widgets</td>
+<td>Modo de edición → Añadir widgets</td>
+<td>Son componentes independientes, como reloj, notas o monitor de recursos.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="learning-callout learning-callout--check"><div class="learning-callout__label">Comprueba.</div>
+<p>Pide al grupo que ubique Kickoff, una aplicación abierta y el indicador de red antes de seguir. Así todos parten del mismo mapa visual.</p>
+</blockquote>
+<p><img src="../shared/assets/kde-plasma-panel-map.svg" alt="Mapa visual del panel de KDE Plasma: Kickoff, tareas, bandeja y reloj."></p>
+<p><em>Mapa visual: en la VM mostrada, el botón <strong>K</strong> abre Kickoff. Los iconos y colores pueden cambiar con el tema.</em></p>
+<h2 id="c6-6-2-dolphin-file-manager">6.2 Dolphin File Manager<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><strong>Dolphin</strong> es el gestor de archivos actual de KDE Plasma. KFM es un nombre histórico que puede aparecer en material antiguo, pero no es la herramienta que se demostrará.</p>
+<p><img src="../shared/assets/kde-dolphin-map.svg" alt="Mapa visual de Dolphin: Lugares, ruta actual, controles de vista y panel dividido."></p>
+<p><em>Mapa visual de Dolphin: <code>F3</code> muestra dos paneles; <code>F4</code>, la terminal inferior.</em></p>
+<p><strong>Atajos visibles en Dolphin:</strong></p>
 <ul>
-<li>panel de lugares y ruta editable;</li>
-<li>vista dividida;</li>
-<li>archivos ocultos;</li>
-<li>terminal integrada;</li>
-<li>propiedades, tipo y permisos.</li>
+<li><code>F3</code>: muestra u oculta la <strong>pantalla dividida</strong>, con dos paneles de archivos lado a lado.</li>
+<li><code>F4</code>: muestra u oculta la <strong>terminal en la parte inferior</strong> de Dolphin, sincronizada con la carpeta que estás viendo.</li>
 </ul>
-<h2 id="c6-6-3-navegacion-y-contenido">6.3 Navegación y contenido<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>En Dolphin navega a <code>~/curso-gui</code>. Abre la terminal integrada y comprueba:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>pwd
-ls -lah
-file config-actual.conf
-</code></pre></figure><p><code>~/curso-gui</code> significa la carpeta <code>curso-gui</code> dentro de tu home. Puedes escribir esa ruta en la barra de ubicación de Dolphin. Los comandos funcionan porque la terminal integrada se abre en la carpeta que Dolphin muestra; confirma que <code>pwd</code> termina en <code>/curso-gui</code>.</p>
-<p>La GUI y la terminal observan el mismo sistema de archivos.</p>
-<h2 id="c6-6-4-crear-directorios">6.4 Crear directorios<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Crear una carpeta desde Dolphin equivale a:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/kde-demo
-</code></pre></figure><p><code>-p</code> crea padres faltantes y no falla si la ruta ya existe.</p>
-<h2 id="c6-6-5-copiar-borrar-y-mover">6.5 Copiar, borrar y mover<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cp ~/curso-gui/config-actual.conf ~/curso-gui/kde-demo/
-mv ~/curso-gui/kde-demo/config-actual.conf ~/curso-gui/kde-demo/app.conf
-rm -i ~/curso-gui/kde-demo/app.conf
-</code></pre></figure><p><code>rm -i</code> solicita confirmación. La terminal no tiene una papelera universal equivalente a Trash.</p>
-<p>Cuando aparezca <code>remove regular file ...?</code>, responde <code>y</code> para borrar el archivo de práctica o <code>n</code> para conservarlo. Si respondes <code>y</code>, el enlace del siguiente apartado seguirá funcionando porque apunta a <code>servicio.conf</code>, no a <code>app.conf</code>.</p>
-<h2 id="c6-6-6-enlaces">6.6 Enlaces<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Dolphin puede mostrar el destino de un enlace. La forma reproducible es:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ln -s ../entrada/servicio.conf ~/curso-gui/kde-demo/servicio-actual
-readlink ~/curso-gui/kde-demo/servicio-actual
-</code></pre></figure><h2 id="c6-6-7-tipos-mime">6.7 Tipos MIME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Las asociaciones de aplicaciones usan tipos MIME, no únicamente extensiones:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>xdg-mime query filetype ~/curso-gui/config-actual.conf
-</code></pre></figure><h2 id="c6-6-8-propiedades-y-permisos">6.8 Propiedades y permisos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>Compara Properties con:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>stat ~/curso-gui/config-actual.conf
-namei -l ~/curso-gui/config-actual.conf
-</code></pre></figure><p><code>namei -l</code> ayuda a encontrar permisos insuficientes en algún directorio de la ruta.</p>
-<h2 id="c6-6-9-6-10-aplicaciones-esenciales">6.9–6.10 Aplicaciones esenciales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Qué mostrar</th>
+<th>Acción en Dolphin</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lugares</td>
+<td>Panel izquierdo</td>
+<td>Llegar a Inicio, Documentos, Descargas, dispositivos y rutas frecuentes.</td>
+</tr>
+<tr>
+<td>Vistas</td>
+<td>Botones de iconos, detalles y columnas</td>
+<td>Elegir la vista adecuada: columnas ayuda a recorrer jerarquías.</td>
+</tr>
+<tr>
+<td>Panel dividido</td>
+<td>Tecla <code>F3</code></td>
+<td>Muestra dos paneles lado a lado para comparar origen y destino sin abrir dos ventanas.</td>
+</tr>
+<tr>
+<td>Terminal integrada</td>
+<td>Tecla <code>F4</code></td>
+<td>Muestra una terminal debajo de los paneles, sincronizada con la carpeta visible; no repetir comandos.</td>
+</tr>
+<tr>
+<td>Archivos ocultos</td>
+<td><strong>Control → Mostrar archivos ocultos</strong> o <code>Alt+.</code></td>
+<td>Ver archivos cuyo nombre inicia con punto, como <code>.config</code>; suelen contener configuración y no se modifican por accidente.</td>
+</tr>
+<tr>
+<td>Ruta editable</td>
+<td>Barra de ubicación</td>
+<td>Copiar, entender o navegar una ruta concreta.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="learning-callout learning-callout--situation"><div class="learning-callout__label">Situación real.</div>
+<p>Cuando recibes archivos para soporte o despliegue, la vista dividida reduce errores: deja visible el origen en un panel y el destino en el otro antes de copiar o mover.</p>
+</blockquote>
+<h2 id="c6-6-3-apps-esenciales-de-kde">6.3 Apps esenciales de KDE<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aplicación</th>
+<th>Demostración breve</th>
+<th>Utilidad práctica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spectacle</td>
+<td>Capturar una región de pantalla</td>
+<td>Adjuntar evidencia a un ticket o documentación.</td>
+</tr>
+<tr>
+<td>Ark</td>
+<td>Crear o abrir un archivo comprimido desde GUI</td>
+<td>Inspeccionar archivos recibidos sin memorizar formatos.</td>
+</tr>
+<tr>
+<td>Okular</td>
+<td>Abrir PDF y mostrar anotaciones</td>
+<td>Revisar documentación técnica y hacer marcas locales.</td>
+</tr>
+<tr>
+<td>Kate</td>
+<td>Abrir un archivo de texto y mostrar números de línea</td>
+<td>Leer o editar configuración con mejor contexto visual.</td>
+</tr>
+</tbody>
+</table>
+<p>No es necesario crear archivos nuevos durante esta parte; basta abrir material de práctica preparado por el instructor.</p>
+<h2 id="c6-6-4-herramientas-de-productividad">6.4 Herramientas de productividad<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Herramienta</th>
+<th>Qué mostrar</th>
+<th>Por qué es propia de KDE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🖥️ Konsole</td>
+<td>Pestañas y división de paneles</td>
+<td>Organiza varias sesiones de terminal en una misma ventana.</td>
+</tr>
+<tr>
+<td>📝 Kate</td>
+<td>Pestañas, resaltado y panel lateral</td>
+<td>Editor de texto orientado a trabajo técnico.</td>
+</tr>
+<tr>
+<td>❓ KHelpCenter</td>
+<td>Búsqueda de ayuda gráfica</td>
+<td>Centraliza documentación del escritorio.</td>
+</tr>
+<tr>
+<td>🔎 KFind</td>
+<td>Búsqueda avanzada por nombre, fecha, tamaño o contenido</td>
+<td>Ofrece filtros visuales para explorar archivos locales.</td>
+</tr>
+<tr>
+<td>⚡ KRunner</td>
+<td><code>Alt+F2</code> abre el lanzador y cuadro de búsqueda</td>
+<td>Inicia aplicaciones, localiza elementos y realiza consultas rápidas sin abrir Kickoff.</td>
+</tr>
+</tbody>
+</table>
+<p>La terminal integrada o Konsole se enseñan como interfaz; los comandos ya vistos no se repiten aquí.</p>
+<h2 id="c6-6-5-kmenuedit-opcional">6.5 KMenuEdit (opcional)<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>KMenuEdit permite revisar cómo está construido el menú de aplicaciones de Plasma. Es una exploración opcional en la VM del instructor; no es una tarea para configurar los equipos de alumnos.</p>
 <ul>
-<li>Dolphin: archivos.</li>
-<li>Konsole: terminal.</li>
-<li>Kate: edición de texto; sustituye en la práctica a referencias antiguas como <code>kedit</code>/<code>kwrite</code>.</li>
-<li>KHelpCenter: ayuda gráfica.</li>
-<li>KFind o búsqueda de Dolphin: localización de archivos.</li>
+<li>Abre <strong>Kickoff</strong> y busca <strong>KMenuEdit</strong>; en algunas versiones también aparece como “Editar aplicaciones”.</li>
+<li>Selecciona una entrada y ubica sus cuatro piezas: <strong>nombre</strong>, <strong>icono</strong>, <strong>categoría</strong> y <strong>acción</strong> que se ejecuta al abrirla.</li>
+<li>Muestra que una entrada puede moverse de categoría o recibir otro icono; el objetivo es reconocer que el menú es configurable.</li>
+<li>Cierra sin guardar cambios. No necesitas crear un lanzador para completar la clase.</li>
 </ul>
-<h2 id="c6-6-11-6-14-configuracion">6.11–6.14 Configuración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>“KDE Control Center” se denomina actualmente System Settings. Se demostrará configuración de pantalla, teclado, apariencia y panel. KMenuEdit y la personalización profunda quedan como exploración opcional.</p>
-<h2 id="c6-practica-guiada-resuelta-3">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p>En Dolphin crea un archivo, abre la terminal integrada y ejecuta:</p>
-<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'creado-desde=plasma\n' &gt; ~/curso-gui/kde-demo/origen.txt
-chmod 640 ~/curso-gui/kde-demo/origen.txt
-stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/origen.txt
-</code></pre></figure><p>Aunque el texto diga “crea un archivo”, la primera línea con <code>printf</code> ya lo crea y escribe su contenido; no necesitas crearlo antes con Dolphin.</p>
-<p class="micro-label">Salida representativa</p>
-<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rw-r----- 640 ubuntu:ubuntu /home/ubuntu/curso-gui/kde-demo/origen.txt
-</code></pre></figure><ul>
-<li><code>%A</code>: permisos simbólicos.</li>
-<li><code>%a</code>: permisos octales.</li>
-<li><code>%U:%G</code>: dueño y grupo.</li>
-<li><code>%n</code>: nombre.</li>
-</ul>
-<h2 id="c6-errores-frecuentes-4">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<blockquote class="learning-callout learning-callout--care"><div class="learning-callout__label">Cuidado.</div>
+<p>No crees accesos que ejecuten utilidades administrativas ni modifiques el menú de una máquina compartida.</p>
+</blockquote>
+<h2 id="c6-6-6-configuracion-avanzada-del-sistema">6.6 Configuración avanzada del sistema<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Como exploración guiada, muestra dónde se administran:</p>
 <ul>
-<li>Seguir tutoriales de KFM o KDE Control Center como si fueran herramientas actuales.</li>
-<li>Asociar una aplicación incorrecta a un tipo MIME globalmente.</li>
-<li>Confundir un enlace con una copia.</li>
+<li>escritorios virtuales y actividades;</li>
+<li>comportamiento de inicio y restauración de sesión;</li>
+<li>red y VPN;</li>
+<li>efectos del espacio de trabajo.</li>
 </ul>
-<h2 id="c6-reto-6-diagnostico-desde-dolphin">Reto 6 — Diagnóstico desde Dolphin<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<p><span class="local-reference">Ver respuesta</span></p>
-<p>Crea <code>~/curso-gui/kde-demo/check.sh</code> con texto válido de Bash, pero sin permiso de ejecución. Usa Dolphin y Konsole para diagnosticarlo. Documenta tipo, permisos, propietario y ruta completa; corrige únicamente el permiso necesario.</p>
-<h3 id="c6-criterios-de-comprobacion-4">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
-<ul>
-<li>No utiliza <code>chmod 777</code>.</li>
-<li>Explica la diferencia entre archivo no ejecutable y directorio no accesible.</li>
-<li>Confirma el modo antes y después.</li>
-</ul>
-<h2 id="c6-checklist-4">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
-<ul>
-<li>[ ] Reconozco Dolphin, Konsole, Kate y System Settings.</li>
-<li>[ ] Identifico nombres históricos del temario.</li>
-<li>[ ] Relaciono Properties con <code>stat</code> y <code>namei</code>.</li>
-</ul>
+<p>Explica el criterio operativo: una personalización útil para una estación personal puede ser una decisión incorrecta en una estación compartida o administrada por políticas corporativas.</p>
+<h2 id="c6-6-7-personalizar-el-panel">6.7 Personalizar el panel<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Para añadir un elemento: clic derecho en una zona vacía del panel → <strong>Añadir elementos gráficos…</strong> → elegir el widget. Después puedes arrastrarlo a la posición deseada y bloquear los widgets al terminar.</p>
+<p><img src="../shared/assets/kde-panel-widgets-map.svg" alt="Mapa visual para añadir un elemento al panel de KDE Plasma."></p>
+<p><em>Mapa visual: añade un widget sólo en la VM de práctica; al terminar, bloquea los widgets para evitar cambios accidentales.</em></p>
+<table>
+<thead>
+<tr>
+<th>Acción</th>
+<th>Aprendizaje</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Añadir Dolphin a barra de tareas</td>
+<td>Un lanzador fija acceso rápido a una herramienta frecuente.</td>
+</tr>
+<tr>
+<td>Reordenar reloj, lanzador o bandeja</td>
+<td>El panel es flexible y depende del flujo de trabajo.</td>
+</tr>
+<tr>
+<td>Bloquear widgets</td>
+<td>Evita cambios accidentales después de configurar una estación.</td>
+</tr>
+</tbody>
+</table>
+<p>Esta personalización es opcional; no se evalúa ni debe consumir el tiempo destinado a búsqueda y respaldos.</p>
+<h2 id="c6-kde-vs-gnome-diferencias-clave">KDE vs GNOME: diferencias clave<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>KDE Plasma</th>
+<th>GNOME</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Filosofía</td>
+<td>Configurabilidad y densidad de herramientas</td>
+<td>Flujo minimalista y centrado en Activities</td>
+</tr>
+<tr>
+<td>Lanzador</td>
+<td>Kickoff con menú y categorías</td>
+<td>Activities Overview a pantalla completa</td>
+</tr>
+<tr>
+<td>Archivos</td>
+<td>Dolphin: panel dividido, vistas y terminal integrada</td>
+<td>Files/Nautilus: interfaz más simple</td>
+</tr>
+<tr>
+<td>Personalización</td>
+<td>Panel, widgets y temas accesibles desde Plasma</td>
+<td>Personalización más limitada de forma predeterminada</td>
+</tr>
+<tr>
+<td>Herramientas</td>
+<td>Konsole, Kate, Spectacle, Ark, Okular, KFind</td>
+<td>Terminal, Text Editor, Screenshot, Archive Manager, Files</td>
+</tr>
+</tbody>
+</table>
 </article>
 
   <section class="section-divider closing">
@@ -1685,10 +2376,86 @@ stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/origen.txt
       <div class="closing-checks">
         <div>Busco contenido y archivos, e interpreto capacidad y uso de espacio.</div>
         <div>Creo, inspecciono, restauro y verifico un respaldo comprimido.</div>
-        <div>Distingo las capas gráficas y relaciono acciones de GNOME/KDE con comandos.</div>
+        <div>Distingo las capas gráficas y reconozco diferencias de interfaz entre GNOME y KDE Plasma.</div>
       </div>
       <div class="next-session">Siguiente: Clase 3 · I/O, procesos y Bash</div>
     </div>
   </section>
+  <article class="chapter chapter-6 chapter-glossary"><h2 id="c6-glosario-rapido-de-kde">Glosario rápido de KDE<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<table>
+<thead>
+<tr>
+<th>Término</th>
+<th>Qué es y para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KDE Plasma</strong></td>
+<td>Entorno de escritorio: organiza paneles, ventanas, menús, widgets y configuraciones gráficas.</td>
+</tr>
+<tr>
+<td><strong>Panel</strong></td>
+<td>Barra de la pantalla que reúne el lanzador de aplicaciones, tareas abiertas, bandeja del sistema y reloj.</td>
+</tr>
+<tr>
+<td><strong>Kickoff</strong></td>
+<td>Menú de aplicaciones de Plasma: en esta VM es el botón con la <strong>K</strong> al extremo izquierdo del panel inferior. Abre categorías y búsqueda; el icono puede variar con el tema.</td>
+</tr>
+<tr>
+<td><strong>Widget</strong></td>
+<td>Pequeño componente visual que muestra o controla información, por ejemplo reloj, clima, notas o uso del sistema.</td>
+</tr>
+<tr>
+<td><strong>Bandeja del sistema</strong></td>
+<td>Zona del panel donde aparecen indicadores como red, volumen, batería, actualizaciones y notificaciones.</td>
+</tr>
+<tr>
+<td><strong>Dolphin</strong></td>
+<td>Gestor de archivos de KDE. Sirve para explorar carpetas, cambiar vistas, usar panel dividido y consultar propiedades de los archivos.</td>
+</tr>
+<tr>
+<td><strong>Konsole</strong></td>
+<td>Emulador de terminal de KDE. En esta clase se reconoce como una aplicación de Plasma; los comandos ya se estudian en las secciones de shell.</td>
+</tr>
+<tr>
+<td><strong>KRunner</strong></td>
+<td>Lanzador y buscador de Plasma. Se abre con <code>Alt+F2</code> para iniciar aplicaciones o localizar elementos rápidamente.</td>
+</tr>
+<tr>
+<td><strong>KFind</strong></td>
+<td>Herramienta gráfica para buscar archivos y carpetas mediante nombre, ubicación, fecha o contenido.</td>
+</tr>
+<tr>
+<td><strong>Spectacle</strong></td>
+<td>Aplicación para realizar capturas de pantalla y seleccionar qué parte de la interfaz documentar.</td>
+</tr>
+<tr>
+<td><strong>Ark</strong></td>
+<td>Gestor gráfico de archivos comprimidos; permite abrir, revisar y extraer archivos como <code>.zip</code> o <code>.tar.gz</code>.</td>
+</tr>
+<tr>
+<td><strong>Okular</strong></td>
+<td>Visor de documentos, especialmente útil para PDF y otros formatos de lectura.</td>
+</tr>
+<tr>
+<td><strong>Kate</strong></td>
+<td>Editor de texto de KDE para revisar y editar archivos de texto y código.</td>
+</tr>
+<tr>
+<td><strong>KHelpCenter</strong></td>
+<td>Centro de ayuda de KDE, con documentación de las aplicaciones y componentes del escritorio.</td>
+</tr>
+<tr>
+<td><strong>KMenuEdit</strong></td>
+<td>Herramienta para revisar y organizar los lanzadores que aparecen en el menú de aplicaciones.</td>
+</tr>
+<tr>
+<td><strong>Escritorios virtuales</strong></td>
+<td>Espacios de trabajo separados para distribuir ventanas según la tarea, sin cerrar aplicaciones.</td>
+</tr>
+</tbody>
+</table>
+</article>
 </body>
 </html>

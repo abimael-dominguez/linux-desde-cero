@@ -4,8 +4,24 @@ Este documento es para el instructor. Las soluciones son referencias; se aceptan
 
 Salvo que se indique lo contrario, ejecuta las soluciones desde la raíz del curso. Los nombres dentro de `< >` son marcadores y deben sustituirse antes de entregar un comando al alumno.
 
+## Índice
+
+- [Reto 1](#reto-1--inventario-reproducible)
+- [Reto 2](#reto-2--flujo-de-componentes)
+- [Reto 3](#reto-3--directorio-compartido)
+- [Reto 4](#reto-4--mapa-de-la-sesión-gráfica)
+- [Reto 7](#reto-7--snapshot-de-evidencias)
+- [Reto 8](#reto-8--pipeline-auditable)
+- [Reto 9](#reto-9--operación-observable)
+- [Reto 10](#reto-10--resumen-parametrizado)
+- [Reto 11](#reto-11--entrega-devops)
+
 <a id="respuesta-reto-1"></a>
 ## Reto 1 — Inventario reproducible
+
+En Clase 1, el alumno crea `~/curso-linux/evidencias/inventario.txt` desde Text Editor y copia las salidas observadas de `hostname`, `cat /etc/os-release`, `uname -r`, `whoami`, `id -nG` y `command -v bash`. La automatización con redirecciones y sustitución de comandos se resuelve después de estudiar Clase 3.
+
+Como referencia para el instructor, la versión automatizada es:
 
 ```bash
 mkdir -p ~/curso-linux/evidencias
@@ -37,6 +53,8 @@ test "$(wc -l < laboratorio/reto2/servicios.txt)" -eq \
 <a id="respuesta-reto-3"></a>
 ## Reto 3 — Directorio compartido
 
+En Clase 1, crear `app.env` y `check.sh` con `touch`; escribir el contenido de `check.sh` desde Text Editor antes de aplicar permisos. La versión siguiente conserva una solución automatizada para consulta posterior.
+
 ```bash
 mkdir -p laboratorio/compartido
 chmod 770 laboratorio/compartido
@@ -52,60 +70,28 @@ readlink laboratorio/compartido/check-actual
 <a id="respuesta-reto-4"></a>
 ## Reto 4 — Mapa de la sesión gráfica
 
-```bash
-{
-  printf 'Protocolo: %s\n' "${XDG_SESSION_TYPE:-sin sesión gráfica}"
-  printf 'Escritorio: %s\n' "${XDG_CURRENT_DESKTOP:-no definido}"
-  printf 'X11: %s\n' "${DISPLAY:-no definido}"
-  printf 'Wayland: %s\n' "${WAYLAND_DISPLAY:-no definido}"
-  ps -e | grep -E 'gnome-shell|kwin_wayland|Xorg' || true
-} > laboratorio/sesion-grafica.txt
-```
-
-<a id="respuesta-reto-5"></a>
-## Reto 5 — GUI y CLI equivalentes
-
-Solución posible después de crear el archivo original desde Files:
+En la VM gráfica, crear `~/linux-desde-cero/laboratorio/sesion-grafica.txt` desde Text Editor, Kate o una aplicación equivalente. El archivo debe incluir la salida observada y dos aplicaciones visibles. Las consultas que el alumno puede ejecutar son:
 
 ```bash
-mkdir -p ~/curso-gui/reto5
-printf 'evidencia=gnome\n' > ~/curso-gui/reto5/origen.txt
-cp ~/curso-gui/reto5/origen.txt ~/curso-gui/reto5/copia.txt
-mv ~/curso-gui/reto5/copia.txt ~/curso-gui/reto5/final.txt
-chmod 640 ~/curso-gui/reto5/final.txt
-sha256sum ~/curso-gui/reto5/origen.txt ~/curso-gui/reto5/final.txt \
-  | tee ~/curso-gui/reto5/evidencia.txt
-stat -c '%A %a %U:%G %n' ~/curso-gui/reto5/final.txt \
-  >> ~/curso-gui/reto5/evidencia.txt
-```
-
-<a id="respuesta-reto-6"></a>
-## Reto 6 — Diagnóstico desde Dolphin
-
-```bash
-mkdir -p ~/curso-gui/kde-demo
-printf '#!/usr/bin/env bash\necho ok\n' > ~/curso-gui/kde-demo/check.sh
-chmod 640 ~/curso-gui/kde-demo/check.sh
-file ~/curso-gui/kde-demo/check.sh
-namei -l ~/curso-gui/kde-demo/check.sh
-stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/check.sh
-chmod u+x ~/curso-gui/kde-demo/check.sh
-stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/check.sh
+mkdir -p laboratorio
+echo "$XDG_SESSION_TYPE"
+echo "$XDG_CURRENT_DESKTOP"
 ```
 
 <a id="respuesta-reto-7"></a>
 ## Reto 7 — Snapshot de evidencias
 
 ```bash
-mkdir -p laboratorio/reto7/{paquete,restaurado}
-find data -type f \( -name '*.txt' -o -name '*.csv' \) -size +0c \
-  -printf '%s %p\n' | sort -n > laboratorio/reto7/paquete/inventario.txt
-cp data/dummy_logs.txt laboratorio/reto7/paquete/
-tar -czf laboratorio/reto7/snapshot.tar.gz -C laboratorio/reto7 paquete
+mkdir -p laboratorio/reto7/restaurado
+find data -type f \( -name '*.txt' -o -name '*.csv' \) -size +0c
+tar -czf laboratorio/reto7/snapshot.tar.gz \
+  data/dummy_logs.txt data/basketball_scores.csv
 tar -tzf laboratorio/reto7/snapshot.tar.gz
 tar -xzf laboratorio/reto7/snapshot.tar.gz -C laboratorio/reto7/restaurado
-cmp laboratorio/reto7/paquete/inventario.txt \
-    laboratorio/reto7/restaurado/paquete/inventario.txt
+sha256sum data/dummy_logs.txt \
+  laboratorio/reto7/restaurado/data/dummy_logs.txt
+sha256sum data/basketball_scores.csv \
+  laboratorio/reto7/restaurado/data/basketball_scores.csv
 ```
 
 <a id="respuesta-reto-8"></a>

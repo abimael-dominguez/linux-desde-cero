@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa visual de GNOME</title>
+  <desc id="desc">Escritorio GNOME con llamados a Actividades, dock y configuración rápida.</desc>
+  <defs><linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#36557b"/><stop offset=".55" stop-color="#6f88ad"/><stop offset="1" stop-color="#d28165"/></linearGradient></defs>
+  <rect width="1200" height="620" rx="22" fill="url(#wall)"/>
+  <path d="M0 450C230 300 460 480 725 350s305-185 475-95v365H0Z" fill="#d48562" opacity=".64"/>
+  <rect x="25" y="22" width="1150" height="48" rx="9" fill="#181d25"/>
+  <text x="72" y="53" fill="#f4f7fb" font-family="Arial, sans-serif" font-size="20" font-weight="700">Actividades</text>
+  <text x="600" y="53" fill="#f4f7fb" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">Miércoles 14:20</text>
+  <text x="1087" y="53" fill="#f4f7fb" font-family="Arial, sans-serif" font-size="19" text-anchor="middle">⌁  ◖  ▣</text>
+  <rect x="48" y="166" width="78" height="322" rx="18" fill="#202936" opacity=".96"/>
+  <rect x="62" y="181" width="50" height="50" rx="12" fill="#468bb5"/><path d="M72 200h30l-7 14H79Z" fill="#e9f5fb"/>
+  <rect x="62" y="244" width="50" height="50" rx="12" fill="#717c8c"/><text x="87" y="278" fill="#fff" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">⌨</text>
+  <rect x="62" y="307" width="50" height="50" rx="12" fill="#7d9baa"/><text x="87" y="340" fill="#fff" font-family="Arial, sans-serif" font-size="23" text-anchor="middle">⚙</text>
+  <rect x="62" y="370" width="50" height="50" rx="12" fill="#6a82a7"/><text x="87" y="404" fill="#fff" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">▣</text>
+  <rect x="333" y="151" width="525" height="287" rx="16" fill="#f8fbfd" stroke="#c9d6df" stroke-width="2"/>
+  <rect x="333" y="151" width="525" height="42" rx="16" fill="#eef4f7"/><text x="595" y="179" fill="#40566c" font-family="Arial, sans-serif" font-size="19" text-anchor="middle">Vista general de Actividades</text>
+  <rect x="367" y="218" width="205" height="170" rx="10" fill="#e3edf4"/><rect x="598" y="218" width="225" height="170" rx="10" fill="#d9e5ee"/>
+  <rect x="734" y="90" width="342" height="172" rx="14" fill="#f9fcfd" stroke="#c9d6df" stroke-width="2"/>
+  <text x="764" y="126" fill="#28455d" font-family="Arial, sans-serif" font-size="21" font-weight="700">Configuración rápida</text>
+  <rect x="760" y="145" width="134" height="42" rx="20" fill="#dbeefa"/><text x="827" y="172" fill="#21658e" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">Red</text>
+  <rect x="909" y="145" width="134" height="42" rx="20" fill="#e7eef3"/><text x="976" y="172" fill="#466076" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">Volumen</text>
+  <rect x="760" y="200" width="283" height="14" rx="7" fill="#d7e5ed"/><rect x="760" y="200" width="173" height="14" rx="7" fill="#4e9dcc"/>
+  <g font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#142330">
+    <rect x="55" y="91" width="254" height="52" rx="26" fill="#fff"/><text x="182" y="124" text-anchor="middle">1 · Actividades / Super</text>
+    <rect x="142" y="508" width="180" height="52" rx="26" fill="#fff"/><text x="232" y="541" text-anchor="middle">2 · Dock</text>
+    <rect x="850" y="286" width="260" height="52" rx="26" fill="#fff"/><text x="980" y="319" text-anchor="middle">3 · Ajustes rápidos</text>
+  </g>
+  <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M182 143C159 105 132 73 94 70"/><path d="M232 508c-58-27-110-66-121-105"/><path d="M980 286c9-13 25-19 42-24"/></g>
+  <g fill="#fff"><circle cx="94" cy="70" r="7"/><circle cx="111" cy="403" r="7"/><circle cx="1022" cy="262" r="7"/></g>
+</svg>

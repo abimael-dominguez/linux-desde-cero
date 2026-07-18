@@ -1,158 +1,188 @@
 # 6. KDE Plasma
 
+**KDE Plasma** es un entorno de escritorio: la capa visual que aporta panel, menú de aplicaciones, ventanas, widgets y herramientas gráficas para trabajar sobre Linux. No es otra distribución ni otro kernel; **Kubuntu** combina Ubuntu como sistema base con KDE Plasma como interfaz.
+
+Recorrido práctico hands-on para conocer esta interfaz. Compararemos Plasma con GNOME y relacionaremos las acciones visuales con los conceptos Linux ya aprendidos, sin repetir comandos de terminal.
+
+## Índice
+
+- [Instalarla en una VM (práctica opcional)](#instalarla-en-una-vm-práctica-opcional)
+- [6.1 Partes de la pantalla](#61-partes-de-la-pantalla)
+- [6.2 Dolphin File Manager](#62-dolphin-file-manager)
+- [6.3 Apps esenciales de KDE](#63-apps-esenciales-de-kde)
+- [6.4 Herramientas de productividad](#64-herramientas-de-productividad)
+- [6.5 KMenuEdit (opcional)](#65-kmenuedit-opcional)
+- [6.6 Configuración avanzada del sistema](#66-configuración-avanzada-del-sistema)
+- [6.7 Personalizar el panel](#67-personalizar-el-panel)
+- [KDE vs GNOME: diferencias clave](#kde-vs-gnome-diferencias-clave)
+- [Glosario rápido de KDE](#glosario-rápido-de-kde)
+
+> **Imagen usada en la demostración.** La VM del instructor usa **`kubuntu-16.04.6-desktop-amd64.iso`** (Kubuntu 16.04.6 Desktop para 64 bits), con KDE Plasma. Los nombres exactos de algunos menús pueden variar con la versión; busca la función descrita, no una etiqueta idéntica.
+
+### Instalarla en una VM (práctica opcional)
+
+1. Instala [VirtualBox](https://www.virtualbox.org/wiki/Downloads) para tu sistema anfitrión (Windows, macOS o Linux).
+2. Descarga [la ISO oficial de Kubuntu 16.04.6 para `amd64`](https://cdimage.ubuntu.com/kubuntu/releases/16.04/release/kubuntu-16.04.6-desktop-amd64.iso) —ocupa aproximadamente 1.6 GB—.
+3. En VirtualBox elige **Nueva** y crea `Kubuntu-KDE`: tipo **Linux**, versión **Ubuntu (64-bit)**, al menos **2 GB de RAM**, **2 CPU** y un disco virtual **VDI** dinámico de **25 GB**.
+4. En **Configuración → Almacenamiento**, selecciona la unidad óptica vacía y carga la ISO descargada. Inicia la VM y elige **Install Kubuntu**.
+5. En la pantalla de destino, selecciona instalar sobre el **disco virtual** creado por VirtualBox (por ejemplo, `VBOX HARDDISK`). Finaliza el asistente, reinicia y retira la ISO cuando la VM lo pida.
+
+> **Cuidado.** Kubuntu 16.04 es una versión histórica sin soporte de seguridad. Úsala sólo en una VM de práctica aislada. No selecciones un disco físico ni reemplaces el sistema operativo de tu equipo para completar la Clase 2.
+
 ## Objetivos
 
-- Reconocer Plasma, Dolphin, Konsole y System Settings.
-- Relacionar administración gráfica de archivos con comandos Linux.
-- Contextualizar los nombres históricos del temario.
+- Ubicar panel, Kickoff, bandeja y widgets.
+- Explorar Dolphin: Lugares, vistas, `F3` y `F4`.
+- Identificar herramientas básicas de KDE.
+- Distinguir KDE Plasma de GNOME.
 
-## Antes de empezar
+## Antes de la demostración
 
-Este capítulo continúa con los archivos creados en GNOME. Si abriste este documento directamente, prepara el mismo punto de partida desde Konsole:
+El instructor muestra una VM de KDE Plasma. Sólo observa: no necesitas instalar KDE ni modificar tu equipo.
 
-```bash
-mkdir -p ~/curso-gui/{entrada,kde-demo}
-printf 'estado=ok\n' > ~/curso-gui/entrada/servicio.conf
-cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
-```
+> **Cuidado.** No cambies red, permisos, asociaciones de archivos, panel ni sesión. El instructor usa cambios reversibles en la VM.
 
-Después existirán `servicio.conf`, `config-actual.conf` y el directorio vacío `kde-demo`.
+## Ruta corta para mostrar en clase
+
+1. **Panel y Kickoff:** ubicar la lógica general de Plasma.
+2. **Dolphin:** mostrar lugares, vistas, panel dividido, ruta y terminal integrada como característica de interfaz.
+3. **Herramientas esenciales:** Spectacle, Ark, Okular, Kate y KFind.
+4. **Comparación final con GNOME:** identificar qué cambia en la experiencia, no en Linux.
+
+Los apartados restantes quedan como exploración guiada: se muestran si hay tiempo o si responden a una necesidad del grupo.
 
 ## 6.1 Partes de la pantalla
 
-KDE Plasma suele presentar panel, lanzador, bandeja, escritorio, widgets y actividades. Es altamente configurable, pero en este curso sólo se recorren elementos que ayudan a trabajar.
+> **Situación real.** Una persona de soporte debe orientarse rápidamente en una estación que usa Plasma. Antes de abrir herramientas, identifica qué parte lanza aplicaciones, qué parte muestra tareas y dónde aparecen red, volumen o notificaciones.
 
-## 6.2 Administración de archivos con Dolphin
+| Qué mostrar | Ruta o acción en Plasma | Qué debe observar el alumno |
+|---|---|---|
+| Panel | Barra normalmente inferior | Contiene lanzador, tareas abiertas, widgets y bandeja; es configurable. |
+| Kickoff | Botón con la **K** al extremo izquierdo del panel inferior | Abre categorías y búsqueda; el icono puede variar con el tema. |
+| Escritorio | Área central | Puede contener archivos y widgets; no es una carpeta distinta del sistema. |
+| Bandeja del sistema | Extremo del panel | Red, sonido, batería, actualizaciones y notificaciones. |
+| Editar panel | Clic derecho en panel → modo de edición | La posición y los elementos del panel pueden cambiarse. |
+| Widgets | Modo de edición → Añadir widgets | Son componentes independientes, como reloj, notas o monitor de recursos. |
 
-KFM fue un gestor antiguo de KDE. Su equivalente actual es Dolphin.
+> **Comprueba.** Pide al grupo que ubique Kickoff, una aplicación abierta y el indicador de red antes de seguir. Así todos parten del mismo mapa visual.
 
-Funciones de la demostración:
+![Mapa visual del panel de KDE Plasma: Kickoff, tareas, bandeja y reloj.](docs/pdf/shared/assets/kde-plasma-panel-map.svg)
 
-- panel de lugares y ruta editable;
-- vista dividida;
-- archivos ocultos;
-- terminal integrada;
-- propiedades, tipo y permisos.
+*Mapa visual: en la VM mostrada, el botón **K** abre Kickoff. Los iconos y colores pueden cambiar con el tema.*
 
-## 6.3 Navegación y contenido
+## 6.2 Dolphin File Manager
 
-En Dolphin navega a `~/curso-gui`. Abre la terminal integrada y comprueba:
+**Dolphin** es el gestor de archivos actual de KDE Plasma. KFM es un nombre histórico que puede aparecer en material antiguo, pero no es la herramienta que se demostrará.
 
-```bash
-pwd
-ls -lah
-file config-actual.conf
-```
+![Mapa visual de Dolphin: Lugares, ruta actual, controles de vista y panel dividido.](docs/pdf/shared/assets/kde-dolphin-map.svg)
 
-`~/curso-gui` significa la carpeta `curso-gui` dentro de tu home. Puedes escribir esa ruta en la barra de ubicación de Dolphin. Los comandos funcionan porque la terminal integrada se abre en la carpeta que Dolphin muestra; confirma que `pwd` termina en `/curso-gui`.
+*Mapa visual de Dolphin: `F3` muestra dos paneles; `F4`, la terminal inferior.*
 
-La GUI y la terminal observan el mismo sistema de archivos.
+**Atajos visibles en Dolphin:**
 
-## 6.4 Crear directorios
+- `F3`: muestra u oculta la **pantalla dividida**, con dos paneles de archivos lado a lado.
+- `F4`: muestra u oculta la **terminal en la parte inferior** de Dolphin, sincronizada con la carpeta que estás viendo.
 
-Crear una carpeta desde Dolphin equivale a:
+| Qué mostrar | Acción en Dolphin | Para qué sirve |
+|---|---|---|
+| Lugares | Panel izquierdo | Llegar a Inicio, Documentos, Descargas, dispositivos y rutas frecuentes. |
+| Vistas | Botones de iconos, detalles y columnas | Elegir la vista adecuada: columnas ayuda a recorrer jerarquías. |
+| Panel dividido | Tecla `F3` | Muestra dos paneles lado a lado para comparar origen y destino sin abrir dos ventanas. |
+| Terminal integrada | Tecla `F4` | Muestra una terminal debajo de los paneles, sincronizada con la carpeta visible; no repetir comandos. |
+| Archivos ocultos | **Control → Mostrar archivos ocultos** o `Alt+.` | Ver archivos cuyo nombre inicia con punto, como `.config`; suelen contener configuración y no se modifican por accidente. |
+| Ruta editable | Barra de ubicación | Copiar, entender o navegar una ruta concreta. |
 
-```bash
-mkdir -p ~/curso-gui/kde-demo
-```
+> **Situación real.** Cuando recibes archivos para soporte o despliegue, la vista dividida reduce errores: deja visible el origen en un panel y el destino en el otro antes de copiar o mover.
 
-`-p` crea padres faltantes y no falla si la ruta ya existe.
+## 6.3 Apps esenciales de KDE
 
-## 6.5 Copiar, borrar y mover
+| Aplicación | Demostración breve | Utilidad práctica |
+|---|---|---|
+| Spectacle | Capturar una región de pantalla | Adjuntar evidencia a un ticket o documentación. |
+| Ark | Crear o abrir un archivo comprimido desde GUI | Inspeccionar archivos recibidos sin memorizar formatos. |
+| Okular | Abrir PDF y mostrar anotaciones | Revisar documentación técnica y hacer marcas locales. |
+| Kate | Abrir un archivo de texto y mostrar números de línea | Leer o editar configuración con mejor contexto visual. |
 
-```bash
-cp ~/curso-gui/config-actual.conf ~/curso-gui/kde-demo/
-mv ~/curso-gui/kde-demo/config-actual.conf ~/curso-gui/kde-demo/app.conf
-rm -i ~/curso-gui/kde-demo/app.conf
-```
+No es necesario crear archivos nuevos durante esta parte; basta abrir material de práctica preparado por el instructor.
 
-`rm -i` solicita confirmación. La terminal no tiene una papelera universal equivalente a Trash.
+## 6.4 Herramientas de productividad
 
-Cuando aparezca `remove regular file ...?`, responde `y` para borrar el archivo de práctica o `n` para conservarlo. Si respondes `y`, el enlace del siguiente apartado seguirá funcionando porque apunta a `servicio.conf`, no a `app.conf`.
+| Herramienta | Qué mostrar | Por qué es propia de KDE |
+|---|---|---|
+| 🖥️ Konsole | Pestañas y división de paneles | Organiza varias sesiones de terminal en una misma ventana. |
+| 📝 Kate | Pestañas, resaltado y panel lateral | Editor de texto orientado a trabajo técnico. |
+| ❓ KHelpCenter | Búsqueda de ayuda gráfica | Centraliza documentación del escritorio. |
+| 🔎 KFind | Búsqueda avanzada por nombre, fecha, tamaño o contenido | Ofrece filtros visuales para explorar archivos locales. |
+| ⚡ KRunner | `Alt+F2` abre el lanzador y cuadro de búsqueda | Inicia aplicaciones, localiza elementos y realiza consultas rápidas sin abrir Kickoff. |
 
-## 6.6 Enlaces
+La terminal integrada o Konsole se enseñan como interfaz; los comandos ya vistos no se repiten aquí.
 
-Dolphin puede mostrar el destino de un enlace. La forma reproducible es:
+## 6.5 KMenuEdit (opcional)
 
-```bash
-ln -s ../entrada/servicio.conf ~/curso-gui/kde-demo/servicio-actual
-readlink ~/curso-gui/kde-demo/servicio-actual
-```
+KMenuEdit permite revisar cómo está construido el menú de aplicaciones de Plasma. Es una exploración opcional en la VM del instructor; no es una tarea para configurar los equipos de alumnos.
 
-## 6.7 Tipos MIME
+- Abre **Kickoff** y busca **KMenuEdit**; en algunas versiones también aparece como “Editar aplicaciones”.
+- Selecciona una entrada y ubica sus cuatro piezas: **nombre**, **icono**, **categoría** y **acción** que se ejecuta al abrirla.
+- Muestra que una entrada puede moverse de categoría o recibir otro icono; el objetivo es reconocer que el menú es configurable.
+- Cierra sin guardar cambios. No necesitas crear un lanzador para completar la clase.
 
-Las asociaciones de aplicaciones usan tipos MIME, no únicamente extensiones:
+> **Cuidado.** No crees accesos que ejecuten utilidades administrativas ni modifiques el menú de una máquina compartida.
 
-```bash
-xdg-mime query filetype ~/curso-gui/config-actual.conf
-```
+## 6.6 Configuración avanzada del sistema
 
-## 6.8 Propiedades y permisos
+Como exploración guiada, muestra dónde se administran:
 
-Compara Properties con:
+- escritorios virtuales y actividades;
+- comportamiento de inicio y restauración de sesión;
+- red y VPN;
+- efectos del espacio de trabajo.
 
-```bash
-stat ~/curso-gui/config-actual.conf
-namei -l ~/curso-gui/config-actual.conf
-```
+Explica el criterio operativo: una personalización útil para una estación personal puede ser una decisión incorrecta en una estación compartida o administrada por políticas corporativas.
 
-`namei -l` ayuda a encontrar permisos insuficientes en algún directorio de la ruta.
+## 6.7 Personalizar el panel
 
-## 6.9–6.10 Aplicaciones esenciales
+Para añadir un elemento: clic derecho en una zona vacía del panel → **Añadir elementos gráficos…** → elegir el widget. Después puedes arrastrarlo a la posición deseada y bloquear los widgets al terminar.
 
-- Dolphin: archivos.
-- Konsole: terminal.
-- Kate: edición de texto; sustituye en la práctica a referencias antiguas como `kedit`/`kwrite`.
-- KHelpCenter: ayuda gráfica.
-- KFind o búsqueda de Dolphin: localización de archivos.
+![Mapa visual para añadir un elemento al panel de KDE Plasma.](docs/pdf/shared/assets/kde-panel-widgets-map.svg)
 
-## 6.11–6.14 Configuración
+*Mapa visual: añade un widget sólo en la VM de práctica; al terminar, bloquea los widgets para evitar cambios accidentales.*
 
-“KDE Control Center” se denomina actualmente System Settings. Se demostrará configuración de pantalla, teclado, apariencia y panel. KMenuEdit y la personalización profunda quedan como exploración opcional.
+| Acción | Aprendizaje |
+|---|---|
+| Añadir Dolphin a barra de tareas | Un lanzador fija acceso rápido a una herramienta frecuente. |
+| Reordenar reloj, lanzador o bandeja | El panel es flexible y depende del flujo de trabajo. |
+| Bloquear widgets | Evita cambios accidentales después de configurar una estación. |
 
-## Práctica guiada resuelta
+Esta personalización es opcional; no se evalúa ni debe consumir el tiempo destinado a búsqueda y respaldos.
 
-En Dolphin crea un archivo, abre la terminal integrada y ejecuta:
+## KDE vs GNOME: diferencias clave
 
-```bash
-printf 'creado-desde=plasma\n' > ~/curso-gui/kde-demo/origen.txt
-chmod 640 ~/curso-gui/kde-demo/origen.txt
-stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/origen.txt
-```
+| Aspecto | KDE Plasma | GNOME |
+|---|---|---|
+| Filosofía | Configurabilidad y densidad de herramientas | Flujo minimalista y centrado en Activities |
+| Lanzador | Kickoff con menú y categorías | Activities Overview a pantalla completa |
+| Archivos | Dolphin: panel dividido, vistas y terminal integrada | Files/Nautilus: interfaz más simple |
+| Personalización | Panel, widgets y temas accesibles desde Plasma | Personalización más limitada de forma predeterminada |
+| Herramientas | Konsole, Kate, Spectacle, Ark, Okular, KFind | Terminal, Text Editor, Screenshot, Archive Manager, Files |
 
-Aunque el texto diga “crea un archivo”, la primera línea con `printf` ya lo crea y escribe su contenido; no necesitas crearlo antes con Dolphin.
 
-Salida representativa:
+## Glosario rápido de KDE
 
-```text
--rw-r----- 640 ubuntu:ubuntu /home/ubuntu/curso-gui/kde-demo/origen.txt
-```
-
-- `%A`: permisos simbólicos.
-- `%a`: permisos octales.
-- `%U:%G`: dueño y grupo.
-- `%n`: nombre.
-
-## Errores frecuentes
-
-- Seguir tutoriales de KFM o KDE Control Center como si fueran herramientas actuales.
-- Asociar una aplicación incorrecta a un tipo MIME globalmente.
-- Confundir un enlace con una copia.
-
-## Reto 6 — Diagnóstico desde Dolphin
-
-[Ver respuesta](instructor/soluciones.md#respuesta-reto-6)
-
-Crea `~/curso-gui/kde-demo/check.sh` con texto válido de Bash, pero sin permiso de ejecución. Usa Dolphin y Konsole para diagnosticarlo. Documenta tipo, permisos, propietario y ruta completa; corrige únicamente el permiso necesario.
-
-### Criterios de comprobación
-
-- No utiliza `chmod 777`.
-- Explica la diferencia entre archivo no ejecutable y directorio no accesible.
-- Confirma el modo antes y después.
-
-## Checklist
-
-- [ ] Reconozco Dolphin, Konsole, Kate y System Settings.
-- [ ] Identifico nombres históricos del temario.
-- [ ] Relaciono Properties con `stat` y `namei`.
+| Término | Qué es y para qué sirve |
+|---|---|
+| **KDE Plasma** | Entorno de escritorio: organiza paneles, ventanas, menús, widgets y configuraciones gráficas. |
+| **Panel** | Barra de la pantalla que reúne el lanzador de aplicaciones, tareas abiertas, bandeja del sistema y reloj. |
+| **Kickoff** | Menú de aplicaciones de Plasma: en esta VM es el botón con la **K** al extremo izquierdo del panel inferior. Abre categorías y búsqueda; el icono puede variar con el tema. |
+| **Widget** | Pequeño componente visual que muestra o controla información, por ejemplo reloj, clima, notas o uso del sistema. |
+| **Bandeja del sistema** | Zona del panel donde aparecen indicadores como red, volumen, batería, actualizaciones y notificaciones. |
+| **Dolphin** | Gestor de archivos de KDE. Sirve para explorar carpetas, cambiar vistas, usar panel dividido y consultar propiedades de los archivos. |
+| **Konsole** | Emulador de terminal de KDE. En esta clase se reconoce como una aplicación de Plasma; los comandos ya se estudian en las secciones de shell. |
+| **KRunner** | Lanzador y buscador de Plasma. Se abre con `Alt+F2` para iniciar aplicaciones o localizar elementos rápidamente. |
+| **KFind** | Herramienta gráfica para buscar archivos y carpetas mediante nombre, ubicación, fecha o contenido. |
+| **Spectacle** | Aplicación para realizar capturas de pantalla y seleccionar qué parte de la interfaz documentar. |
+| **Ark** | Gestor gráfico de archivos comprimidos; permite abrir, revisar y extraer archivos como `.zip` o `.tar.gz`. |
+| **Okular** | Visor de documentos, especialmente útil para PDF y otros formatos de lectura. |
+| **Kate** | Editor de texto de KDE para revisar y editar archivos de texto y código. |
+| **KHelpCenter** | Centro de ayuda de KDE, con documentación de las aplicaciones y componentes del escritorio. |
+| **KMenuEdit** | Herramienta para revisar y organizar los lanzadores que aparecen en el menú de aplicaciones. |
+| **Escritorios virtuales** | Espacios de trabajo separados para distribuir ventanas según la tarea, sin cerrar aplicaciones. |

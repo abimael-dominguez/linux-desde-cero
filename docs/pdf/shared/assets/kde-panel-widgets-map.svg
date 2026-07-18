@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Añadir un elemento al panel de KDE Plasma</title>
+  <desc id="desc">Mapa visual: clic derecho sobre el panel, elegir Añadir elementos gráficos, seleccionar un widget y bloquearlo.</desc>
+  <defs>
+    <linearGradient id="desktop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#203753"/><stop offset=".55" stop-color="#536d92"/><stop offset="1" stop-color="#dc7b48"/></linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#263442"/><stop offset="1" stop-color="#141c25"/></linearGradient>
+  </defs>
+  <rect width="1200" height="650" rx="22" fill="url(#desktop)"/>
+  <path d="M0 420C210 280 430 480 670 365s304-190 530-45v330H0Z" fill="#d06f4d" opacity=".75"/>
+  <rect x="36" y="510" width="1128" height="94" rx="12" fill="url(#panel)"/>
+  <rect x="58" y="523" width="62" height="62" rx="10" fill="#e8f1f6"/><text x="89" y="568" fill="#263442" font-family="Arial, sans-serif" font-size="38" font-weight="700" text-anchor="middle">K</text>
+  <rect x="148" y="531" width="52" height="46" rx="6" fill="#5e92b9"/><rect x="211" y="531" width="52" height="46" rx="6" fill="#718190"/>
+  <circle cx="873" cy="557" r="17" fill="#7cc8e8"/><path d="M865 557h16M873 549v16" stroke="#172431" stroke-width="3"/>
+  <text x="1092" y="567" fill="#eef5fa" font-family="Arial, sans-serif" font-size="27" text-anchor="middle">14:41</text>
+  <rect x="677" y="282" width="390" height="210" rx="10" fill="#fbfdfe" stroke="#c7d4dc" stroke-width="2"/>
+  <text x="710" y="320" fill="#38516a" font-family="Arial, sans-serif" font-size="20">Opciones del panel</text>
+  <line x1="700" y1="336" x2="1044" y2="336" stroke="#d7e1e7"/>
+  <rect x="694" y="350" width="356" height="48" rx="5" fill="#dff1fb"/>
+  <text x="716" y="382" fill="#1a4e70" font-family="Arial, sans-serif" font-size="20" font-weight="700">＋ Añadir elementos gráficos…</text>
+  <text x="716" y="426" fill="#40576b" font-family="Arial, sans-serif" font-size="19">Editar panel</text>
+  <text x="716" y="468" fill="#40576b" font-family="Arial, sans-serif" font-size="19">Bloquear widgets</text>
+  <rect x="758" y="88" width="355" height="155" rx="12" fill="#fff" stroke="#c7d4dc" stroke-width="2"/>
+  <text x="788" y="128" fill="#26435c" font-family="Arial, sans-serif" font-size="21" font-weight="700">3 · Elige un widget</text>
+  <rect x="781" y="149" width="94" height="70" rx="8" fill="#eef5f8"/><text x="828" y="180" fill="#45667c" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">Reloj</text><text x="828" y="205" fill="#1781b2" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">＋</text>
+  <rect x="890" y="149" width="94" height="70" rx="8" fill="#eef5f8"/><text x="937" y="180" fill="#45667c" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">Notas</text><text x="937" y="205" fill="#1781b2" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">＋</text>
+  <rect x="999" y="149" width="94" height="70" rx="8" fill="#eef5f8"/><text x="1046" y="180" fill="#45667c" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">Red</text><text x="1046" y="205" fill="#1781b2" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">＋</text>
+  <g font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#142330">
+    <rect x="55" y="65" width="246" height="54" rx="27" fill="#fff"/><text x="178" y="99" text-anchor="middle">1 · Clic derecho</text>
+    <rect x="360" y="174" width="284" height="54" rx="27" fill="#fff"/><text x="502" y="208" text-anchor="middle">2 · Añadir elementos</text>
+  </g>
+  <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M178 119c-42 140-45 255-50 404"/><path d="M502 228c92 46 162 87 210 144"/></g>
+  <g fill="#fff"><circle cx="128" cy="523" r="7"/><circle cx="712" cy="374" r="7"/></g>
+</svg>

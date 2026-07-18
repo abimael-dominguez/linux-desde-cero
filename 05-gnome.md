@@ -1,127 +1,125 @@
 # 5. GNOME
 
-## Objetivos
+**GNOME** es un entorno de escritorio: organiza ventanas, aplicaciones, notificaciones y espacios de trabajo sobre Linux. En Ubuntu Desktop, GNOME es la interfaz que verás; no reemplaza al kernel, al sistema de archivos ni a Bash.
 
-- Reconocer los elementos principales de GNOME.
-- Administrar archivos con Files/Nautilus y relacionar acciones con comandos.
-- Usar terminal, búsqueda y configuración básica.
-- Comprender el proceso de instalación sin consumir la clase descargando un escritorio.
+> **Entorno de demostración.** La VM del instructor usa Ubuntu 24.04 LTS con GNOME. Los iconos o nombres menores pueden variar según la versión, pero la ruta de trabajo es la misma.
 
-## Antes de empezar
+## Índice
 
-Usa la VM gráfica del instructor o una Ubuntu Desktop. Los ejemplos crearán `~/curso-gui`; `~` representa el home del usuario que inició la sesión gráfica.
+- [Instalar Ubuntu GNOME en una VM (opcional)](#instalar-ubuntu-gnome-en-una-vm-opcional)
+- [5.1 Mapa de GNOME](#51-mapa-de-gnome)
+- [5.2 Files](#52-files)
+- [5.3 Herramientas esenciales](#53-herramientas-esenciales)
+- [5.4 Aplicaciones populares (opcional)](#54-aplicaciones-populares-opcional)
+- [5.5 Espacios de trabajo (opcional)](#55-espacios-de-trabajo-opcional)
+- [GNOME y KDE: diferencia de enfoque](#gnome-y-kde-diferencia-de-enfoque)
+- [Glosario rápido de GNOME](#glosario-rápido-de-gnome)
 
-Prepara la carpeta de práctica:
+### Instalar Ubuntu GNOME en una VM (opcional)
 
-```bash
-mkdir -p ~/curso-gui/entrada
-```
+Para reproducir el recorrido en casa, usa [Ubuntu 24.04.4 Desktop para 64 bits (`amd64`)](https://releases.ubuntu.com/noble/ubuntu-24.04.4-desktop-amd64.iso). Es una imagen reciente de Ubuntu con GNOME; una revisión menor diferente de 24.04 puede cambiar iconos o textos, no la idea de la demostración.
 
-`mkdir -p` conserva lo que ya exista. Si repetiste la práctica, puedes usar otros nombres o revisar los archivos antes de sobrescribirlos.
+1. Instala [VirtualBox](https://www.virtualbox.org/wiki/Downloads) para Windows, macOS o Linux.
+2. Descarga la ISO oficial de Ubuntu indicada arriba (aproximadamente 6.2 GB).
+3. En VirtualBox elige **Nueva** y crea `Ubuntu-GNOME`: tipo **Linux**, versión **Ubuntu (64-bit)**, al menos **4 GB de RAM**, **2 CPU** y un disco virtual **VDI** dinámico de **30 GB**.
+4. En **Configuración → Almacenamiento**, selecciona la unidad óptica vacía, carga la ISO e inicia la VM. Elige **Install Ubuntu**.
+5. Instala únicamente en el disco virtual creado por VirtualBox (por ejemplo, `VBOX HARDDISK`), reinicia y retira la ISO cuando la VM lo solicite.
 
-## 5.1 Iniciación a GNOME
+> **Cuidado.** Esta práctica es opcional. No selecciones un disco físico ni reemplaces el sistema operativo de tu equipo para completar la Clase 2.
 
-GNOME prioriza un flujo simple basado en Activities, búsqueda, espacios de trabajo y aplicaciones integradas. Ubuntu Desktop incluye una adaptación de GNOME.
+## Antes de la demostración
 
-Elementos para la demostración:
+El instructor muestra GNOME desde Ubuntu Desktop o una VM preparada. Observa primero: no necesitas instalar otro escritorio, cambiar la red ni modificar configuraciones globales.
 
-- Activities Overview;
-- panel superior y notificaciones;
-- dock;
-- espacios de trabajo;
-- configuración rápida.
+## Ruta corta para mostrar en clase
 
-## 5.2 Aplicaciones auxiliares
+1. **Actividades:** abrir la vista general con el botón **Actividades** o la tecla `Super`.
+2. **Files:** reconocer Lugares, búsqueda, ubicación y vistas.
+3. **Herramientas esenciales:** Screenshot, Text Editor y System Monitor.
+4. **Espacios de trabajo:** sólo si queda tiempo.
+5. **Comparación con KDE:** distinguir enfoque de interfaz, no “dos Linux distintos”.
 
-Las aplicaciones útiles para este curso son Files, Terminal, Text Editor, Settings y System Monitor. El objetivo es ubicar herramientas, no recorrer todo el catálogo.
+## 5.1 Mapa de GNOME
 
-## 5.3 Files/Nautilus
+GNOME concentra el trabajo en **Actividades**. Desde ahí se buscan aplicaciones, se ven las ventanas abiertas y se cambia de espacio de trabajo. Es distinto del menú por categorías de KDE Plasma, pero ambos permiten llegar a las mismas aplicaciones Linux.
 
-Demostración en la VM:
+![Mapa visual de GNOME: Actividades, dock y configuración rápida.](docs/pdf/shared/assets/gnome-overview-map.svg)
 
-1. Crear `~/curso-gui/entrada`.
-2. Mostrar archivos ocultos con `Ctrl+H`.
-3. Copiar, mover, renombrar y eliminar un archivo.
-4. Abrir Properties y revisar tipo, tamaño y permisos.
-5. Repetir en terminal:
+*Mapa visual: usa **Actividades** o `Super` para abrir la vista general. La configuración rápida sólo se observa durante la demostración.*
 
-```bash
-mkdir -p ~/curso-gui/entrada
-printf 'estado=ok\n' > ~/curso-gui/entrada/servicio.conf
-cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/copia.conf
-mv ~/curso-gui/copia.conf ~/curso-gui/config-actual.conf
-ls -lah ~/curso-gui
-```
+| Elemento | Dónde se reconoce | Para qué sirve |
+|---|---|---|
+| **Actividades** | Esquina superior izquierda o tecla `Super` | Abrir la vista general, buscar aplicaciones y ver espacios de trabajo. |
+| **Dock** | Barra lateral o inferior, según la distribución | Acceso rápido a aplicaciones frecuentes y ventanas abiertas. |
+| **Configuración rápida** | Menú de iconos de red, volumen y energía | Consultar estado y controles inmediatos de la sesión. |
 
-`servicio.conf` es el archivo original, `copia.conf` es una copia temporal y `config-actual.conf` es el nombre final después de moverla.
+> **Cuidado.** No cambies red, brillo, energía o sesión en una máquina compartida sólo para explorar el menú.
 
-## 5.4 Búsqueda
+## 5.2 Files
 
-La búsqueda gráfica es apropiada cuando se exploran documentos. Para búsquedas reproducibles o servidores se usan comandos:
+**Files** (también llamado Nautilus) es el gestor de archivos de GNOME. Esta demostración no repite crear, copiar, mover o cambiar permisos: esas operaciones ya se aprendieron en Clase 1. Aquí importa reconocer cómo GNOME presenta las rutas y cómo se encuentra información visualmente.
 
-```bash
-find ~/curso-gui -type f -name '*.conf'
-grep -R "estado=" ~/curso-gui
-```
+![Mapa visual de Files en GNOME: Lugares, ubicación, búsqueda y vista.](docs/pdf/shared/assets/gnome-files-map.svg)
 
-## 5.5 Terminales
+*Mapa visual de Files: identifica primero **Lugares**, la **ubicación**, **Buscar** y los botones de **vista**.*
 
-GNOME Terminal, Console y XTerm son emuladores de terminal. El shell puede ser Bash en cualquiera de ellos.
+- **Lugares:** permite ir a Inicio, Recientes, Descargas, Documentos y otras ubicaciones.
+- **Ubicación:** muestra dónde estás; con `Ctrl+L` puedes escribir o copiar una ruta cuando necesites documentarla.
+- **Buscar:** usa el botón de búsqueda o `Ctrl+F` para encontrar elementos dentro de la ubicación abierta.
+- **Vista:** alterna entre iconos y lista para priorizar vista previa o detalles.
 
-```bash
-printf 'Terminal: %s\nShell: %s\n' "$TERM" "$SHELL"
-```
+> **Cuidado.** Files no tiene una vista dividida equivalente a Dolphin. Si necesitas comparar origen y destino durante una demostración, usa dos ventanas o elige Dolphin; no presentes una limitación como si fuera un error del alumno.
 
-`$TERM` describe capacidades de terminal; no debe usarse para decidir qué shell está activo.
+## 5.3 Herramientas esenciales
 
-## 5.6 Multimedia
+| Herramienta | Qué mostrar | Cuándo ayuda |
+|---|---|---|
+| 📸 **Screenshot** | Seleccionar una región o ventana | Documentar un ticket o una evidencia visual. |
+| 📝 **Text Editor** | Abrir un archivo de texto y sus números de línea | Leer notas o configuración de práctica. |
+| 📊 **System Monitor** | Procesos y uso de CPU o memoria | Orientar una consulta local antes de investigar con más detalle. |
+| 🔎 **Búsqueda de Actividades** | Escribir el nombre de una aplicación | Abrir una herramienta sin recorrer menús. |
+| 🧮 **Calculator (opcional)** | Cambiar a modo Programador | Convertir un valor entre decimal, hexadecimal y binario durante una demostración técnica. |
 
-El temario original incluye multimedia. Para este curso basta explicar que audio, video y cámaras dependen de servicios, permisos y aplicaciones del escritorio. No se dedicará una práctica a reproductores.
+Estas herramientas sirven para observar y documentar. Los comandos de búsqueda, procesos, archivos y permisos se conservan en sus capítulos de terminal.
 
-## 5.7 Instalación y configuración
+## 5.4 Aplicaciones populares (opcional)
 
-La VM del instructor se prepara antes de clase. En Ubuntu se inspeccionan primero los paquetes disponibles:
+Estas aplicaciones no son parte de GNOME, pero se usan con frecuencia sobre Ubuntu Desktop. Se muestran sólo si ya están instaladas en la VM del instructor; no se instalan durante la clase.
 
-```bash
-apt search ubuntu-desktop
-apt show ubuntu-desktop-minimal
-```
+| Aplicación | Qué mostrar en un minuto | Uso habitual |
+|---|---|---|
+| 📹 **OBS Studio** | Escena, fuentes y botón de grabación | Grabar una demostración de pantalla o una incidencia reproducible. |
+| 🎙️ **Audacity** | Pista de audio y medidor de entrada | Grabar o limpiar audio para material de capacitación. |
+| 🎨 **GIMP** | Capas y herramienta de anotación | Preparar una captura con marcas antes de documentar un ticket. |
+| 📊 **GNU Octave** | Consola y una gráfica de ejemplo preparada | Cálculo numérico y prototipos académicos o de ingeniería. |
+| 🖥️ **Remmina** | Tipo de conexión RDP/VNC/SSH | Acceder a una estación remota autorizada desde soporte. |
 
-`apt search` y `apt show` sólo consultan información. No instalan GNOME. La instalación real se prepara antes de clase porque puede descargar muchos paquetes y cambiar la pantalla de inicio de sesión.
+> **Cuidado.** No inicies grabaciones, conexiones remotas ni cambios de audio en equipos ajenos. El objetivo es reconocer la herramienta y cuándo sería apropiada.
 
-La instalación de un escritorio descarga muchos paquetes y requiere reinicio/selección de sesión; no debe iniciarse en una EC2 de laboratorio. Durante la demostración se configuran pantalla, teclado, red, usuarios y accesibilidad desde Settings.
+## 5.5 Espacios de trabajo (opcional)
 
-## Práctica guiada resuelta
+En **Actividades**, GNOME muestra espacios de trabajo para separar tareas: por ejemplo, documentación en uno y una terminal o navegador en otro. Arrastra una ventana a otro espacio o usa la vista general para cambiar entre ellos.
 
-Compara una operación gráfica con su evidencia CLI:
+Es opcional porque depende del flujo de cada persona. La idea importante es que mover una ventana de espacio no la cierra ni cambia sus archivos.
 
-```bash
-stat ~/curso-gui/config-actual.conf
-sha256sum ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
-```
+## GNOME y KDE: diferencia de enfoque
 
-Si los hashes coinciden, la copia conserva el mismo contenido aunque el nombre y metadatos puedan ser distintos.
+| Aspecto | GNOME | KDE Plasma |
+|---|---|---|
+| Punto de partida | Actividades y búsqueda | Kickoff y panel |
+| Organización | Vista general y espacios de trabajo | Paneles, widgets y lanzadores visibles |
+| Archivos | Files, interfaz más simple | Dolphin, panel dividido y más vistas |
+| Personalización | Menos opciones expuestas | Más opciones en la propia interfaz |
 
-## Errores frecuentes
+GNOME y KDE cambian la experiencia visual, no los conceptos Linux que ya aprendiste: rutas, usuarios, permisos y comandos siguen siendo los mismos.
 
-- Confundir el gestor de archivos con el sistema de archivos.
-- Creer que mover a Trash elimina inmediatamente y sin recuperación.
-- Cambiar permisos gráficamente sin interpretar usuario, grupo y otros.
+## Glosario rápido de GNOME
 
-## Reto 5 — GUI y CLI equivalentes
-
-[Ver respuesta](instructor/soluciones.md#respuesta-reto-5)
-
-Trabaja dentro de `~/curso-gui/reto5`. Realiza tres operaciones en Files y documenta en `evidencia.txt` los comandos equivalentes. Incluye una prueba que confirme contenido y otra que confirme permisos.
-
-### Criterios de comprobación
-
-- Incluye crear, mover o copiar y cambiar permisos.
-- Usa una evidencia verificable, no sólo capturas.
-- Explica qué metadato cambió en cada operación.
-
-## Checklist
-
-- [ ] Reconozco Activities, Files, Terminal y Settings.
-- [ ] Relaciono operaciones gráficas con comandos.
-- [ ] Sé por qué la instalación se demuestra en una VM preparada.
+| Término | Qué es |
+|---|---|
+| **GNOME Shell** | Componente que muestra el panel superior, Actividades, notificaciones y la vista general. |
+| **Actividades** | Puerta de entrada para buscar aplicaciones, ver ventanas y cambiar de espacio de trabajo. |
+| **Dock** | Barra de accesos a aplicaciones frecuentes y ventanas abiertas. |
+| **Configuración rápida** | Menú de controles inmediatos de red, sonido, energía y sesión. |
+| **Files / Nautilus** | Gestor de archivos de GNOME. |
+| **Espacio de trabajo** | Área separada para organizar ventanas sin cerrar aplicaciones. |

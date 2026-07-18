@@ -53,6 +53,17 @@ md.renderer.rules.link_close = (tokens, idx, options, env, self) => {
   return self.renderToken(tokens, idx, options);
 };
 
+const defaultImage = md.renderer.rules.image || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
+md.renderer.rules.image = (tokens, idx, options, env, self) => {
+  const token = tokens[idx];
+  const src = token.attrGet('src') || '';
+  const sharedAssets = 'docs/pdf/shared/assets/';
+  if (src.startsWith(sharedAssets)) {
+    token.attrSet('src', `../shared/assets/${src.slice(sharedAssets.length)}`);
+  }
+  return defaultImage(tokens, idx, options, env, self);
+};
+
 function source(file, startAt, stopAt) {
   let text = fs.readFileSync(path.join(repo, file), 'utf8');
   if (startAt) {
@@ -107,14 +118,26 @@ function renderChapter(file, chapterKey, startAt, stopAt) {
     inline.children.push(backLink);
   }
 
-  return md.renderer.render(tokens, md.options, env)
+  const rendered = md.renderer.render(tokens, md.options, env)
     .replaceAll('<p>Salida representativa:</p>', '<p class="micro-label">Salida representativa</p>')
     .replaceAll('<p>Sintaxis general:</p>', '<p class="micro-label">Sintaxis general</p>')
     .replaceAll('<p>Ejemplos resueltos:</p>', '<p class="micro-label">Ejemplos resueltos</p>')
     .replaceAll('<p>Ejemplo resuelto para copiar:</p>', '<p class="micro-label">Ejemplo resuelto para copiar</p>');
+
+  const callouts = [
+    ['Situación real.', 'situation'],
+    ['Antes de ejecutar.', 'before'],
+    ['Comprueba.', 'check'],
+    ['Cuidado.', 'care'],
+  ];
+
+  return callouts.reduce((html, [label, kind]) => html.replaceAll(
+    `<blockquote>\n<p><strong>${label}</strong> `,
+    `<blockquote class="learning-callout learning-callout--${kind}"><div class="learning-callout__label">${label}</div>\n<p>`,
+  ), rendered);
 }
 
-const chapter7 = renderChapter('07-el-shell.md', 'c7', '## 7.16 Espacio:');
+const chapter7 = renderChapter('07-el-shell.md', 'c7', '## Antes de continuar con la Clase 2');
 const chapter3 = renderChapter(
   '03-estructura-del-sistema-de-archivos-de-linux.md',
   'c3',
@@ -123,7 +146,8 @@ const chapter3 = renderChapter(
 );
 const chapter4 = renderChapter('04-x-window.md', 'c4');
 const chapter5 = renderChapter('05-gnome.md', 'c5');
-const chapter6 = renderChapter('06-kde.md', 'c6');
+const chapter6 = renderChapter('06-kde.md', 'c6', '# 6. KDE Plasma', '## Glosario rápido de KDE');
+const chapter6Glossary = renderChapter('06-kde.md', 'c6', '## Glosario rápido de KDE');
 
 const tocChapters = [
   { key: 'c7', id: 'capitulo-7', label: 'Capítulo 7.16–7.21', title: 'Shell útil' },
@@ -148,16 +172,17 @@ const tocChapter5 = tocGroup(tocChapters[3]);
 const tocChapter6 = tocGroup(tocChapters[4]);
 
 const agenda = [
-  ['09:00–09:15', 'Recuperación activa de navegación y permisos.'],
-  ['09:15–10:20', '<code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>, <code>find</code>, <code>du</code> y <code>df</code>.'],
-  ['10:20–11:00', '<code>grep</code>, <code>tar</code> y <code>gzip</code>.'],
+  ['09:00–09:30', 'Acuerdo de ritmo y recuperación activa de navegación y permisos.'],
+  ['09:30–10:10', 'Microciclos: <code>head</code>, <code>tail</code>, <code>less</code> y <code>grep</code>.'],
+  ['10:10–10:45', 'Buscar con <code>find</code>; comparar <code>du</code> y <code>df</code>.'],
+  ['10:45–11:00', 'Checkpoint, preguntas y repetición; sin contenido nuevo.'],
   ['11:00–11:30', '<strong>Receso.</strong>', 'break-row'],
-  ['11:30–12:15', 'Práctica resuelta de respaldo y restauración.'],
-  ['12:15–12:40', '<code>lsblk</code>, <code>findmnt</code>, <code>df -T</code>; sin formatear discos.'],
-  ['12:40–13:10', 'Capas gráficas y demostración GNOME.'],
-  ['13:10–13:35', 'Demostración KDE: Dolphin, Konsole y propiedades.'],
-  ['13:35–13:55', 'Misma operación en GUI y CLI.'],
-  ['13:55–14:00', 'Evidencia y cierre.'],
+  ['11:30–12:30', 'Crear, listar, restaurar y verificar un <code>tar.gz</code>.'],
+  ['12:30–12:45', 'Checkpoint y clínica de errores del respaldo.'],
+  ['12:45–13:05', '<code>lsblk</code>, <code>findmnt</code>, <code>df -T</code>; sólo inspección.'],
+  ['13:05–13:40', 'Capas gráficas y recorridos visuales breves de GNOME y KDE Plasma.'],
+  ['13:40–13:52', 'Práctica de búsqueda y restauración; preguntas de cierre sobre KDE.'],
+  ['13:52–14:00', 'Exit ticket, semáforo final y cierre.'],
 ];
 
 const agendaRows = agenda.map(([time, activity, rowClass = '']) => `
@@ -1056,6 +1081,23 @@ const html = `<!doctype html>
       text-decoration-color: rgba(10,120,170,.45);
       text-underline-offset: 2px;
     }
+    article.chapter img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      max-height: 430px;
+      margin: 0.16in auto 0.05in;
+      border: 1px solid #d7e1e8;
+      border-radius: 10px;
+      background: #fff;
+    }
+    article.chapter img + em {
+      display: block;
+      max-width: 720px;
+      margin: 0 auto 0.15in;
+      color: #526575;
+      font-size: 8.6pt;
+    }
     .local-reference {
       display: inline-block;
       padding: 2px 7px;
@@ -1091,6 +1133,7 @@ const html = `<!doctype html>
       background: #eef5f8;
       font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
       font-size: .91em;
+      white-space: nowrap;
       font-variant-ligatures: none;
       text-rendering: geometricPrecision;
     }
@@ -1158,6 +1201,7 @@ const html = `<!doctype html>
       color: inherit;
       background: transparent;
       font: inherit;
+      white-space: pre-wrap;
     }
     .codebox--output {
       border-color: #cfdde4;
@@ -1211,6 +1255,44 @@ const html = `<!doctype html>
       background: #fff3f6;
     }
     article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter .learning-callout {
+      position: relative;
+      padding: 0.15in 0.16in 0.13in;
+      border-left-width: 5px;
+      border-radius: 0 7px 7px 0;
+    }
+    .learning-callout__label {
+      margin-bottom: 0.05in;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    article.chapter .learning-callout--situation {
+      border-left-color: var(--blue);
+      color: #294b64;
+      background: #eaf3f7;
+    }
+    .learning-callout--situation .learning-callout__label { color: var(--blue); }
+    article.chapter .learning-callout--before {
+      border-left-color: #e8a900;
+      color: #5f4a13;
+      background: #fff8df;
+    }
+    .learning-callout--before .learning-callout__label { color: #9b6c00; }
+    article.chapter .learning-callout--check {
+      border-left-color: #2a9d68;
+      color: #245a43;
+      background: #e9f7f0;
+    }
+    .learning-callout--check .learning-callout__label { color: #1d8054; }
+    article.chapter .learning-callout--care {
+      border-left-color: var(--red);
+      color: #70404b;
+      background: #fff1f4;
+    }
+    .learning-callout--care .learning-callout__label { color: #c71841; }
     article.chapter hr {
       margin: 0.26in 0;
       border: 0;
@@ -1347,7 +1429,7 @@ const html = `<!doctype html>
     <div class="overview-foot">
       <div class="overview-note">
         <p><strong>No recortar:</strong> búsqueda, respaldo y restauración.</p>
-        <p><strong>Recortar primero:</strong> personalización de escritorios.</p>
+        <p><strong>Recortar primero:</strong> personalización, recorrido detallado de KDE y opciones avanzadas.</p>
       </div>
     </div>
   </section>
@@ -1366,7 +1448,7 @@ const html = `<!doctype html>
     <header class="toc-header">
       <div class="toc-kicker">Navegación · 2 de 3</div>
       <h2>Índice interactivo</h2>
-      <p class="toc-description">Capas gráficas, GNOME y operaciones equivalentes entre GUI y terminal.</p>
+      <p class="toc-description">Capas gráficas y recorridos visuales de GNOME y KDE Plasma.</p>
     </header>
     <div class="toc-grid">${tocChapter4}${tocChapter5}</div>
     <nav class="toc-nav"><a href="#indice-interactivo">← Shell</a><a href="#indice-interactivo-3">KDE →</a></nav>
@@ -1376,7 +1458,7 @@ const html = `<!doctype html>
     <header class="toc-header">
       <div class="toc-kicker">Navegación · 3 de 3</div>
       <h2>Índice interactivo</h2>
-      <p class="toc-description">KDE Plasma, Dolphin, Konsole, propiedades y diagnóstico desde el escritorio.</p>
+      <p class="toc-description">KDE Plasma como recorrido visual: Panel, Kickoff, Dolphin y herramientas esenciales.</p>
     </header>
     <div class="toc-grid">${tocChapter6}</div>
     <nav class="toc-nav"><a href="#indice-interactivo-2">← Capítulos 4 y 5</a></nav>
@@ -1428,8 +1510,8 @@ const html = `<!doctype html>
       <div class="divider-number">04</div>
       <div class="divider-kicker">Escritorio</div>
       <h2>GNOME</h2>
-      <p class="divider-description">Activities, Files, búsqueda, terminal y la misma operación expresada de forma verificable en CLI.</p>
-      <div class="divider-tags"><span>Capítulo 5</span><span>Files · Nautilus</span><span>Terminal</span><span>Settings</span></div>
+      <p class="divider-description">Actividades, Files, herramientas esenciales y espacios de trabajo para comprender el flujo de GNOME.</p>
+      <div class="divider-tags"><span>Capítulo 5</span><span>Activities</span><span>Files · Nautilus</span><span>Workspaces</span></div>
     </div>
   </section>
   <article class="chapter chapter-5">${chapter5}</article>
@@ -1441,8 +1523,8 @@ const html = `<!doctype html>
       <div class="divider-number">05</div>
       <div class="divider-kicker">Escritorio</div>
       <h2>KDE Plasma</h2>
-      <p class="divider-description">Dolphin, Konsole, tipos MIME, propiedades, permisos y diagnóstico desde una interfaz gráfica moderna.</p>
-      <div class="divider-tags"><span>Capítulo 6</span><span>Dolphin</span><span>Konsole</span><span>System Settings</span></div>
+      <p class="divider-description">Panel, Kickoff, Dolphin y herramientas esenciales para comprender una interfaz Plasma moderna.</p>
+      <div class="divider-tags"><span>Capítulo 6</span><span>Dolphin</span><span>Herramientas KDE</span></div>
     </div>
   </section>
   <article class="chapter chapter-6">${chapter6}</article>
@@ -1458,11 +1540,12 @@ const html = `<!doctype html>
       <div class="closing-checks">
         <div>Busco contenido y archivos, e interpreto capacidad y uso de espacio.</div>
         <div>Creo, inspecciono, restauro y verifico un respaldo comprimido.</div>
-        <div>Distingo las capas gráficas y relaciono acciones de GNOME/KDE con comandos.</div>
+        <div>Distingo las capas gráficas y reconozco diferencias de interfaz entre GNOME y KDE Plasma.</div>
       </div>
       <div class="next-session">Siguiente: Clase 3 · I/O, procesos y Bash</div>
     </div>
   </section>
+  <article class="chapter chapter-6 chapter-glossary">${chapter6Glossary}</article>
 </body>
 </html>`;
 
