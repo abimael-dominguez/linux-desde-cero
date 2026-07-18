@@ -1317,7 +1317,7 @@ const html = `<!doctype html>
       <h2>Clase 4 — Regex, red y copias remotas</h2>
     </header>
     <div class="overview-files">
-      <strong>Archivo:</strong> capítulo <span class="chapter-number">11</span> completo.
+      <strong>Archivo:</strong> <code>11-scp-copias-remotas.md</code> (capítulo <span class="chapter-number">11</span> completo).
     </div>
     <table class="agenda-table" aria-label="Agenda de la clase 4">
       <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>

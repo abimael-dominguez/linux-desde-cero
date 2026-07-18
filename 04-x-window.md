@@ -1,119 +1,124 @@
 # 4. X Window y Wayland
 
+**X.Org y Wayland no son escritorios ni aplicaciones.** Son la capa que permite que una aplicación gráfica reciba teclado y ratón, dibuje una ventana y la muestre en la pantalla. GNOME y KDE Plasma son los escritorios que organizan esa experiencia sobre Linux.
+
 ## Índice
 
-- [Objetivos](#objetivos)
-- [Antes de continuar](#antes-de-continuar)
-- [4.1 X Window y Wayland](#41-x-window-y-wayland)
-- [Práctica guiada: mapa de tu sesión](#práctica-guiada-resuelta--mapa-de-tu-sesión)
+- [4.1 De un clic a una ventana](#41-de-un-clic-a-una-ventana)
+- [Objetivo de esta parte](#objetivo-de-esta-parte)
+- [Antes de la demostración](#antes-de-la-demostración)
+- [El mapa que necesitas](#el-mapa-que-necesitas)
+- [X.Org y Wayland en una frase](#xorg-y-wayland-en-una-frase)
+- [Identifica tu sesión (sólo consulta)](#identifica-tu-sesión-sólo-consulta)
+- [Escritorio o SSH](#escritorio-o-ssh)
+- [Demostración guiada: 4 minutos](#demostración-guiada-4-minutos)
 - [Errores frecuentes](#errores-frecuentes)
-- [Reto 4](#reto-4--mapa-de-la-sesión-gráfica)
 
-## Objetivos
+## 4.1 De un clic a una ventana
 
-- Distinguir Linux, shell, terminal, protocolo gráfico, compositor y escritorio.
-- Identificar la sesión gráfica sin memorizar componentes históricos.
-- Decidir cuándo un servidor necesita GUI y cuándo conviene administrarlo por SSH.
+### Objetivo de esta parte
 
-## Antes de continuar
+Al terminar, debes poder explicar sin memorizar procesos ni siglas:
 
-Este capítulo se trabaja en una VM con escritorio abierto, no en la terminal SSH de EC2. La EC2 sigue siendo útil para los comandos de servidor; la VM gráfica sirve para observar cómo una aplicación llega a una pantalla.
+- qué parte de Linux muestra una ventana y recibe un clic;
+- que GNOME y KDE Plasma son escritorios, mientras que X.Org y Wayland son la base gráfica que usan;
+- por qué una EC2 puede funcionar perfectamente sin escritorio ni pantalla.
+
+### Antes de la demostración
+
+Este recorrido ocurre en una VM con escritorio abierto, no en una terminal SSH de EC2. La VM sirve para **observar una sesión gráfica**; la EC2 sigue siendo el lugar para practicar administración por terminal. No instales GNOME, KDE ni un servidor gráfico en una EC2 para seguir esta parte.
+
+Abre la terminal desde la raíz del curso: la carpeta que contiene `README.md` y `data/`. La ruta varía según dónde clonaste el repositorio; no copies una ruta ajena. Si no estás ahí, usa la navegación de la Clase 1 para llegar a tu copia del curso y confirma:
 
 ```bash
-cd ~/linux-desde-cero
 pwd
+ls README.md data
 ```
 
-No necesitas archivos de la Clase 1 para esta demostración. Si `laboratorio/` existe, conserva su contenido. El reto de este capítulo crea `laboratorio/sesion-grafica.txt` desde un editor gráfico; si la carpeta no existe, puedes crearla con `mkdir -p laboratorio`.
+> **Cuidado.** Esta sección no requiere crear archivos ni cambiar la sesión, la red o la resolución. Si no tienes VM gráfica, sigue el diagrama y la demostración del instructor.
 
-> **Cuidado.** No instales GNOME, KDE ni un servidor gráfico en una EC2 sólo para seguir la práctica. Si no tienes VM gráfica, observa la demostración del instructor y usa el diagrama.
+### El mapa que necesitas
 
-## 4.1 X Window y Wayland
+> **Situación real.** Abres Files, haces clic en una carpeta y aparece una ventana. Para trabajar bien no necesitas conocer todos los procesos que intervienen; sólo necesitas saber qué capa hace cada trabajo y no confundirlas.
 
-> **Situación real.** Una persona de soporte usa una aplicación con ventanas en su laptop, mientras que una persona de operaciones administra por SSH un servidor sin pantalla. Ambos usan Linux, pero no necesitan la misma capa gráfica.
+![Mapa visual de una sesión gráfica: aplicación, toolkit, sesión Wayland o X.Org, Linux, pantalla y dispositivos de entrada.](docs/pdf/shared/assets/x-window-session-map.svg)
 
-Linux es el kernel y el sistema base. Un escritorio como GNOME o KDE Plasma organiza ventanas, menús y configuración. X.Org y Wayland son formas de comunicar aplicaciones gráficas con la pantalla, teclado y ratón. No son sinónimos.
+*Lee el mapa de izquierda a derecha para ver cómo llega una ventana a la pantalla. El teclado y el ratón recorren el camino inverso: entran por la sesión gráfica y llegan a la aplicación activa.*
 
-```text
-aplicación → toolkit → X.Org o compositor Wayland → kernel/controladores → pantalla
-                         ↑
-                  teclado y ratón
-```
-
-### Modelo mental: quién hace qué
-
-| Componente | Responsabilidad | Ejemplo práctico |
+| Capa | Ejemplo que puedes reconocer | Trabajo que hace |
 |---|---|---|
-| Aplicación | Hace el trabajo visible | navegador, editor, Files/Dolphin |
-| Toolkit | Dibuja controles y ventanas | GTK o Qt |
-| X.Org o Wayland | Protocolo/canal gráfico | comunica app, entrada y pantalla |
-| Compositor | Ordena ventanas y efectos | GNOME Shell o KWin |
-| Escritorio | Experiencia completa de usuario | GNOME o KDE Plasma |
-| Shell/terminal | Ejecuta comandos de texto | Bash en GNOME Terminal o Konsole |
+| **Aplicación** | Files, Firefox, Kate, Terminal | Hace el trabajo que pediste y muestra su ventana. |
+| **Toolkit** | GTK o Qt | Construye botones, menús, cuadros de diálogo y ventanas. |
+| **Sesión gráfica** | Wayland o X.Org | Coordina el dibujo de ventanas y entrega clics y teclas. |
+| **Escritorio** | GNOME o KDE Plasma | Organiza paneles, lanzadores, espacios de trabajo y notificaciones. |
+| **Linux y controladores** | kernel y GPU | Hablan con el hardware: pantalla, teclado, ratón y tarjeta gráfica. |
 
-> **Comprueba.** GNOME y KDE no reemplazan a Linux; son entornos de escritorio. Una terminal puede existir dentro de ambos y también en un servidor sin escritorio.
+Qué debes retener: **Files no es GNOME, GNOME no es Wayland y Wayland no es Linux**. Son capas que colaboran.
 
-### Identificar una sesión
+> **Comprueba.** Señala en la VM una aplicación abierta y responde: “¿es Files, GNOME/KDE o Wayland/X.Org?”. La respuesta correcta es **una aplicación**.
 
-Abre GNOME Terminal o Konsole **dentro de la VM gráfica**. Las variables que empiezan con `$` son valores que la sesión ya conoce; no sustituyas tú el signo `$`.
+### X.Org y Wayland en una frase
+
+- **X.Org** es la base gráfica tradicional de Linux. Una aplicación se comunica con el servidor X para mostrar ventanas y recibir entrada.
+- **Wayland** es el enfoque moderno. El compositor de la sesión —por ejemplo Mutter en GNOME o KWin en KDE— coordina las ventanas, la pantalla y la entrada.
+
+No es necesario elegir, instalar ni configurar uno durante la clase. Ubuntu actual suele iniciar con Wayland; algunas sesiones, equipos o programas pueden usar X.Org/X11. **GNOME y KDE Plasma pueden funcionar sobre cualquiera de los dos.**
+
+| Si oyes… | Traducción útil |
+|---|---|
+| “Estoy en Wayland” | La sesión gráfica usa el protocolo moderno para conectar aplicaciones, entrada y pantalla. |
+| “Esta sesión es X11” | La sesión usa la arquitectura gráfica tradicional de X.Org. |
+| “Uso GNOME” o “uso KDE” | Describe el escritorio visible, no el protocolo gráfico ni el kernel. |
+
+> **Cuidado.** No conviertas esto en una discusión de marcas. Para soporte inicial, importa saber qué sesión está abierta y si el problema pertenece a una aplicación, al escritorio o a la pantalla.
+
+### Identifica tu sesión (sólo consulta)
+
+Abre GNOME Terminal o Konsole **dentro de la VM gráfica** y ejecuta:
 
 ```bash
 echo "$XDG_SESSION_TYPE"
 echo "$XDG_CURRENT_DESKTOP"
 ```
 
-La primera línea suele mostrar `wayland` o `x11`. La segunda puede mostrar `GNOME`, `KDE`, `ubuntu:GNOME` u otro nombre. Los valores cambian según la distribución y la sesión elegida al iniciar.
+La primera consulta responde por la base gráfica; la segunda nombra el escritorio. Las variables ya existen en la sesión: escribe el comando completo, incluido `$` dentro de las comillas.
 
-#### Qué significa una salida vacía
+Salida representativa:
 
-Si una variable no muestra nada, probablemente ejecutaste el comando desde SSH, una consola virtual o una sesión sin escritorio. Eso no indica que Linux esté roto: indica que no hay una sesión gráfica que describir.
-
-### Servidor frente a escritorio
-
-Un servidor de aplicación normalmente se administra por SSH porque no necesita ventanas para atender peticiones. Evitar una GUI reduce paquetes instalados, memoria usada, actualizaciones y superficie de ataque. Una estación de soporte o desarrollo sí puede usar GUI para editar, revisar archivos o ejecutar herramientas visuales.
-
-| Si necesitas… | Usa principalmente… |
-|---|---|
-| operar una EC2, revisar logs, cambiar configuración | SSH y terminal |
-| asistir a una persona local, mover documentos, ajustar pantalla | escritorio gráfico |
-| automatizar despliegues o tareas repetibles | comandos y scripts reproducibles |
-
-## Práctica guiada resuelta — Mapa de tu sesión
-
-1. En la VM gráfica, abre una terminal.
-2. Ejecuta las dos líneas de identificación.
-3. Abre el menú de aplicaciones y localiza una aplicación visible, por ejemplo Files o Konsole.
-4. Abre un editor de texto gráfico, escribe protocolo, escritorio y dos aplicaciones visibles, y guarda el archivo como `~/linux-desde-cero/laboratorio/sesion-grafica.txt`.
-
-El archivo es una evidencia humana, no una salida que debas generar con redirecciones. Si `laboratorio/` no existe, crea la carpeta desde Files o ejecuta:
-
-```bash
-mkdir -p laboratorio
+```text
+wayland
+ubuntu:GNOME
 ```
 
-> **Comprueba.** En tu evidencia debe quedar clara esta frase: “Mi aplicación se muestra mediante una sesión gráfica; mi servidor EC2 no necesita esa sesión para ejecutar servicios”.
+- La primera línea puede ser `wayland` o `x11`.
+- La segunda puede ser `ubuntu:GNOME`, `GNOME`, `KDE` u otro nombre de escritorio.
+- Una salida vacía suele significar que estás en SSH, una consola virtual o una sesión sin escritorio. No indica que Linux esté dañado.
 
-## Errores frecuentes
+### Escritorio o SSH
 
-- Intentar abrir una aplicación gráfica desde SSH sin una sesión de display.
-- Llamar “Linux” únicamente al escritorio que se ve en pantalla.
-- Instalar un escritorio pesado en un servidor para evitar aprender SSH.
-- Memorizar nombres de procesos en vez de comprender la función de cada capa.
+La pregunta práctica no es “¿cuál es mejor?”, sino **qué necesitas hacer y dónde ocurre**.
 
-## Reto 4 — Mapa de la sesión gráfica
+| Situación | Herramienta principal | Por qué |
+|---|---|---|
+| Ver una aplicación local, ajustar una pantalla o ayudar a una persona frente a su equipo | Escritorio gráfico | Necesitas ventanas, ratón, pantalla o una aplicación visual. |
+| Revisar logs, desplegar un backend o administrar una EC2 | SSH y terminal | El servidor no necesita mostrar ventanas para ejecutar servicios. |
+| Automatizar una tarea repetible | Script y terminal | El resultado puede repetirse, revisar y ejecutar sin una pantalla. |
 
-[Ver respuesta](instructor/soluciones.md#respuesta-reto-4)
+Una terminal puede vivir dentro de GNOME o KDE Plasma, pero también existe sin escritorio. Por eso un servidor remoto puede ser Linux aunque nunca veas un panel, un menú ni un cursor.
 
-Desde la VM del instructor, crea o completa `~/linux-desde-cero/laboratorio/sesion-grafica.txt` con protocolo, escritorio, dos aplicaciones visibles y una frase sobre cada capa. Si el archivo de evidencia no existe, créalo desde el editor gráfico; si `laboratorio/` no existe, créalo primero.
+### Demostración guiada: 4 minutos
 
-### Criterios de comprobación
+1. En la VM, abre **Actividades** (GNOME) o **Kickoff** (KDE) y lanza Files o Dolphin. Eso muestra el **escritorio** iniciando una **aplicación**.
+2. Haz clic en una carpeta y mueve la ventana. No cambies configuraciones: sólo observa que la sesión gráfica recibe tu entrada y dibuja la ventana.
+3. Abre una terminal dentro de esa misma VM y ejecuta las dos consultas de la sección 4.3.
+4. Vuelve a la EC2 por SSH y di qué falta allí: no Linux ni Bash, sino **una sesión gráfica con pantalla**.
 
-- Distingue protocolo, escritorio y aplicación.
-- Los valores se observan en la sesión, no se inventan.
-- Explica por qué la EC2 del laboratorio no requiere GUI.
+> **Comprueba.** Completa esta frase: “En mi VM, ____ es el escritorio y ____ es el tipo de sesión. En la EC2 uso SSH porque el servicio no necesita ____”.
 
-## Checklist
+### Errores frecuentes
 
-- [ ] Distingo X.Org, Wayland, GNOME y KDE.
-- [ ] Sé reconocer si estoy en una sesión gráfica o en SSH.
-- [ ] Puedo justificar por qué un servidor puede operar sin escritorio.
+- Llamar “Linux” únicamente a lo que se ve en pantalla. Linux también existe en una EC2 sin escritorio.
+- Creer que GNOME o KDE Plasma sustituyen al kernel. Son la experiencia visual que se ejecuta sobre Linux.
+- Confundir Files/Dolphin con el escritorio completo. Son aplicaciones de archivos.
+- Intentar abrir una aplicación gráfica por SSH como si hubiera una pantalla local disponible.
+- Instalar una GUI en un servidor sólo para evitar usar SSH.

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">De un clic a una ventana en Linux</title>
+  <desc id="desc">Diagrama de capas: aplicación, toolkit, sesión gráfica Wayland o X.Org, Linux y pantalla. El teclado y ratón entran por la sesión gráfica.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M1 1 L9 5 L1 9 Z" fill="#8adcf6"/>
+    </marker>
+    <style>
+      .title { font: 700 37px Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 400 19px Arial, sans-serif; fill: #c5ddeb; }
+      .label { font: 700 20px Arial, sans-serif; fill: #eaf7ff; }
+      .copy { font: 400 16px Arial, sans-serif; fill: #d1e4ef; }
+      .small { font: 700 14px Arial, sans-serif; fill: #8edffc; letter-spacing: 1.4px; }
+      .hint { font: 400 15px Arial, sans-serif; fill: #95b9cb; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" rx="28" fill="#102a43"/>
+  <text x="70" y="78" class="small">MAPA MENTAL · CLASE 2</text>
+  <text x="70" y="128" class="title">De un clic a una ventana</text>
+  <text x="70" y="161" class="subtitle">No memorices procesos: identifica qué capa hace cada trabajo.</text>
+
+  <rect x="70" y="275" width="200" height="176" rx="14" fill="#147ba8"/>
+  <rect x="304" y="275" width="200" height="176" rx="14" fill="#1b8fba"/>
+  <rect x="538" y="245" width="280" height="236" rx="14" fill="#164f70" stroke="#65d6f7" stroke-width="2"/>
+  <rect x="852" y="275" width="200" height="176" rx="14" fill="#1a5a7f"/>
+  <rect x="1086" y="275" width="78" height="176" rx="14" fill="#147ba8"/>
+
+  <text x="94" y="319" class="label">Aplicación</text>
+  <text x="94" y="350" class="copy">Files · Firefox</text>
+  <text x="94" y="375" class="copy">Kate · Terminal</text>
+  <text x="94" y="417" class="hint">Hace el trabajo</text>
+
+  <text x="328" y="319" class="label">Toolkit</text>
+  <text x="328" y="350" class="copy">GTK · Qt</text>
+  <text x="328" y="385" class="hint">Botones, menús</text>
+  <text x="328" y="407" class="hint">y ventanas</text>
+
+  <text x="562" y="225" class="small">ESCRITORIO: GNOME / KDE PLASMA</text>
+  <text x="562" y="289" class="label">Sesión gráfica</text>
+  <rect x="562" y="315" width="232" height="61" rx="9" fill="#102f47" stroke="#8adcf6" stroke-width="2"/>
+  <text x="582" y="342" class="copy">Wayland</text>
+  <text x="582" y="364" class="hint">compositor: Mutter / KWin</text>
+  <rect x="562" y="392" width="232" height="61" rx="9" fill="#102f47" stroke="#8adcf6" stroke-width="2"/>
+  <text x="582" y="419" class="copy">X.Org / X11</text>
+  <text x="582" y="441" class="hint">servidor gráfico tradicional</text>
+
+  <text x="876" y="319" class="label">Linux</text>
+  <text x="876" y="350" class="copy">kernel +</text>
+  <text x="876" y="375" class="copy">controladores</text>
+  <text x="876" y="417" class="hint">Habla con</text>
+  <text x="876" y="439" class="hint">el hardware</text>
+
+  <text x="1100" y="319" class="label" transform="rotate(90 1100 319)">Pantalla</text>
+
+  <path d="M275 363 H295" fill="none" stroke="#8adcf6" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M509 363 H529" fill="none" stroke="#8adcf6" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M823 363 H843" fill="none" stroke="#8adcf6" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M1057 363 H1077" fill="none" stroke="#8adcf6" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <rect x="614" y="520" width="240" height="88" rx="14" fill="#f4bf58"/>
+  <text x="639" y="554" style="font:700 19px Arial,sans-serif;fill:#172f43">Teclado y ratón</text>
+  <text x="639" y="581" style="font:400 16px Arial,sans-serif;fill:#304456">Clics y teclas entran aquí</text>
+  <path d="M734 515 V490 H697 V481" fill="none" stroke="#8adcf6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+
+  <text x="70" y="667" class="hint">GNOME y KDE Plasma organizan la experiencia visible; no sustituyen a Linux ni a Wayland/X.Org.</text>
+</svg>

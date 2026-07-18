@@ -144,7 +144,7 @@ const chapter3 = renderChapter(
   '## 3.5 Acceso a sistemas de archivos',
   '## 3.6 Permisos',
 );
-const chapter4 = renderChapter('04-x-window.md', 'c4');
+const chapter4 = renderChapter('04-x-window.md', 'c4', '## 4.1 De un clic a una ventana');
 const chapter5 = renderChapter('05-gnome.md', 'c5');
 const chapter6 = renderChapter('06-kde.md', 'c6', '# 6. KDE Plasma', '## Glosario rápido de KDE');
 const chapter6Glossary = renderChapter('06-kde.md', 'c6', '## Glosario rápido de KDE');
@@ -1420,7 +1420,9 @@ const html = `<!doctype html>
       <h2>Clase 2 — Shell útil y escritorios</h2>
     </header>
     <div class="overview-files">
-      <strong>Archivos:</strong> secciones 7.16–7.21 del capítulo <span class="chapter-number">7</span>, sección 3.5 del capítulo <span class="chapter-number">3</span> y capítulos <span class="chapter-number">4</span>, <span class="chapter-number">5</span> y <span class="chapter-number">6</span>.
+      <strong>Archivos:</strong><br>
+      <code>07-el-shell.md</code> (7.16–7.21) · <code>03-estructura-del-sistema-de-archivos-de-linux.md</code> (3.5) ·<br>
+      <code>04-x-window.md</code> · <code>05-gnome.md</code> · <code>06-kde.md</code>.
     </div>
     <table class="agenda-table" aria-label="Agenda de la clase 2">
       <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
@@ -1497,8 +1499,8 @@ const html = `<!doctype html>
       <div class="divider-number">03</div>
       <div class="divider-kicker">Capas gráficas</div>
       <h2>X Window y Wayland</h2>
-      <p class="divider-description">Relación entre aplicaciones, toolkits, protocolos gráficos, compositor, kernel y pantalla.</p>
-      <div class="divider-tags"><span>Capítulo 4</span><span>X.Org</span><span>Wayland</span><span>sesión gráfica</span></div>
+      <p class="divider-description">Qué ocurre entre un clic, una aplicación y la pantalla; distinguir X.Org, Wayland, escritorio y SSH.</p>
+      <div class="divider-tags"><span>Capítulo 4</span><span>aplicación → pantalla</span><span>X.Org / Wayland</span><span>SSH</span></div>
     </div>
   </section>
   <article class="chapter chapter-4">${chapter4}</article>

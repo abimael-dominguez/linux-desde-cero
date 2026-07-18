@@ -9,7 +9,6 @@ Salvo que se indique lo contrario, ejecuta las soluciones desde la raíz del cur
 - [Reto 1](#reto-1--inventario-reproducible)
 - [Reto 2](#reto-2--flujo-de-componentes)
 - [Reto 3](#reto-3--directorio-compartido)
-- [Reto 4](#reto-4--mapa-de-la-sesión-gráfica)
 - [Reto 7](#reto-7--snapshot-de-evidencias)
 - [Reto 8](#reto-8--pipeline-auditable)
 - [Reto 9](#reto-9--operación-observable)
@@ -67,31 +66,18 @@ ls -ld laboratorio/compartido laboratorio/compartido/*
 readlink laboratorio/compartido/check-actual
 ```
 
-<a id="respuesta-reto-4"></a>
-## Reto 4 — Mapa de la sesión gráfica
-
-En la VM gráfica, crear `~/linux-desde-cero/laboratorio/sesion-grafica.txt` desde Text Editor, Kate o una aplicación equivalente. El archivo debe incluir la salida observada y dos aplicaciones visibles. Las consultas que el alumno puede ejecutar son:
-
-```bash
-mkdir -p laboratorio
-echo "$XDG_SESSION_TYPE"
-echo "$XDG_CURRENT_DESKTOP"
-```
-
 <a id="respuesta-reto-7"></a>
 ## Reto 7 — Snapshot de evidencias
 
 ```bash
 mkdir -p laboratorio/reto7/restaurado
-find data -type f \( -name '*.txt' -o -name '*.csv' \) -size +0c
-tar -czf laboratorio/reto7/snapshot.tar.gz \
-  data/dummy_logs.txt data/basketball_scores.csv
+find data -type f -name '*.txt'
+find data -type f -name '*.csv'
+tar -czf laboratorio/reto7/snapshot.tar.gz data/dummy_logs.txt data/basketball_scores.csv
 tar -tzf laboratorio/reto7/snapshot.tar.gz
 tar -xzf laboratorio/reto7/snapshot.tar.gz -C laboratorio/reto7/restaurado
-sha256sum data/dummy_logs.txt \
-  laboratorio/reto7/restaurado/data/dummy_logs.txt
-sha256sum data/basketball_scores.csv \
-  laboratorio/reto7/restaurado/data/basketball_scores.csv
+sha256sum data/dummy_logs.txt laboratorio/reto7/restaurado/data/dummy_logs.txt
+sha256sum data/basketball_scores.csv laboratorio/reto7/restaurado/data/basketball_scores.csv
 ```
 
 <a id="respuesta-reto-8"></a>

@@ -24,10 +24,11 @@
 
 ## Antes de empezar
 
-Sitúate en la raíz del curso y crea el espacio de trabajo:
+Abre la terminal en la raíz del curso —la carpeta que contiene `README.md`— y crea el espacio de trabajo. La ruta depende de dónde clonaste el repositorio; usa la navegación de la Clase 1, no una ruta copiada de otro equipo:
 
 ```bash
-cd ~/linux-desde-cero
+pwd
+ls README.md
 mkdir -p laboratorio/enlaces
 ```
 
@@ -229,11 +230,11 @@ MemAvailable:   ... kB
 
 ### Antes de continuar
 
-Este apartado pertenece a la Clase 2. Trabaja desde la raíz del curso, aunque conserves carpetas de la Clase 1 en `laboratorio/`:
+Este apartado pertenece a la Clase 2. Trabaja desde la raíz del curso —la carpeta que contiene `README.md`— aunque conserves carpetas de la Clase 1 en `laboratorio/`. La ruta depende de dónde clonaste el repositorio; usa la navegación de la Clase 1 para llegar a ella y confirma:
 
 ```bash
-cd ~/linux-desde-cero
 pwd
+ls README.md
 ```
 
 No necesitas crear discos ni particiones para este ejercicio. Los comandos consultan el estado actual del equipo. Si `laboratorio/` no existe, podrás crearlo más adelante con `mkdir -p laboratorio`; no recrees a mano archivos versionados de `data/`.

@@ -37,9 +37,9 @@
 
 **Material de trabajo:**
 
-- Capítulo [1](../01-introduccion-a-linux.md): Linux, distribuciones, terminal, usuarios, grupos y `sudo`.
-- Capítulo [3](../03-estructura-del-sistema-de-archivos-de-linux.md): tipos de archivo, rutas, jerarquía, enlaces y permisos.
-- Capítulo [7](../07-el-shell.md), secciones 7.1–7.15: navegación y administración segura de archivos desde Bash.
+- [01-introduccion-a-linux.md](../01-introduccion-a-linux.md#11-qué-es-linux) — capítulo 1: Linux, distribuciones, terminal, usuarios, grupos y `sudo`.
+- [03-estructura-del-sistema-de-archivos-de-linux.md](../03-estructura-del-sistema-de-archivos-de-linux.md#31-tipos-de-archivo) — capítulo 3: tipos de archivo, rutas, jerarquía, enlaces y permisos.
+- [07-el-shell.md](../07-el-shell.md#71-73-shell-comandos-y-directorio-personal) — secciones 7.1–7.15: navegación y administración segura de archivos desde Bash.
 
 **Conducción detallada:** [planeacion-clase-1.md](planeacion-clase-1.md).
 
@@ -63,11 +63,11 @@
 
 **Material de trabajo:**
 
-- Capítulo [7](../07-el-shell.md), secciones 7.16–7.21: espacio, lectura, búsqueda, respaldos e impresión.
-- Capítulo [3](../03-estructura-del-sistema-de-archivos-de-linux.md), sección 3.5: dispositivos, puntos de montaje y espacio disponible; sólo consulta, sin formatear discos.
-- Capítulo [4](../04-x-window.md): X Window, Wayland y la diferencia entre servidor y escritorio.
-- Capítulo [5](../05-gnome.md): recorrido visual de GNOME, Actividades, Files, herramientas y espacios de trabajo.
-- Capítulo [6](../06-kde.md): recorrido visual de KDE Plasma, Dolphin y herramientas esenciales.
+- [07-el-shell.md](../07-el-shell.md#716-espacio-du-y-df) — secciones 7.16–7.21: espacio, lectura, búsqueda, respaldos e impresión.
+- [03-estructura-del-sistema-de-archivos-de-linux.md](../03-estructura-del-sistema-de-archivos-de-linux.md#35-acceso-a-sistemas-de-archivos) — sección 3.5: dispositivos, puntos de montaje y espacio disponible; sólo consulta, sin formatear discos.
+- [04-x-window.md](../04-x-window.md#41-de-un-clic-a-una-ventana) — capítulo 4: X Window, Wayland y la diferencia entre servidor y escritorio.
+- [05-gnome.md](../05-gnome.md#51-mapa-de-gnome) — recorrido visual de GNOME, Actividades, Files, herramientas y espacios de trabajo.
+- [06-kde.md](../06-kde.md#61-partes-de-la-pantalla) — recorrido visual de KDE Plasma, Dolphin y herramientas esenciales.
 
 **Conducción detallada:** [planeacion-clase-2.md](planeacion-clase-2.md).
 
@@ -92,11 +92,11 @@
 
 **Material de trabajo:**
 
-- Capítulo [2](../02-un-enfoque-a-linux.md): entrada, salida, errores, terminal y el modelo mental de composición.
-- Capítulo [8](../08-redirecciones-y-tuberias.md): redirecciones, pipes, `tee` y reportes que conservan diagnósticos.
-- Capítulo [9](../09-ejecucion-de-programas.md): procesos, jobs, señales, prioridad, servicios y journal.
-- Capítulo [10](../10-programas-de-comandos.md): scripts Bash, variables, argumentos, validación y estados de salida.
-- Capítulo [12](../12-hands-on-bash-scripting.md), ejercicios seleccionados: práctica guiada de scripting sobre datos del laboratorio.
+- [02-un-enfoque-a-linux.md](../02-un-enfoque-a-linux.md#21-entrada-y-salida) — entrada, salida, errores, terminal y el modelo mental de composición.
+- [08-redirecciones-y-tuberias.md](../08-redirecciones-y-tuberias.md#81-redirecciones) — redirecciones, pipes, `tee` y reportes que conservan diagnósticos.
+- [09-ejecucion-de-programas.md](../09-ejecucion-de-programas.md#inspección-con-ps-pgrep-y-top) — procesos, jobs, señales, prioridad, servicios y journal.
+- [10-programas-de-comandos.md](../10-programas-de-comandos.md#101-comentarios-y-shebang) — scripts Bash, variables, argumentos, validación y estados de salida.
+- [12-hands-on-bash-scripting.md](../12-hands-on-bash-scripting.md#preparación) — ejercicios seleccionados: práctica guiada de scripting sobre datos del laboratorio.
 
 | Hora | Actividad |
 |---|---|
@@ -116,7 +116,7 @@
 
 **Material de trabajo:**
 
-- Capítulo [11](../11-scp-copias-remotas.md): compilación, regex, red, SSH, SCP/SFTP y verificación de una entrega remota.
+- [11-scp-copias-remotas.md](../11-scp-copias-remotas.md#111-compilación-en-linux) — compilación, regex, red, SSH, SCP/SFTP y verificación de una entrega remota.
 
 | Hora | Actividad |
 |---|---|

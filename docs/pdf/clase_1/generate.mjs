@@ -1373,7 +1373,10 @@ const html = `<!doctype html>
       <h2>Clase 1 — Fundamentos, archivos y permisos</h2>
     </header>
     <div class="overview-files">
-      <strong>Archivos:</strong> capítulos <span class="chapter-number">1</span>, <span class="chapter-number">3</span> y 7.1–7.15 de <span class="chapter-number">7</span>.
+      <strong>Archivos:</strong><br>
+      <code>01-introduccion-a-linux.md</code> (capítulo <span class="chapter-number">1</span>) ·
+      <code>03-estructura-del-sistema-de-archivos-de-linux.md</code> (capítulo <span class="chapter-number">3</span>) ·<br>
+      <code>07-el-shell.md</code> (secciones 7.1–7.15).
     </div>
     <table class="agenda-table" aria-label="Agenda de la clase 1">
       <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
