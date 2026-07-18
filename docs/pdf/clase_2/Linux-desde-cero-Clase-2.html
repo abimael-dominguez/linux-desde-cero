@@ -1,0 +1,1694 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linux desde cero · Clase 2</title>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    :root {
+      --blue: #0a78aa;
+      --blue-deep: #243d5a;
+      --blue-dark: #10263d;
+      --blue-soft: #eaf3f7;
+      --blue-pale: #f4f8fa;
+      --red: #ff1f4b;
+      --ink: #243447;
+      --muted: #607084;
+      --line: #d9e3e8;
+      --paper: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    .svg-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    @page {
+      size: Letter portrait;
+      margin: 0.76in 0.70in 0.67in 0.70in;
+      @top-left {
+        content: 'CLASE 2';
+        padding-top: 0.12in;
+        border-bottom: 1px solid #b8cad4;
+        color: #ff1f4b;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 7pt;
+        font-weight: 700;
+        letter-spacing: .16em;
+      }
+      @top-right {
+        content: 'TECGURUS · LINUX DESDE CERO';
+        padding-top: 0.12in;
+        border-bottom: 1px solid #b8cad4;
+        color: #708291;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .05em;
+      }
+      @top-right-corner {
+        content: '';
+        background: linear-gradient(135deg, transparent 0 43%, #0a78aa 44% 100%);
+      }
+      @bottom-left {
+        content: 'LINUX DESDE CERO';
+        padding-left: 0.48in;
+        padding-bottom: 0.09in;
+        border-top: 1px solid #b8cad4;
+        color: #243d5a;
+        background:
+          linear-gradient(90deg, #ff1f4b 0 0.18in, transparent 0.18in 0.23in, #0a78aa 0.23in 0.42in, transparent 0.42in) left 0.11in / 0.44in 0.06in no-repeat;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .04em;
+      }
+      @bottom-right {
+        content: 'CLASE 2  ·  ' counter(page);
+        padding-bottom: 0.09in;
+        border-top: 1px solid #b8cad4;
+        color: #708291;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .05em;
+      }
+      @bottom-right-corner {
+        content: '';
+        background: linear-gradient(315deg, #0a78aa 0 36%, transparent 37% 100%);
+      }
+    }
+    @page cover {
+      size: Letter portrait;
+      margin: 0;
+    }
+    @page divider {
+      size: Letter portrait;
+      margin: 0;
+    }
+    @page overview {
+      size: Letter portrait;
+      margin: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      background: white;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 9.8pt;
+      line-height: 1.48;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    /* El marco corporativo se repite en cada página de contenido. */
+    .page-furniture {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+    }
+    .frame-border {
+      position: fixed;
+      top: -0.61in;
+      right: -0.55in;
+      bottom: -0.52in;
+      left: -0.55in;
+      border: 1.1px solid #b8cad4;
+      border-radius: 7px;
+    }
+    .frame-top-blue {
+      position: fixed;
+      top: -0.76in;
+      right: -0.70in;
+      width: 2.35in;
+      height: 0.52in;
+      background: var(--blue);
+      clip-path: polygon(17% 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .frame-top-red {
+      position: fixed;
+      top: -0.30in;
+      right: -0.70in;
+      width: 1.18in;
+      height: 0.08in;
+      background: var(--red);
+    }
+    .frame-bottom-blue {
+      position: fixed;
+      bottom: -0.67in;
+      left: -0.70in;
+      width: 1.62in;
+      height: 0.28in;
+      background: var(--blue);
+      clip-path: polygon(0 0, 76% 0, 100% 100%, 0 100%);
+    }
+    .frame-bottom-red {
+      position: fixed;
+      bottom: -0.67in;
+      left: -0.70in;
+      width: 0.58in;
+      height: 0.34in;
+      background: var(--red);
+      clip-path: polygon(0 0, 68% 0, 100% 100%, 0 100%);
+    }
+    .frame-brand {
+      position: fixed;
+      top: -0.54in;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .frame-brand::before {
+      content: '';
+      width: 0.20in;
+      height: 0.07in;
+      border-radius: 99px;
+      background: var(--red);
+      box-shadow: 0.24in 0 0 var(--blue);
+      margin-right: 0.22in;
+    }
+    .frame-footer {
+      position: fixed;
+      right: 0;
+      bottom: -0.48in;
+      color: #708291;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .cover {
+      page: cover;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+      background: #fff;
+      break-after: page;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0.5px 0.5px, rgba(10,120,170,.14) .7px, transparent .8px) 7.73in 7.83in / 9px 9px no-repeat,
+        linear-gradient(145deg, transparent 0 61%, rgba(234,243,247,.75) 61% 68%, transparent 68%);
+      pointer-events: none;
+    }
+    .cover-top-shadow {
+      position: absolute;
+      top: 0.42in;
+      left: 2.45in;
+      width: 1.82in;
+      height: 1.50in;
+      background: #eff5f8;
+      clip-path: url(#rounded-hexagon);
+    }
+    .cover-top-panel {
+      position: absolute;
+      top: 0.12in;
+      left: 0;
+      width: 3.33in;
+      height: 2.15in;
+      background: linear-gradient(135deg, #3176aa, #256a9d);
+      clip-path: url(#rounded-chevron);
+    }
+    .cover-top-panel .dots {
+      position: absolute;
+      top: 1.43in;
+      left: 0;
+      width: 0.20in;
+      height: 0.36in;
+      background-image: radial-gradient(circle, #fff 1.1px, transparent 1.2px);
+      background-size: 8px 8px;
+      opacity: .95;
+    }
+    .cover-logo {
+      position: absolute;
+      top: 1.63in;
+      left: 0.34in;
+      width: 2.20in;
+      height: auto;
+    }
+    .cover-title {
+      position: absolute;
+      top: 3.22in;
+      left: 0.96in;
+      width: 6.45in;
+    }
+    .cover-kicker {
+      margin-bottom: 0.12in;
+      color: var(--blue);
+      font-size: 11.5pt;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .cover h1 {
+      margin: 0;
+      color: var(--blue-deep);
+      font-size: 47pt;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      font-weight: 700;
+    }
+    .cover-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.31in;
+      color: var(--blue-deep);
+      font-size: 16.5pt;
+      font-weight: 500;
+    }
+    .cover-subtitle .class-pill {
+      display: inline-block;
+      padding: 6px 13px 5px;
+      border-radius: 4px;
+      color: white;
+      background: var(--red);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .cover-url {
+      position: absolute;
+      top: 6.28in;
+      left: 0.97in;
+      color: var(--red);
+      font-size: 14.5pt;
+      font-weight: 500;
+    }
+    .cover-instructor {
+      position: absolute;
+      left: 0.97in;
+      bottom: 2.48in;
+      padding-left: 0.18in;
+      border-left: 4px solid var(--blue);
+      color: var(--blue-deep);
+      font-size: 11pt;
+      line-height: 1.45;
+    }
+    .cover-instructor span {
+      display: block;
+      color: var(--muted);
+      font-size: 8.2pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .cover-bottom-panel {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 3.18in;
+      height: 1.58in;
+      background: linear-gradient(135deg, #3176aa, #276d9f);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .photo-blue-back {
+      position: absolute;
+      right: 0.68in;
+      bottom: 0.36in;
+      width: 3.86in;
+      height: 2.88in;
+      background: #3176aa;
+      clip-path: url(#rounded-hexagon);
+    }
+    .photo-red-back {
+      position: absolute;
+      right: 0.12in;
+      bottom: 1.34in;
+      width: 4.12in;
+      height: 3.24in;
+      background: var(--red);
+      clip-path: url(#rounded-hexagon);
+    }
+    .cover-photo {
+      position: absolute;
+      right: 0.05in;
+      bottom: 1.47in;
+      width: 3.87in;
+      height: 2.96in;
+      object-fit: cover;
+      object-position: 57% 50%;
+      clip-path: url(#rounded-hexagon);
+      outline: 3px solid white;
+    }
+    .cover-hex-outline {
+      position: absolute;
+      right: 1.43in;
+      bottom: 1.46in;
+      width: 1.08in;
+      height: 0.94in;
+      border: 2px solid rgba(255,255,255,.94);
+      border-radius: 9px;
+      transform: rotate(60deg);
+    }
+    .cover-hex-outline::before,
+    .cover-hex-outline::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: inherit;
+      border-radius: inherit;
+      transform: rotate(60deg);
+    }
+    .cover-hex-outline::after { transform: rotate(120deg); }
+
+    .overview {
+      page: overview;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      padding: 0.74in 0.72in 0.55in;
+      overflow: hidden;
+      background: white;
+      break-after: page;
+    }
+    .overview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2.1in;
+      height: 1.25in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right-wide);
+    }
+    .overview::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.4in;
+      height: 0.40in;
+      background: var(--red);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .overview-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.15in;
+    }
+    .overview-kicker {
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .overview h2 {
+      margin: 0.05in 0 0;
+      max-width: 5.45in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 21pt;
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+    .overview-files {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 0.16in;
+      padding: 0.11in 0.14in;
+      border-left: 4px solid var(--blue);
+      color: var(--ink);
+      background: var(--blue-pale);
+      font-size: 9.2pt;
+    }
+    .overview-files strong {
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 700;
+    }
+    .overview-files .chapter-number {
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .agenda-table {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 8.3pt;
+      line-height: 1.25;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .agenda-table th {
+      padding: 0.09in 0.11in;
+      color: var(--blue-deep);
+      background: #edf4f7;
+      border-bottom: 2px solid var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.6pt;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .agenda-table th:first-child { width: 1.10in; }
+    .agenda-table td {
+      padding: 0.087in 0.11in;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .agenda-table tr:last-child td { border-bottom: 0; }
+    .agenda-table tr:nth-child(even) td { background: #f7fafb; }
+    .agenda-table .agenda-time {
+      width: 1.10in;
+      color: var(--blue);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .agenda-table .agenda-activity {
+      color: var(--blue-deep);
+    }
+    .agenda-table code {
+      padding: 1px 4px 2px;
+      border: 1px solid #d6e4ea;
+      border-radius: 4px;
+      color: #174f6d;
+      background: #eef5f8;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: .91em;
+      font-variant-ligatures: none;
+    }
+    .agenda-table .break-row td { background: #fff2f5 !important; }
+    .overview-foot {
+      margin-top: 0.18in;
+    }
+    .overview-note {
+      padding: 0.12in 0.14in;
+      border-left: 4px solid var(--red);
+      background: var(--blue-pale);
+      font-size: 7.8pt;
+      line-height: 1.35;
+    }
+    .overview-note p { margin: 0 0 0.035in; }
+    .overview-note p:last-child { margin-bottom: 0; }
+    .overview-note strong {
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    .toc-page {
+      page: overview;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      padding: 0.72in 0.74in 0.55in;
+      overflow: hidden;
+      background: white;
+      break-after: page;
+    }
+    .toc-page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2.1in;
+      height: 1.25in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right-wide);
+    }
+    .toc-page::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.4in;
+      height: 0.40in;
+      background: var(--red);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .toc-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.24in;
+    }
+    .toc-kicker {
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .toc-page h2 {
+      margin: 0.05in 0 0.05in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 27pt;
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+    .toc-description {
+      max-width: 5.6in;
+      margin: 0;
+      color: var(--muted);
+      font-size: 8.2pt;
+    }
+    .toc-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.26in;
+      align-items: start;
+    }
+    .toc-single .toc-grid {
+      grid-template-columns: 1fr;
+      max-width: 6.82in;
+    }
+    .toc-group {
+      overflow: hidden;
+      border: 1px solid #d2e0e7;
+      border-radius: 8px;
+      background: white;
+    }
+    .toc-chapter {
+      display: block;
+      padding: 0.12in 0.14in;
+      color: white;
+      background: var(--blue);
+      text-decoration: none;
+    }
+    .toc-chapter small {
+      display: block;
+      margin-bottom: 1px;
+      color: rgba(255,255,255,.78);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.6pt;
+      font-weight: 600;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .toc-chapter strong {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10pt;
+      font-weight: 600;
+    }
+    .toc-link {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.10in;
+      min-height: 0.29in;
+      padding: 0.06in 0.11in;
+      border-bottom: 1px solid #e1e9ed;
+      color: var(--blue-deep);
+      background: white;
+      font-size: 7.3pt;
+      line-height: 1.26;
+      text-decoration: none;
+    }
+    .toc-link:last-child { border-bottom: 0; }
+    .toc-link:nth-child(odd) { background: #f8fafb; }
+    .toc-link b {
+      flex: 0 0 auto;
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.5pt;
+    }
+    .toc-level-2 { font-weight: 600; }
+    .toc-level-3 {
+      padding-left: 0.26in;
+      color: #5f7182;
+      font-size: 6.9pt;
+    }
+    .toc-level-3 span::before {
+      content: '•';
+      margin-right: 0.06in;
+      color: var(--red);
+    }
+    .toc-nav {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.08in;
+      margin-top: 0.16in;
+    }
+    .toc-nav a {
+      padding: 0.06in 0.11in;
+      border: 1px solid #c8d9e1;
+      border-radius: 99px;
+      color: var(--blue);
+      background: white;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.8pt;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .section-divider {
+      page: divider;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+      background: white;
+      break-before: page;
+      break-after: page;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .section-divider .divider-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3.12in;
+      height: 4.38in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right);
+    }
+    .section-divider .divider-panel::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0.22in;
+      width: 1.08in;
+      height: 0.13in;
+      background: var(--red);
+    }
+    .section-divider .divider-red {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.35in;
+      height: 3.10in;
+      background: var(--red);
+      clip-path: url(#rounded-slant-left);
+    }
+    .section-divider .divider-blue-foot {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.2in;
+      height: 0.48in;
+      background: var(--blue);
+    }
+    .section-divider .divider-dots {
+      position: absolute;
+      right: 0.10in;
+      top: 0.10in;
+      width: 0.38in;
+      height: 0.34in;
+      background-image: radial-gradient(circle, #fff 1px, transparent 1.1px);
+      background-size: 8px 8px;
+    }
+    .divider-content {
+      position: absolute;
+      top: 2.45in;
+      left: 1.02in;
+      width: 6.35in;
+    }
+    .divider-number {
+      display: grid;
+      width: 0.82in;
+      height: 0.82in;
+      place-items: center;
+      margin-bottom: 0.42in;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      color: var(--blue);
+      font-size: 19pt;
+      font-weight: 700;
+    }
+    .divider-kicker {
+      color: var(--red);
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .section-divider h2 {
+      max-width: 4.95in;
+      margin: 0.13in 0 0.18in;
+      color: var(--blue-deep);
+      font-size: 31.5pt;
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+    .divider-description {
+      max-width: 5.50in;
+      color: var(--muted);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 12pt;
+      line-height: 1.48;
+    }
+    .divider-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.30in;
+    }
+    .divider-tags span {
+      padding: 6px 10px 5px;
+      border: 1px solid #c9d8e0;
+      border-radius: 99px;
+      color: var(--blue-deep);
+      background: white;
+      font-size: 7.4pt;
+      font-weight: 600;
+    }
+
+    article.chapter {
+      position: relative;
+      z-index: 1;
+      page: auto;
+    }
+    article.chapter h2 {
+      position: relative;
+      break-before: page;
+      break-after: avoid;
+      margin: 0 0 0.24in;
+      padding: 0 0.72in 0.13in 0;
+      color: var(--blue-deep);
+      border-bottom: 2px solid var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 21pt;
+      line-height: 1.14;
+      letter-spacing: -.018em;
+    }
+    article.chapter h3 {
+      position: relative;
+      break-after: avoid;
+      margin: 0.25in 0 0.12in;
+      padding-right: 0.66in;
+      color: var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 13pt;
+      line-height: 1.23;
+    }
+    .toc-back {
+      position: absolute;
+      right: 0;
+      top: 0.03in;
+      padding: 2px 6px;
+      border: 1px solid #cadbe3;
+      border-radius: 99px;
+      color: var(--blue) !important;
+      background: white;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.2pt;
+      font-weight: 600;
+      letter-spacing: .02em;
+      text-decoration: none !important;
+      white-space: nowrap;
+    }
+    article.chapter h2 .toc-back { top: 0.04in; }
+    article.chapter h4 {
+      break-after: avoid;
+      margin: 0.20in 0 0.08in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10.3pt;
+    }
+    article.chapter p {
+      margin: 0 0 0.12in;
+      orphans: 3;
+      widows: 3;
+    }
+    article.chapter strong { color: var(--blue-deep); }
+    article.chapter em { color: #44586c; }
+    article.chapter a {
+      color: var(--blue);
+      text-decoration-color: rgba(10,120,170,.45);
+      text-underline-offset: 2px;
+    }
+    .local-reference {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: 8.2pt;
+      font-weight: 600;
+    }
+    article.chapter ul,
+    article.chapter ol {
+      margin: 0.05in 0 0.15in 0.22in;
+      padding-left: 0.18in;
+    }
+    article.chapter li {
+      margin: 0.035in 0;
+      padding-left: 0.035in;
+      orphans: 2;
+      widows: 2;
+    }
+    article.chapter li::marker { color: var(--red); font-weight: 700; }
+    article.chapter input[type='checkbox'] {
+      width: 0.13in;
+      height: 0.13in;
+      margin-right: 0.06in;
+      accent-color: var(--blue);
+    }
+    article.chapter code {
+      padding: 1px 4px 2px;
+      border: 1px solid #d6e4ea;
+      border-radius: 4px;
+      color: #174f6d;
+      background: #eef5f8;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: .91em;
+      font-variant-ligatures: none;
+      text-rendering: geometricPrecision;
+    }
+    .micro-label {
+      margin: 0.16in 0 0.05in !important;
+      color: var(--muted);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .codebox {
+      break-inside: avoid;
+      margin: 0.14in 0 0.18in;
+      overflow: hidden;
+      border: 1px solid #0c2b44;
+      border-radius: 7px;
+      background: var(--blue-dark);
+      box-shadow: 0 5px 14px rgba(24,55,78,.10);
+    }
+    .codebox figcaption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 0.30in;
+      padding: 0.06in 0.11in;
+      color: #a9c4d6;
+      background: #0b2034;
+      border-bottom: 1px solid #25435a;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.6pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+    }
+    .terminal-dots { display: flex; gap: 4px; }
+    .terminal-dots i {
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+    .terminal-dots i:nth-child(2) { background: #ffc24b; }
+    .terminal-dots i:nth-child(3) { background: #55c791; }
+    .codebox pre {
+      margin: 0;
+      padding: 0.13in 0.15in 0.15in;
+      color: #f0f7fb;
+      background: transparent;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: 8.2pt;
+      line-height: 1.43;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      tab-size: 2;
+      direction: ltr;
+      unicode-bidi: plaintext;
+      font-variant-ligatures: none;
+      text-rendering: geometricPrecision;
+    }
+    .codebox pre code {
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+    }
+    .codebox--output {
+      border-color: #cfdde4;
+      background: #f3f7f9;
+      box-shadow: none;
+    }
+    .codebox--output figcaption {
+      color: #496174;
+      background: #e5eef2;
+      border-bottom-color: #cfdde4;
+    }
+    .codebox--output pre { color: #243d52; }
+    article.chapter table {
+      break-inside: avoid;
+      width: 100%;
+      margin: 0.14in 0 0.20in;
+      overflow: hidden;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #cfdee5;
+      border-radius: 7px;
+      font-size: 8.4pt;
+      line-height: 1.33;
+    }
+    article.chapter th {
+      padding: 0.08in 0.09in;
+      color: white;
+      background: var(--blue);
+      border-right: 1px solid rgba(255,255,255,.24);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.6pt;
+      font-weight: 600;
+      text-align: left;
+    }
+    article.chapter th:last-child { border-right: 0; }
+    article.chapter td {
+      padding: 0.07in 0.09in;
+      border-top: 1px solid #dbe6eb;
+      border-right: 1px solid #dbe6eb;
+      vertical-align: top;
+    }
+    article.chapter td:last-child { border-right: 0; }
+    article.chapter tbody tr:first-child td { border-top: 0; }
+    article.chapter tbody tr:nth-child(even) td { background: #f6f9fa; }
+    article.chapter blockquote {
+      break-inside: avoid;
+      margin: 0.14in 0;
+      padding: 0.11in 0.14in;
+      border-left: 4px solid var(--red);
+      color: #45586a;
+      background: #fff3f6;
+    }
+    article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter hr {
+      margin: 0.26in 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+    .closing .divider-number {
+      color: white;
+      background: var(--blue);
+      border-color: var(--blue);
+      font-size: 22pt;
+    }
+    .closing h2 { font-size: 30pt; }
+    .closing-checks {
+      display: grid;
+      gap: 0.11in;
+      max-width: 5.55in;
+      margin-top: 0.32in;
+    }
+    .closing-checks div {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.11in;
+      padding: 0.12in 0.15in;
+      border: 1px solid #d2e0e7;
+      border-radius: 7px;
+      color: var(--blue-deep);
+      background: #f7fafb;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.35;
+    }
+    .closing-checks div::before {
+      content: '✓';
+      display: grid;
+      flex: 0 0 0.24in;
+      width: 0.24in;
+      height: 0.24in;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: var(--red);
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+    .next-session {
+      margin-top: 0.26in;
+      color: var(--blue);
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    @media screen {
+      body { background: #dde5e9; }
+      .cover, .overview, .section-divider {
+        margin: 20px auto;
+        box-shadow: 0 12px 30px rgba(25,55,75,.14);
+      }
+      article.chapter {
+        width: 7.1in;
+        margin: 0 auto;
+        padding: 0.76in 0 0.67in;
+        background: white;
+      }
+      .page-furniture { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="rounded-chevron" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .79 Q .815 0 .83 .03 L .992 .47 Q 1 .5 .992 .53 L .83 .97 Q .815 1 .79 1 H 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-hexagon" clipPathUnits="objectBoundingBox">
+        <path d="M .19 0 H .81 Q .83 0 .84 .035 L .992 .47 Q 1 .5 .992 .53 L .84 .965 Q .83 1 .81 1 H .19 Q .17 1 .16 .965 L .008 .53 Q 0 .5 .008 .47 L .16 .035 Q .17 0 .19 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-bottom-panel" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .65 Q .68 0 .70 .035 L .992 .965 Q 1 1 .96 1 H 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-right" clipPathUnits="objectBoundingBox">
+        <path d="M .30 0 H 1 V 1 H .03 Q 0 1 .018 .965 L .268 .035 Q .28 0 .30 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-right-wide" clipPathUnits="objectBoundingBox">
+        <path d="M .37 0 H 1 V 1 H .03 Q 0 1 .018 .965 L .338 .035 Q .35 0 .37 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-left" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .35 Q .38 0 .40 .035 L .992 .965 Q 1 1 .96 1 H 0 Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+  <div class="page-furniture" aria-hidden="true">
+    <div class="frame-border"></div>
+    <div class="frame-top-blue"></div>
+    <div class="frame-top-red"></div>
+    <div class="frame-bottom-blue"></div>
+    <div class="frame-bottom-red"></div>
+    <div class="frame-brand">Linux desde cero</div>
+    <div class="frame-footer">TecGurus · Clase 2 · Material del alumno</div>
+  </div>
+
+  <section class="cover">
+    <div class="cover-top-shadow"></div>
+    <div class="cover-top-panel"><div class="dots"></div></div>
+    <img class="cover-logo" src="../shared/assets/tecgurus-logo.png" alt="TecGurus">
+    <div class="cover-title">
+      <div class="cover-kicker">Curso</div>
+      <h1>Linux<br>Desde Cero</h1>
+      <div class="cover-subtitle"><span class="class-pill">Clase 2</span> Shell útil y escritorios</div>
+    </div>
+    <div class="cover-url">www.tecgurus.net</div>
+    <div class="cover-instructor"><span>Instructor</span>Ing. Abimael Domínguez</div>
+    <div class="cover-bottom-panel"></div>
+    <div class="photo-blue-back"></div>
+    <div class="photo-red-back"></div>
+    <img class="cover-photo" src="../shared/assets/portada-tecnologia.jpg" alt="Tecnología y archivos digitales">
+    <div class="cover-hex-outline"></div>
+  </section>
+
+  <section class="overview">
+    <header class="overview-header">
+      <div class="overview-kicker">Agenda · 09:00–14:00</div>
+      <h2>Clase 2 — Shell útil y escritorios</h2>
+    </header>
+    <div class="overview-files">
+      <strong>Archivos:</strong> secciones 7.16–7.21 del capítulo <span class="chapter-number">7</span>, sección 3.5 del capítulo <span class="chapter-number">3</span> y capítulos <span class="chapter-number">4</span>, <span class="chapter-number">5</span> y <span class="chapter-number">6</span>.
+    </div>
+    <table class="agenda-table" aria-label="Agenda de la clase 2">
+      <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
+      <tbody>
+  <tr class="">
+    <td class="agenda-time">09:00–09:15</td>
+    <td class="agenda-activity">Recuperación activa de navegación y permisos.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">09:15–10:20</td>
+    <td class="agenda-activity"><code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>, <code>find</code>, <code>du</code> y <code>df</code>.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">10:20–11:00</td>
+    <td class="agenda-activity"><code>grep</code>, <code>tar</code> y <code>gzip</code>.</td>
+  </tr>
+  <tr class="break-row">
+    <td class="agenda-time">11:00–11:30</td>
+    <td class="agenda-activity"><strong>Receso.</strong></td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">11:30–12:15</td>
+    <td class="agenda-activity">Práctica resuelta de respaldo y restauración.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">12:15–12:40</td>
+    <td class="agenda-activity"><code>lsblk</code>, <code>findmnt</code>, <code>df -T</code>; sin formatear discos.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">12:40–13:10</td>
+    <td class="agenda-activity">Capas gráficas y demostración GNOME.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:10–13:35</td>
+    <td class="agenda-activity">Demostración KDE: Dolphin, Konsole y propiedades.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:35–13:55</td>
+    <td class="agenda-activity">Misma operación en GUI y CLI.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:55–14:00</td>
+    <td class="agenda-activity">Evidencia y cierre.</td>
+  </tr></tbody>
+    </table>
+    <div class="overview-foot">
+      <div class="overview-note">
+        <p><strong>No recortar:</strong> búsqueda, respaldo y restauración.</p>
+        <p><strong>Recortar primero:</strong> personalización de escritorios.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="toc-page" id="indice-interactivo">
+    <header class="toc-header">
+      <div class="toc-kicker">Navegación · 1 de 3</div>
+      <h2>Índice interactivo</h2>
+      <p class="toc-description">Selecciona un apartado para ir directamente a su contenido. En cada encabezado encontrarás el enlace para volver aquí.</p>
+    </header>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-7"><small>Capítulo 7.16–7.21</small><strong>Shell útil</strong></a><a class="toc-link toc-level-2" href="#c7-7-16-espacio-du-y-df"><span>7.16 Espacio: du y df</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-17-7-18-visualizar-cat-head-tail-less-y-pr"><span>7.17–7.18 Visualizar: cat, head, tail, less y pr</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-19-buscar-grep-y-find"><span>7.19 Buscar: grep y find</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-20-empaquetar-y-comprimir-tar-gzip"><span>7.20 Empaquetar y comprimir: tar/gzip</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-7-21-impresion-lpr"><span>7.21 Impresión: lpr</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-practica-guiada-resuelta-respaldo-de-logs"><span>Práctica guiada resuelta — Respaldo de logs</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-reto-7-snapshot-de-evidencias"><span>Reto 7 — Snapshot de evidencias</span><b>→</b></a><a class="toc-link toc-level-3" href="#c7-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c7-checklist"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-3"><small>Capítulo 3.5</small><strong>Acceso a sistemas de archivos</strong></a><a class="toc-link toc-level-2" href="#c3-3-5-acceso-a-sistemas-de-archivos"><span>3.5 Acceso a sistemas de archivos</span><b>→</b></a></section></div>
+    <nav class="toc-nav"><a href="#indice-interactivo-2">Capítulos 4 y 5 →</a></nav>
+  </section>
+
+  <section class="toc-page" id="indice-interactivo-2">
+    <header class="toc-header">
+      <div class="toc-kicker">Navegación · 2 de 3</div>
+      <h2>Índice interactivo</h2>
+      <p class="toc-description">Capas gráficas, GNOME y operaciones equivalentes entre GUI y terminal.</p>
+    </header>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-4"><small>Capítulo 4</small><strong>X Window y Wayland</strong></a><a class="toc-link toc-level-2" href="#c4-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-antes-de-empezar"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-4-1-x-window"><span>4.1 X Window</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-identificar-una-sesion"><span>Identificar una sesión</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-servidor-frente-a-escritorio"><span>Servidor frente a escritorio</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-practica-guiada-resuelta"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-errores-frecuentes-2"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-reto-4-mapa-de-la-sesion-grafica"><span>Reto 4 — Mapa de la sesión gráfica</span><b>→</b></a><a class="toc-link toc-level-3" href="#c4-criterios-de-comprobacion-2"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c4-checklist-2"><span>Checklist</span><b>→</b></a></section><section class="toc-group"><a class="toc-chapter" href="#capitulo-5"><small>Capítulo 5</small><strong>GNOME</strong></a><a class="toc-link toc-level-2" href="#c5-objetivos-2"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-antes-de-empezar-2"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-1-iniciacion-a-gnome"><span>5.1 Iniciación a GNOME</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-2-aplicaciones-auxiliares"><span>5.2 Aplicaciones auxiliares</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-3-files-nautilus"><span>5.3 Files/Nautilus</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-4-busqueda"><span>5.4 Búsqueda</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-5-terminales"><span>5.5 Terminales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-6-multimedia"><span>5.6 Multimedia</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-5-7-instalacion-y-configuracion"><span>5.7 Instalación y configuración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-practica-guiada-resuelta-2"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-errores-frecuentes-3"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-reto-5-gui-y-cli-equivalentes"><span>Reto 5 — GUI y CLI equivalentes</span><b>→</b></a><a class="toc-link toc-level-3" href="#c5-criterios-de-comprobacion-3"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c5-checklist-3"><span>Checklist</span><b>→</b></a></section></div>
+    <nav class="toc-nav"><a href="#indice-interactivo">← Shell</a><a href="#indice-interactivo-3">KDE →</a></nav>
+  </section>
+
+  <section class="toc-page toc-single" id="indice-interactivo-3">
+    <header class="toc-header">
+      <div class="toc-kicker">Navegación · 3 de 3</div>
+      <h2>Índice interactivo</h2>
+      <p class="toc-description">KDE Plasma, Dolphin, Konsole, propiedades y diagnóstico desde el escritorio.</p>
+    </header>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-6"><small>Capítulo 6</small><strong>KDE Plasma</strong></a><a class="toc-link toc-level-2" href="#c6-objetivos-3"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-antes-de-empezar-3"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-1-partes-de-la-pantalla"><span>6.1 Partes de la pantalla</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-2-administracion-de-archivos-con-dolphin"><span>6.2 Administración de archivos con Dolphin</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-3-navegacion-y-contenido"><span>6.3 Navegación y contenido</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-4-crear-directorios"><span>6.4 Crear directorios</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-5-copiar-borrar-y-mover"><span>6.5 Copiar, borrar y mover</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-6-enlaces"><span>6.6 Enlaces</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-7-tipos-mime"><span>6.7 Tipos MIME</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-8-propiedades-y-permisos"><span>6.8 Propiedades y permisos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-9-6-10-aplicaciones-esenciales"><span>6.9–6.10 Aplicaciones esenciales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-6-11-6-14-configuracion"><span>6.11–6.14 Configuración</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-practica-guiada-resuelta-3"><span>Práctica guiada resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-errores-frecuentes-4"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-reto-6-diagnostico-desde-dolphin"><span>Reto 6 — Diagnóstico desde Dolphin</span><b>→</b></a><a class="toc-link toc-level-3" href="#c6-criterios-de-comprobacion-4"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c6-checklist-4"><span>Checklist</span><b>→</b></a></section></div>
+    <nav class="toc-nav"><a href="#indice-interactivo-2">← Capítulos 4 y 5</a></nav>
+  </section>
+
+  <section class="section-divider" id="capitulo-7">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">01</div>
+      <div class="divider-kicker">Trabajo en terminal</div>
+      <h2>Shell útil: consultar, buscar y respaldar</h2>
+      <p class="divider-description">Espacio, visualización, búsqueda, empaquetado, compresión y restauración verificable.</p>
+      <div class="divider-tags"><span>Capítulo 7.16–7.21</span><span>grep · find</span><span>tar · gzip</span><span>du · df</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-7"><h2 id="c7-7-16-espacio-du-y-df">7.16 Espacio: <code>du</code> y <code>df</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>du -sh laboratorio data
+du -h --max-depth=1 data | sort -h
+df -hT .
+</code></pre></figure><ul>
+<li><code>du</code>: suma bloques usados por archivos visibles desde una ruta.</li>
+<li><code>df</code>: informa capacidad del sistema de archivos.</li>
+<li><code>-s</code>: total resumido.</li>
+<li><code>--max-depth=1</code>: desglose inmediato.</li>
+</ul>
+<p>Los totales pueden diferir por archivos eliminados aún abiertos, metadatos y espacio reservado.</p>
+<h2 id="c7-7-17-7-18-visualizar-cat-head-tail-less-y-pr">7.17–7.18 Visualizar: <code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code> y <code>pr</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cat data/dummy_logs.txt
+head -n 3 data/dummy_logs.txt
+tail -n 2 data/dummy_logs.txt
+less data/dummy_logs.txt
+</code></pre></figure><ul>
+<li><code>cat</code>: salida completa; ideal para archivos pequeños o pipelines.</li>
+<li><code>head</code>/<code>tail</code>: primeras/últimas líneas.</li>
+<li><code>less</code>: navegación y búsqueda interactiva con <code>/patrón</code>; sal con <code>q</code>.</li>
+<li><code>more</code> y <code>pr</code> se conservan por compatibilidad con el temario, pero <code>less</code> y formatos específicos suelen ser más útiles.</li>
+</ul>
+<h2 id="c7-7-19-buscar-grep-y-find">7.19 Buscar: <code>grep</code> y <code>find</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>grep -n 'ERROR' data/dummy_logs.txt
+grep -Ei 'warn|error' data/dummy_logs.txt
+grep -F '[INFO]' data/specials.txt
+find data -maxdepth 2 -type f -name '*.csv' -size +0c
+</code></pre></figure><ul>
+<li><code>-n</code>: número de línea.</li>
+<li><code>-E</code>: expresiones regulares extendidas; sustituye al nombre histórico <code>egrep</code>.</li>
+<li><code>-F</code>: búsqueda literal; sustituye al nombre histórico <code>fgrep</code>.</li>
+<li><code>-i</code>: ignora mayúsculas/minúsculas.</li>
+<li><code>find -type f</code>: sólo archivos; <code>-name</code>: patrón de nombre; <code>-size +0c</code>: no vacíos.</li>
+</ul>
+<h2 id="c7-7-20-empaquetar-y-comprimir-tar-gzip">7.20 Empaquetar y comprimir: <code>tar</code>/<code>gzip</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>tar -czf laboratorio/shell/datos.tar.gz data/dummy_logs.txt data/specials.txt
+tar -tzf laboratorio/shell/datos.tar.gz
+mkdir -p laboratorio/shell/restaurado
+tar -xzf laboratorio/shell/datos.tar.gz -C laboratorio/shell/restaurado
+</code></pre></figure><ul>
+<li><code>-c</code>: crear; <code>-t</code>: listar; <code>-x</code>: extraer.</li>
+<li><code>-z</code>: usar gzip.</li>
+<li><code>-f</code>: el argumento siguiente es el archivo.</li>
+<li><code>-C</code>: cambia el destino antes de extraer.</li>
+</ul>
+<p>Verifica el contenido con <code>-t</code> antes de extraer archivos recibidos.</p>
+<h2 id="c7-7-21-impresion-lpr">7.21 Impresión: <code>lpr</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El temario incluye impresión Unix. En un equipo configurado con CUPS:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lpstat -p
+lpr documento.pdf
+lpq
+</code></pre></figure><p>En servidores y EC2 normalmente no hay impresora; se presenta como referencia, no como laboratorio.</p>
+<h2 id="c7-practica-guiada-resuelta-respaldo-de-logs">Práctica guiada resuelta — Respaldo de logs<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Esta práctica toma <code>data/dummy_logs.txt</code>, extrae las tres líneas <code>WARN</code>/<code>ERROR</code>, crea un paquete y lo restaura sin tocar el archivo original.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/shell/reporte laboratorio/shell/restauracion
+grep -En 'WARN|ERROR' data/dummy_logs.txt &gt; laboratorio/shell/reporte/incidentes.txt
+wc -l laboratorio/shell/reporte/incidentes.txt
+tar -czf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell reporte
+tar -tzf laboratorio/shell/incidentes.tar.gz
+tar -xzf laboratorio/shell/incidentes.tar.gz -C laboratorio/shell/restauracion
+cmp laboratorio/shell/reporte/incidentes.txt \
+    laboratorio/shell/restauracion/reporte/incidentes.txt
+</code></pre></figure><p><code>cmp</code> no produce salida cuando ambos archivos son idénticos y termina con código 0.</p>
+<p>Por eso, <strong>no ver nada después de <code>cmp</code> significa éxito</strong>. Para hacerlo visible:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cmp laboratorio/shell/reporte/incidentes.txt \
+    laboratorio/shell/restauracion/reporte/incidentes.txt \
+  &amp;&amp; echo &quot;Restauración verificada&quot;
+</code></pre></figure><h2 id="c7-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Usar rutas relativas sin comprobar <code>pwd</code>.</li>
+<li>Omitir comillas alrededor de variables con rutas.</li>
+<li>Confundir glob del shell (<code>*.csv</code>) con regex.</li>
+<li>Empaquetar datos y asumir que existen sin listar el archivo resultante.</li>
+<li>Usar <code>rm -rf</code> o <code>chmod 777</code> para evitar diagnosticar.</li>
+</ul>
+<h2 id="c7-reto-7-snapshot-de-evidencias">Reto 7 — Snapshot de evidencias<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><span class="local-reference">Ver respuesta</span></p>
+<p>Trabaja dentro de <code>laboratorio/reto7</code>. Busca en <code>data/</code> archivos de texto o CSV no vacíos, genera <code>inventario.txt</code> con ruta y tamaño, empaqueta el inventario junto con <code>data/dummy_logs.txt</code> y restaura el paquete dentro de <code>laboratorio/reto7/restaurado</code>.</p>
+<h3 id="c7-criterios-de-comprobacion">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ul>
+<li>El inventario se genera con comandos, no manualmente.</li>
+<li>El paquete puede listarse sin extraerse.</li>
+<li>La restauración no sobrescribe los originales.</li>
+<li>Se demuestra que el inventario restaurado coincide con el original.</li>
+</ul>
+<h2 id="c7-checklist">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>[ ] Navego con rutas absolutas y relativas.</li>
+<li>[ ] Copio, muevo, enlazo y borro con verificación.</li>
+<li>[ ] Consulto tipo, permisos, propietario y espacio.</li>
+<li>[ ] Busco por contenido y por metadatos.</li>
+<li>[ ] Creo, inspecciono y restauro un <code>tar.gz</code>.</li>
+</ul>
+</article>
+
+  <section class="section-divider" id="capitulo-3">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">02</div>
+      <div class="divider-kicker">Inspección focalizada</div>
+      <h2>Montajes y sistemas de archivos</h2>
+      <p class="divider-description">Dispositivos, orígenes, destinos, tipos y capacidad, sin formatear ni modificar discos.</p>
+      <div class="divider-tags"><span>Capítulo 3.5</span><span>lsblk</span><span>findmnt</span><span>df -hT</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-3"><h2 id="c3-3-5-acceso-a-sistemas-de-archivos">3.5 Acceso a sistemas de archivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>En este curso se inspeccionan montajes; no se formatean discos.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>lsblk -f
+findmnt /
+df -hT /
+</code></pre></figure><p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>TARGET SOURCE    FSTYPE OPTIONS
+/      /dev/...  ext4   rw,relatime
+</code></pre></figure><ul>
+<li><code>lsblk -f</code>: dispositivos, sistema de archivos, etiquetas y montajes.</li>
+<li><code>findmnt</code>: relación entre destino y origen.</li>
+<li><code>df -hT</code>: espacio disponible y tipo; <code>-h</code> usa unidades legibles y <code>-T</code> agrega el tipo.</li>
+<li>ext4 es común en Ubuntu; XFS y Btrfs ofrecen decisiones diferentes, pero el usuario trabaja con la misma jerarquía.</li>
+</ul>
+</article>
+
+  <section class="section-divider" id="capitulo-4">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">03</div>
+      <div class="divider-kicker">Capas gráficas</div>
+      <h2>X Window y Wayland</h2>
+      <p class="divider-description">Relación entre aplicaciones, toolkits, protocolos gráficos, compositor, kernel y pantalla.</p>
+      <div class="divider-tags"><span>Capítulo 4</span><span>X.Org</span><span>Wayland</span><span>sesión gráfica</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-4"><h2 id="c4-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Distinguir shell, terminal, servidor gráfico, compositor y escritorio.</li>
+<li>Identificar la sesión gráfica sin memorizar componentes históricos.</li>
+<li>Entender por qué un servidor EC2 normalmente no incluye GUI.</li>
+</ul>
+<h2 id="c4-antes-de-empezar">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Este capítulo se practica en una VM con escritorio abierto, no en la terminal SSH de EC2. Abre GNOME Terminal o Konsole dentro de la VM.</p>
+<p>Las variables empiezan con <code>$</code> porque su valor lo proporciona la sesión gráfica. No debes sustituirlas manualmente.</p>
+<h2 id="c4-4-1-x-window">4.1 X Window<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>X Window System define un modelo de ventanas y entrada que tradicionalmente se implementa con <a href="http://X.Org" target="_blank">X.Org</a>. En escritorios actuales también es común Wayland, un protocolo más reciente en el que el compositor asume más responsabilidades.</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>aplicación → toolkit → X.Org o compositor Wayland → kernel/controladores → pantalla
+                         ↑
+                  teclado y ratón
+</code></pre></figure><p>GNOME y KDE Plasma son <strong>entornos de escritorio</strong>; no son sinónimos de X Window.</p>
+<h3 id="c4-identificar-una-sesion">Identificar una sesión<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Ejecuta esto en la terminal de una VM gráfica:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'Tipo: %s\n' &quot;${XDG_SESSION_TYPE:-no definido}&quot;
+printf 'Escritorio: %s\n' &quot;${XDG_CURRENT_DESKTOP:-no definido}&quot;
+printf 'Display X11: %s\n' &quot;${DISPLAY:-no definido}&quot;
+printf 'Display Wayland: %s\n' &quot;${WAYLAND_DISPLAY:-no definido}&quot;
+</code></pre></figure><p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>Tipo: wayland
+Escritorio: ubuntu:GNOME
+Display X11: :0
+Display Wayland: wayland-0
+</code></pre></figure><ul>
+<li><code>XDG_SESSION_TYPE</code>: protocolo principal de la sesión.</li>
+<li><code>DISPLAY</code>: dirección usada por clientes X11, incluso mediante compatibilidad.</li>
+<li><code>WAYLAND_DISPLAY</code>: socket del compositor Wayland.</li>
+<li>Los valores cambian según la VM y la sesión elegida.</li>
+<li><code>${VARIABLE:-no definido}</code> muestra un texto comprensible cuando la variable no existe.</li>
+</ul>
+<h3 id="c4-servidor-frente-a-escritorio">Servidor frente a escritorio<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Una instancia EC2 para terminal no necesita GUI: reduce paquetes, memoria y superficie de ataque. El curso usa una VM gráfica del instructor para demostrar GNOME/KDE y EC2 para administración real por SSH.</p>
+<h2 id="c4-practica-guiada-resuelta">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>En la VM gráfica:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>session_id=${XDG_SESSION_ID:-$(loginctl | awk -v user=&quot;$USER&quot; '$3 == user {print $1; exit}')}
+loginctl show-session &quot;$session_id&quot; -p Type -p Desktop -p Remote 2&gt;/dev/null || true
+ps -e | grep -E 'gnome-shell|kwin_wayland|Xorg' || true
+</code></pre></figure><p>La primera línea obtiene el ID de la sesión y lo guarda en <code>session_id</code>. La segunda consulta esa sesión. <code>|| true</code> evita presentar como fallo grave la ausencia de un proceso opcional.</p>
+<p>Interpretación:</p>
+<ul>
+<li><code>Type</code> confirma <code>x11</code> o <code>wayland</code>.</li>
+<li><code>Desktop</code> identifica el entorno cuando está disponible.</li>
+<li><code>Remote=yes</code> indica una sesión remota.</li>
+<li>La lista de procesos ayuda a reconocer GNOME Shell, KWin o <a href="http://X.Org" target="_blank">X.Org</a>.</li>
+</ul>
+<h2 id="c4-errores-frecuentes-2">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Intentar ejecutar una aplicación gráfica en una sesión SSH sin display.</li>
+<li>Llamar “Linux” al escritorio completo.</li>
+<li>Instalar un escritorio pesado en un servidor sólo para administrar archivos.</li>
+</ul>
+<h2 id="c4-reto-4-mapa-de-la-sesion-grafica">Reto 4 — Mapa de la sesión gráfica<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><span class="local-reference">Ver respuesta</span></p>
+<p>Desde la VM del instructor, crea <code>laboratorio/sesion-grafica.txt</code>. Registra protocolo, escritorio, compositor o servidor gráfico y dos aplicaciones visibles. Explica la función de cada capa en una frase.</p>
+<h3 id="c4-criterios-de-comprobacion-2">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ul>
+<li>Diferencia protocolo, escritorio y aplicación.</li>
+<li>Los valores se obtienen de la sesión, no se inventan.</li>
+<li>Explica por qué la EC2 del laboratorio no requiere GUI.</li>
+</ul>
+<h2 id="c4-checklist-2">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>[ ] Distingo <a href="http://X.Org" target="_blank">X.Org</a>, Wayland, GNOME y KDE.</li>
+<li>[ ] Puedo identificar el tipo de sesión.</li>
+<li>[ ] Comprendo la diferencia entre servidor y desktop.</li>
+</ul>
+</article>
+
+  <section class="section-divider" id="capitulo-5">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">04</div>
+      <div class="divider-kicker">Escritorio</div>
+      <h2>GNOME</h2>
+      <p class="divider-description">Activities, Files, búsqueda, terminal y la misma operación expresada de forma verificable en CLI.</p>
+      <div class="divider-tags"><span>Capítulo 5</span><span>Files · Nautilus</span><span>Terminal</span><span>Settings</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-5"><h2 id="c5-objetivos-2">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Reconocer los elementos principales de GNOME.</li>
+<li>Administrar archivos con Files/Nautilus y relacionar acciones con comandos.</li>
+<li>Usar terminal, búsqueda y configuración básica.</li>
+<li>Comprender el proceso de instalación sin consumir la clase descargando un escritorio.</li>
+</ul>
+<h2 id="c5-antes-de-empezar-2">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Usa la VM gráfica del instructor o una Ubuntu Desktop. Los ejemplos crearán <code>~/curso-gui</code>; <code>~</code> representa el home del usuario que inició la sesión gráfica.</p>
+<p>Prepara la carpeta de práctica:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/entrada
+</code></pre></figure><p><code>mkdir -p</code> conserva lo que ya exista. Si repetiste la práctica, puedes usar otros nombres o revisar los archivos antes de sobrescribirlos.</p>
+<h2 id="c5-5-1-iniciacion-a-gnome">5.1 Iniciación a GNOME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>GNOME prioriza un flujo simple basado en Activities, búsqueda, espacios de trabajo y aplicaciones integradas. Ubuntu Desktop incluye una adaptación de GNOME.</p>
+<p>Elementos para la demostración:</p>
+<ul>
+<li>Activities Overview;</li>
+<li>panel superior y notificaciones;</li>
+<li>dock;</li>
+<li>espacios de trabajo;</li>
+<li>configuración rápida.</li>
+</ul>
+<h2 id="c5-5-2-aplicaciones-auxiliares">5.2 Aplicaciones auxiliares<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Las aplicaciones útiles para este curso son Files, Terminal, Text Editor, Settings y System Monitor. El objetivo es ubicar herramientas, no recorrer todo el catálogo.</p>
+<h2 id="c5-5-3-files-nautilus">5.3 Files/Nautilus<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Demostración en la VM:</p>
+<ol>
+<li>Crear <code>~/curso-gui/entrada</code>.</li>
+<li>Mostrar archivos ocultos con <code>Ctrl+H</code>.</li>
+<li>Copiar, mover, renombrar y eliminar un archivo.</li>
+<li>Abrir Properties y revisar tipo, tamaño y permisos.</li>
+<li>Repetir en terminal:</li>
+</ol>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/entrada
+printf 'estado=ok\n' &gt; ~/curso-gui/entrada/servicio.conf
+cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/copia.conf
+mv ~/curso-gui/copia.conf ~/curso-gui/config-actual.conf
+ls -lah ~/curso-gui
+</code></pre></figure><p><code>servicio.conf</code> es el archivo original, <code>copia.conf</code> es una copia temporal y <code>config-actual.conf</code> es el nombre final después de moverla.</p>
+<h2 id="c5-5-4-busqueda">5.4 Búsqueda<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>La búsqueda gráfica es apropiada cuando se exploran documentos. Para búsquedas reproducibles o servidores se usan comandos:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>find ~/curso-gui -type f -name '*.conf'
+grep -R &quot;estado=&quot; ~/curso-gui
+</code></pre></figure><h2 id="c5-5-5-terminales">5.5 Terminales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>GNOME Terminal, Console y XTerm son emuladores de terminal. El shell puede ser Bash en cualquiera de ellos.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'Terminal: %s\nShell: %s\n' &quot;$TERM&quot; &quot;$SHELL&quot;
+</code></pre></figure><p><code>$TERM</code> describe capacidades de terminal; no debe usarse para decidir qué shell está activo.</p>
+<h2 id="c5-5-6-multimedia">5.6 Multimedia<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El temario original incluye multimedia. Para este curso basta explicar que audio, video y cámaras dependen de servicios, permisos y aplicaciones del escritorio. No se dedicará una práctica a reproductores.</p>
+<h2 id="c5-5-7-instalacion-y-configuracion">5.7 Instalación y configuración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>La VM del instructor se prepara antes de clase. En Ubuntu se inspeccionan primero los paquetes disponibles:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>apt search ubuntu-desktop
+apt show ubuntu-desktop-minimal
+</code></pre></figure><p><code>apt search</code> y <code>apt show</code> sólo consultan información. No instalan GNOME. La instalación real se prepara antes de clase porque puede descargar muchos paquetes y cambiar la pantalla de inicio de sesión.</p>
+<p>La instalación de un escritorio descarga muchos paquetes y requiere reinicio/selección de sesión; no debe iniciarse en una EC2 de laboratorio. Durante la demostración se configuran pantalla, teclado, red, usuarios y accesibilidad desde Settings.</p>
+<h2 id="c5-practica-guiada-resuelta-2">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Compara una operación gráfica con su evidencia CLI:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>stat ~/curso-gui/config-actual.conf
+sha256sum ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
+</code></pre></figure><p>Si los hashes coinciden, la copia conserva el mismo contenido aunque el nombre y metadatos puedan ser distintos.</p>
+<h2 id="c5-errores-frecuentes-3">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Confundir el gestor de archivos con el sistema de archivos.</li>
+<li>Creer que mover a Trash elimina inmediatamente y sin recuperación.</li>
+<li>Cambiar permisos gráficamente sin interpretar usuario, grupo y otros.</li>
+</ul>
+<h2 id="c5-reto-5-gui-y-cli-equivalentes">Reto 5 — GUI y CLI equivalentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><span class="local-reference">Ver respuesta</span></p>
+<p>Trabaja dentro de <code>~/curso-gui/reto5</code>. Realiza tres operaciones en Files y documenta en <code>evidencia.txt</code> los comandos equivalentes. Incluye una prueba que confirme contenido y otra que confirme permisos.</p>
+<h3 id="c5-criterios-de-comprobacion-3">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ul>
+<li>Incluye crear, mover o copiar y cambiar permisos.</li>
+<li>Usa una evidencia verificable, no sólo capturas.</li>
+<li>Explica qué metadato cambió en cada operación.</li>
+</ul>
+<h2 id="c5-checklist-3">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>[ ] Reconozco Activities, Files, Terminal y Settings.</li>
+<li>[ ] Relaciono operaciones gráficas con comandos.</li>
+<li>[ ] Sé por qué la instalación se demuestra en una VM preparada.</li>
+</ul>
+</article>
+
+  <section class="section-divider" id="capitulo-6">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">05</div>
+      <div class="divider-kicker">Escritorio</div>
+      <h2>KDE Plasma</h2>
+      <p class="divider-description">Dolphin, Konsole, tipos MIME, propiedades, permisos y diagnóstico desde una interfaz gráfica moderna.</p>
+      <div class="divider-tags"><span>Capítulo 6</span><span>Dolphin</span><span>Konsole</span><span>System Settings</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-6"><h2 id="c6-objetivos-3">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Reconocer Plasma, Dolphin, Konsole y System Settings.</li>
+<li>Relacionar administración gráfica de archivos con comandos Linux.</li>
+<li>Contextualizar los nombres históricos del temario.</li>
+</ul>
+<h2 id="c6-antes-de-empezar-3">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Este capítulo continúa con los archivos creados en GNOME. Si abriste este documento directamente, prepara el mismo punto de partida desde Konsole:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/{entrada,kde-demo}
+printf 'estado=ok\n' &gt; ~/curso-gui/entrada/servicio.conf
+cp ~/curso-gui/entrada/servicio.conf ~/curso-gui/config-actual.conf
+</code></pre></figure><p>Después existirán <code>servicio.conf</code>, <code>config-actual.conf</code> y el directorio vacío <code>kde-demo</code>.</p>
+<h2 id="c6-6-1-partes-de-la-pantalla">6.1 Partes de la pantalla<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>KDE Plasma suele presentar panel, lanzador, bandeja, escritorio, widgets y actividades. Es altamente configurable, pero en este curso sólo se recorren elementos que ayudan a trabajar.</p>
+<h2 id="c6-6-2-administracion-de-archivos-con-dolphin">6.2 Administración de archivos con Dolphin<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>KFM fue un gestor antiguo de KDE. Su equivalente actual es Dolphin.</p>
+<p>Funciones de la demostración:</p>
+<ul>
+<li>panel de lugares y ruta editable;</li>
+<li>vista dividida;</li>
+<li>archivos ocultos;</li>
+<li>terminal integrada;</li>
+<li>propiedades, tipo y permisos.</li>
+</ul>
+<h2 id="c6-6-3-navegacion-y-contenido">6.3 Navegación y contenido<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>En Dolphin navega a <code>~/curso-gui</code>. Abre la terminal integrada y comprueba:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>pwd
+ls -lah
+file config-actual.conf
+</code></pre></figure><p><code>~/curso-gui</code> significa la carpeta <code>curso-gui</code> dentro de tu home. Puedes escribir esa ruta en la barra de ubicación de Dolphin. Los comandos funcionan porque la terminal integrada se abre en la carpeta que Dolphin muestra; confirma que <code>pwd</code> termina en <code>/curso-gui</code>.</p>
+<p>La GUI y la terminal observan el mismo sistema de archivos.</p>
+<h2 id="c6-6-4-crear-directorios">6.4 Crear directorios<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Crear una carpeta desde Dolphin equivale a:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p ~/curso-gui/kde-demo
+</code></pre></figure><p><code>-p</code> crea padres faltantes y no falla si la ruta ya existe.</p>
+<h2 id="c6-6-5-copiar-borrar-y-mover">6.5 Copiar, borrar y mover<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cp ~/curso-gui/config-actual.conf ~/curso-gui/kde-demo/
+mv ~/curso-gui/kde-demo/config-actual.conf ~/curso-gui/kde-demo/app.conf
+rm -i ~/curso-gui/kde-demo/app.conf
+</code></pre></figure><p><code>rm -i</code> solicita confirmación. La terminal no tiene una papelera universal equivalente a Trash.</p>
+<p>Cuando aparezca <code>remove regular file ...?</code>, responde <code>y</code> para borrar el archivo de práctica o <code>n</code> para conservarlo. Si respondes <code>y</code>, el enlace del siguiente apartado seguirá funcionando porque apunta a <code>servicio.conf</code>, no a <code>app.conf</code>.</p>
+<h2 id="c6-6-6-enlaces">6.6 Enlaces<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Dolphin puede mostrar el destino de un enlace. La forma reproducible es:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ln -s ../entrada/servicio.conf ~/curso-gui/kde-demo/servicio-actual
+readlink ~/curso-gui/kde-demo/servicio-actual
+</code></pre></figure><h2 id="c6-6-7-tipos-mime">6.7 Tipos MIME<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Las asociaciones de aplicaciones usan tipos MIME, no únicamente extensiones:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>xdg-mime query filetype ~/curso-gui/config-actual.conf
+</code></pre></figure><h2 id="c6-6-8-propiedades-y-permisos">6.8 Propiedades y permisos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Compara Properties con:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>stat ~/curso-gui/config-actual.conf
+namei -l ~/curso-gui/config-actual.conf
+</code></pre></figure><p><code>namei -l</code> ayuda a encontrar permisos insuficientes en algún directorio de la ruta.</p>
+<h2 id="c6-6-9-6-10-aplicaciones-esenciales">6.9–6.10 Aplicaciones esenciales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Dolphin: archivos.</li>
+<li>Konsole: terminal.</li>
+<li>Kate: edición de texto; sustituye en la práctica a referencias antiguas como <code>kedit</code>/<code>kwrite</code>.</li>
+<li>KHelpCenter: ayuda gráfica.</li>
+<li>KFind o búsqueda de Dolphin: localización de archivos.</li>
+</ul>
+<h2 id="c6-6-11-6-14-configuracion">6.11–6.14 Configuración<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>“KDE Control Center” se denomina actualmente System Settings. Se demostrará configuración de pantalla, teclado, apariencia y panel. KMenuEdit y la personalización profunda quedan como exploración opcional.</p>
+<h2 id="c6-practica-guiada-resuelta-3">Práctica guiada resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>En Dolphin crea un archivo, abre la terminal integrada y ejecuta:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>printf 'creado-desde=plasma\n' &gt; ~/curso-gui/kde-demo/origen.txt
+chmod 640 ~/curso-gui/kde-demo/origen.txt
+stat -c '%A %a %U:%G %n' ~/curso-gui/kde-demo/origen.txt
+</code></pre></figure><p>Aunque el texto diga “crea un archivo”, la primera línea con <code>printf</code> ya lo crea y escribe su contenido; no necesitas crearlo antes con Dolphin.</p>
+<p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>-rw-r----- 640 ubuntu:ubuntu /home/ubuntu/curso-gui/kde-demo/origen.txt
+</code></pre></figure><ul>
+<li><code>%A</code>: permisos simbólicos.</li>
+<li><code>%a</code>: permisos octales.</li>
+<li><code>%U:%G</code>: dueño y grupo.</li>
+<li><code>%n</code>: nombre.</li>
+</ul>
+<h2 id="c6-errores-frecuentes-4">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Seguir tutoriales de KFM o KDE Control Center como si fueran herramientas actuales.</li>
+<li>Asociar una aplicación incorrecta a un tipo MIME globalmente.</li>
+<li>Confundir un enlace con una copia.</li>
+</ul>
+<h2 id="c6-reto-6-diagnostico-desde-dolphin">Reto 6 — Diagnóstico desde Dolphin<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><span class="local-reference">Ver respuesta</span></p>
+<p>Crea <code>~/curso-gui/kde-demo/check.sh</code> con texto válido de Bash, pero sin permiso de ejecución. Usa Dolphin y Konsole para diagnosticarlo. Documenta tipo, permisos, propietario y ruta completa; corrige únicamente el permiso necesario.</p>
+<h3 id="c6-criterios-de-comprobacion-4">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ul>
+<li>No utiliza <code>chmod 777</code>.</li>
+<li>Explica la diferencia entre archivo no ejecutable y directorio no accesible.</li>
+<li>Confirma el modo antes y después.</li>
+</ul>
+<h2 id="c6-checklist-4">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>[ ] Reconozco Dolphin, Konsole, Kate y System Settings.</li>
+<li>[ ] Identifico nombres históricos del temario.</li>
+<li>[ ] Relaciono Properties con <code>stat</code> y <code>namei</code>.</li>
+</ul>
+</article>
+
+  <section class="section-divider closing">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">✓</div>
+      <div class="divider-kicker">Evidencia y cierre</div>
+      <h2>Clase 2 completada</h2>
+      <p class="divider-description">Al terminar la Clase 2, conserva el respaldo listado y restaurado, junto con evidencia de equivalencia entre GUI y CLI.</p>
+      <div class="closing-checks">
+        <div>Busco contenido y archivos, e interpreto capacidad y uso de espacio.</div>
+        <div>Creo, inspecciono, restauro y verifico un respaldo comprimido.</div>
+        <div>Distingo las capas gráficas y relaciono acciones de GNOME/KDE con comandos.</div>
+      </div>
+      <div class="next-session">Siguiente: Clase 3 · I/O, procesos y Bash</div>
+    </div>
+  </section>
+</body>
+</html>

@@ -25,7 +25,7 @@
 
 | Hora | Actividad |
 |---|---|
-| 09:00–09:20 | Verificar SSH con `whoami`, `hostname`, `pwd` y `/etc/os-release`. |
+| 09:00–09:20 | Verificar el entorno con `whoami`, `hostname`, `pwd` y `/etc/os-release`. |
 | 09:20–10:00 | Kernel, distribución, shell, terminal y escritorio. |
 | 10:00–10:40 | Usuarios, grupos y `sudo`; práctica controlada. |
 | 10:40–11:00 | Flujo mínimo de `apt`. |

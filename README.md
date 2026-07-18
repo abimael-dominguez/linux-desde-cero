@@ -83,7 +83,7 @@ Cada sesión dura de 09:00 a 14:00, con receso de 11:00 a 11:30: **4.5 horas efe
 
 | Sesión | Fecha | Capítulos y resultado principal |
 |---|---|---|
-| 1 | 4 de julio de 2026 | 1, 3 y fundamentos de 7. Crear una estructura de trabajo con permisos correctos. |
+| 1 | 4 de julio de 2026 | Capítulos 1, 3 y 7.1–7.15 de 7. Crear una estructura de trabajo con permisos correctos. |
 | 2 | 11 de julio de 2026 | Resto de 7, inspección de sistemas de archivos y 4–6. Buscar, respaldar y relacionar CLI con GUI. |
 | 3 | 18 de julio de 2026 | 2, 8, 9 y 10; ejercicios seleccionados de 12. Construir pipelines, controlar procesos y generar un reporte. |
 | 4 | 25 de julio de 2026 | 11. Analizar logs, empaquetar resultados y transferirlos de forma segura. |

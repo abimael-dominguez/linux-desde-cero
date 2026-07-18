@@ -1,0 +1,1570 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linux desde cero · Clase 4</title>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('../shared/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('../shared/fonts/Montserrat-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    :root {
+      --blue: #0a78aa;
+      --blue-deep: #243d5a;
+      --blue-dark: #10263d;
+      --blue-soft: #eaf3f7;
+      --blue-pale: #f4f8fa;
+      --red: #ff1f4b;
+      --ink: #243447;
+      --muted: #607084;
+      --line: #d9e3e8;
+      --paper: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    .svg-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    @page {
+      size: Letter portrait;
+      margin: 0.76in 0.70in 0.67in 0.70in;
+      @top-left {
+        content: 'CLASE 4';
+        padding-top: 0.12in;
+        border-bottom: 1px solid #b8cad4;
+        color: #ff1f4b;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 7pt;
+        font-weight: 700;
+        letter-spacing: .16em;
+      }
+      @top-right {
+        content: 'TECGURUS · LINUX DESDE CERO';
+        padding-top: 0.12in;
+        border-bottom: 1px solid #b8cad4;
+        color: #708291;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .05em;
+      }
+      @top-right-corner {
+        content: '';
+        background: linear-gradient(135deg, transparent 0 43%, #0a78aa 44% 100%);
+      }
+      @bottom-left {
+        content: 'LINUX DESDE CERO';
+        padding-left: 0.48in;
+        padding-bottom: 0.09in;
+        border-top: 1px solid #b8cad4;
+        color: #243d5a;
+        background:
+          linear-gradient(90deg, #ff1f4b 0 0.18in, transparent 0.18in 0.23in, #0a78aa 0.23in 0.42in, transparent 0.42in) left 0.11in / 0.44in 0.06in no-repeat;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .04em;
+      }
+      @bottom-right {
+        content: 'CLASE 4  ·  ' counter(page);
+        padding-bottom: 0.09in;
+        border-top: 1px solid #b8cad4;
+        color: #708291;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 6.8pt;
+        font-weight: 600;
+        letter-spacing: .05em;
+      }
+      @bottom-right-corner {
+        content: '';
+        background: linear-gradient(315deg, #0a78aa 0 36%, transparent 37% 100%);
+      }
+    }
+    @page cover {
+      size: Letter portrait;
+      margin: 0;
+    }
+    @page divider {
+      size: Letter portrait;
+      margin: 0;
+    }
+    @page overview {
+      size: Letter portrait;
+      margin: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      background: white;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 9.8pt;
+      line-height: 1.48;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    /* El marco corporativo se repite en cada página de contenido. */
+    .page-furniture {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+    }
+    .frame-border {
+      position: fixed;
+      top: -0.61in;
+      right: -0.55in;
+      bottom: -0.52in;
+      left: -0.55in;
+      border: 1.1px solid #b8cad4;
+      border-radius: 7px;
+    }
+    .frame-top-blue {
+      position: fixed;
+      top: -0.76in;
+      right: -0.70in;
+      width: 2.35in;
+      height: 0.52in;
+      background: var(--blue);
+      clip-path: polygon(17% 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .frame-top-red {
+      position: fixed;
+      top: -0.30in;
+      right: -0.70in;
+      width: 1.18in;
+      height: 0.08in;
+      background: var(--red);
+    }
+    .frame-bottom-blue {
+      position: fixed;
+      bottom: -0.67in;
+      left: -0.70in;
+      width: 1.62in;
+      height: 0.28in;
+      background: var(--blue);
+      clip-path: polygon(0 0, 76% 0, 100% 100%, 0 100%);
+    }
+    .frame-bottom-red {
+      position: fixed;
+      bottom: -0.67in;
+      left: -0.70in;
+      width: 0.58in;
+      height: 0.34in;
+      background: var(--red);
+      clip-path: polygon(0 0, 68% 0, 100% 100%, 0 100%);
+    }
+    .frame-brand {
+      position: fixed;
+      top: -0.54in;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .frame-brand::before {
+      content: '';
+      width: 0.20in;
+      height: 0.07in;
+      border-radius: 99px;
+      background: var(--red);
+      box-shadow: 0.24in 0 0 var(--blue);
+      margin-right: 0.22in;
+    }
+    .frame-footer {
+      position: fixed;
+      right: 0;
+      bottom: -0.48in;
+      color: #708291;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .cover {
+      page: cover;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+      background: #fff;
+      break-after: page;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0.5px 0.5px, rgba(10,120,170,.14) .7px, transparent .8px) 7.73in 7.83in / 9px 9px no-repeat,
+        linear-gradient(145deg, transparent 0 61%, rgba(234,243,247,.75) 61% 68%, transparent 68%);
+      pointer-events: none;
+    }
+    .cover-top-shadow {
+      position: absolute;
+      top: 0.42in;
+      left: 2.45in;
+      width: 1.82in;
+      height: 1.50in;
+      background: #eff5f8;
+      clip-path: url(#rounded-hexagon);
+    }
+    .cover-top-panel {
+      position: absolute;
+      top: 0.12in;
+      left: 0;
+      width: 3.33in;
+      height: 2.15in;
+      background: linear-gradient(135deg, #3176aa, #256a9d);
+      clip-path: url(#rounded-chevron);
+    }
+    .cover-top-panel .dots {
+      position: absolute;
+      top: 1.43in;
+      left: 0;
+      width: 0.20in;
+      height: 0.36in;
+      background-image: radial-gradient(circle, #fff 1.1px, transparent 1.2px);
+      background-size: 8px 8px;
+      opacity: .95;
+    }
+    .cover-logo {
+      position: absolute;
+      top: 1.63in;
+      left: 0.34in;
+      width: 2.20in;
+      height: auto;
+    }
+    .cover-title {
+      position: absolute;
+      top: 3.22in;
+      left: 0.96in;
+      width: 6.45in;
+    }
+    .cover-kicker {
+      margin-bottom: 0.12in;
+      color: var(--blue);
+      font-size: 11.5pt;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .cover h1 {
+      margin: 0;
+      color: var(--blue-deep);
+      font-size: 47pt;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      font-weight: 700;
+    }
+    .cover-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.31in;
+      color: var(--blue-deep);
+      font-size: 16.5pt;
+      font-weight: 500;
+    }
+    .cover-subtitle .class-pill {
+      display: inline-block;
+      padding: 6px 13px 5px;
+      border-radius: 4px;
+      color: white;
+      background: var(--red);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .cover-url {
+      position: absolute;
+      top: 6.28in;
+      left: 0.97in;
+      color: var(--red);
+      font-size: 14.5pt;
+      font-weight: 500;
+    }
+    .cover-instructor {
+      position: absolute;
+      left: 0.97in;
+      bottom: 2.48in;
+      padding-left: 0.18in;
+      border-left: 4px solid var(--blue);
+      color: var(--blue-deep);
+      font-size: 11pt;
+      line-height: 1.45;
+    }
+    .cover-instructor span {
+      display: block;
+      color: var(--muted);
+      font-size: 8.2pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .cover-bottom-panel {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 3.18in;
+      height: 1.58in;
+      background: linear-gradient(135deg, #3176aa, #276d9f);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .photo-blue-back {
+      position: absolute;
+      right: 0.68in;
+      bottom: 0.36in;
+      width: 3.86in;
+      height: 2.88in;
+      background: #3176aa;
+      clip-path: url(#rounded-hexagon);
+    }
+    .photo-red-back {
+      position: absolute;
+      right: 0.12in;
+      bottom: 1.34in;
+      width: 4.12in;
+      height: 3.24in;
+      background: var(--red);
+      clip-path: url(#rounded-hexagon);
+    }
+    .cover-photo {
+      position: absolute;
+      right: 0.05in;
+      bottom: 1.47in;
+      width: 3.87in;
+      height: 2.96in;
+      object-fit: cover;
+      object-position: 57% 50%;
+      clip-path: url(#rounded-hexagon);
+      outline: 3px solid white;
+    }
+    .cover-hex-outline {
+      position: absolute;
+      right: 1.43in;
+      bottom: 1.46in;
+      width: 1.08in;
+      height: 0.94in;
+      border: 2px solid rgba(255,255,255,.94);
+      border-radius: 9px;
+      transform: rotate(60deg);
+    }
+    .cover-hex-outline::before,
+    .cover-hex-outline::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: inherit;
+      border-radius: inherit;
+      transform: rotate(60deg);
+    }
+    .cover-hex-outline::after { transform: rotate(120deg); }
+
+    .overview {
+      page: overview;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      padding: 0.74in 0.72in 0.55in;
+      overflow: hidden;
+      background: white;
+      break-after: page;
+    }
+    .overview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2.1in;
+      height: 1.25in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right-wide);
+    }
+    .overview::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.4in;
+      height: 0.40in;
+      background: var(--red);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .overview-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.15in;
+    }
+    .overview-kicker {
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .overview h2 {
+      margin: 0.05in 0 0;
+      max-width: 5.45in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 21pt;
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+    .overview-files {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 0.16in;
+      padding: 0.11in 0.14in;
+      border-left: 4px solid var(--blue);
+      color: var(--ink);
+      background: var(--blue-pale);
+      font-size: 9.2pt;
+    }
+    .overview-files strong {
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 700;
+    }
+    .overview-files .chapter-number {
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .agenda-table {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 8.3pt;
+      line-height: 1.25;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .agenda-table th {
+      padding: 0.09in 0.11in;
+      color: var(--blue-deep);
+      background: #edf4f7;
+      border-bottom: 2px solid var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.6pt;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .agenda-table th:first-child { width: 1.10in; }
+    .agenda-table td {
+      padding: 0.087in 0.11in;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .agenda-table tr:last-child td { border-bottom: 0; }
+    .agenda-table tr:nth-child(even) td { background: #f7fafb; }
+    .agenda-table .agenda-time {
+      width: 1.10in;
+      color: var(--blue);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .agenda-table .agenda-activity {
+      color: var(--blue-deep);
+    }
+    .agenda-table code {
+      padding: 1px 4px 2px;
+      border: 1px solid #d6e4ea;
+      border-radius: 4px;
+      color: #174f6d;
+      background: #eef5f8;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: .91em;
+      font-variant-ligatures: none;
+    }
+    .agenda-table .break-row td { background: #fff2f5 !important; }
+    .overview-foot {
+      margin-top: 0.18in;
+    }
+    .overview-note {
+      padding: 0.12in 0.14in;
+      border-left: 4px solid var(--red);
+      background: var(--blue-pale);
+      font-size: 7.8pt;
+      line-height: 1.35;
+    }
+    .overview-note p { margin: 0 0 0.035in; }
+    .overview-note p:last-child { margin-bottom: 0; }
+    .overview-note strong {
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    .toc-page {
+      page: overview;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      padding: 0.72in 0.74in 0.55in;
+      overflow: hidden;
+      background: white;
+      break-after: page;
+    }
+    .toc-page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2.1in;
+      height: 1.25in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right-wide);
+    }
+    .toc-page::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.4in;
+      height: 0.40in;
+      background: var(--red);
+      clip-path: url(#rounded-bottom-panel);
+    }
+    .toc-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.24in;
+    }
+    .toc-kicker {
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .toc-page h2 {
+      margin: 0.05in 0 0.05in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 27pt;
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+    .toc-description {
+      max-width: 5.6in;
+      margin: 0;
+      color: var(--muted);
+      font-size: 8.2pt;
+    }
+    .toc-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.26in;
+      align-items: start;
+    }
+    .toc-single .toc-grid {
+      grid-template-columns: 1fr;
+      max-width: 6.82in;
+    }
+    .toc-group {
+      overflow: hidden;
+      border: 1px solid #d2e0e7;
+      border-radius: 8px;
+      background: white;
+    }
+    .toc-chapter {
+      display: block;
+      padding: 0.12in 0.14in;
+      color: white;
+      background: var(--blue);
+      text-decoration: none;
+    }
+    .toc-chapter small {
+      display: block;
+      margin-bottom: 1px;
+      color: rgba(255,255,255,.78);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.6pt;
+      font-weight: 600;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .toc-chapter strong {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10pt;
+      font-weight: 600;
+    }
+    .toc-link {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.10in;
+      min-height: 0.29in;
+      padding: 0.06in 0.11in;
+      border-bottom: 1px solid #e1e9ed;
+      color: var(--blue-deep);
+      background: white;
+      font-size: 7.3pt;
+      line-height: 1.26;
+      text-decoration: none;
+    }
+    .toc-link:last-child { border-bottom: 0; }
+    .toc-link:nth-child(odd) { background: #f8fafb; }
+    .toc-link b {
+      flex: 0 0 auto;
+      color: var(--red);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.5pt;
+    }
+    .toc-level-2 { font-weight: 600; }
+    .toc-level-3 {
+      padding-left: 0.26in;
+      color: #5f7182;
+      font-size: 6.9pt;
+    }
+    .toc-level-3 span::before {
+      content: '•';
+      margin-right: 0.06in;
+      color: var(--red);
+    }
+    .toc-nav {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.16in;
+    }
+    .toc-nav a {
+      padding: 0.06in 0.11in;
+      border: 1px solid #c8d9e1;
+      border-radius: 99px;
+      color: var(--blue);
+      background: white;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.8pt;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .section-divider {
+      page: divider;
+      position: relative;
+      z-index: 5;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+      background: white;
+      break-before: page;
+      break-after: page;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .section-divider .divider-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3.12in;
+      height: 4.38in;
+      background: var(--blue);
+      clip-path: url(#rounded-slant-right);
+    }
+    .section-divider .divider-panel::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0.22in;
+      width: 1.08in;
+      height: 0.13in;
+      background: var(--red);
+    }
+    .section-divider .divider-red {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.35in;
+      height: 3.10in;
+      background: var(--red);
+      clip-path: url(#rounded-slant-left);
+    }
+    .section-divider .divider-blue-foot {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.2in;
+      height: 0.48in;
+      background: var(--blue);
+    }
+    .section-divider .divider-dots {
+      position: absolute;
+      right: 0.10in;
+      top: 0.10in;
+      width: 0.38in;
+      height: 0.34in;
+      background-image: radial-gradient(circle, #fff 1px, transparent 1.1px);
+      background-size: 8px 8px;
+    }
+    .divider-content {
+      position: absolute;
+      top: 2.45in;
+      left: 1.02in;
+      width: 6.35in;
+    }
+    .divider-number {
+      display: grid;
+      width: 0.82in;
+      height: 0.82in;
+      place-items: center;
+      margin-bottom: 0.42in;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      color: var(--blue);
+      font-size: 19pt;
+      font-weight: 700;
+    }
+    .divider-kicker {
+      color: var(--red);
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .section-divider h2 {
+      max-width: 4.95in;
+      margin: 0.13in 0 0.18in;
+      color: var(--blue-deep);
+      font-size: 31.5pt;
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+    .divider-description {
+      max-width: 5.50in;
+      color: var(--muted);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 12pt;
+      line-height: 1.48;
+    }
+    .divider-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.30in;
+    }
+    .divider-tags span {
+      padding: 6px 10px 5px;
+      border: 1px solid #c9d8e0;
+      border-radius: 99px;
+      color: var(--blue-deep);
+      background: white;
+      font-size: 7.4pt;
+      font-weight: 600;
+    }
+
+    article.chapter {
+      position: relative;
+      z-index: 1;
+      page: auto;
+    }
+    article.chapter h2 {
+      position: relative;
+      break-before: page;
+      break-after: avoid;
+      margin: 0 0 0.24in;
+      padding: 0 0.72in 0.13in 0;
+      color: var(--blue-deep);
+      border-bottom: 2px solid var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 21pt;
+      line-height: 1.14;
+      letter-spacing: -.018em;
+    }
+    article.chapter h3 {
+      position: relative;
+      break-after: avoid;
+      margin: 0.25in 0 0.12in;
+      padding-right: 0.66in;
+      color: var(--blue);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 13pt;
+      line-height: 1.23;
+    }
+    .toc-back {
+      position: absolute;
+      right: 0;
+      top: 0.03in;
+      padding: 2px 6px;
+      border: 1px solid #cadbe3;
+      border-radius: 99px;
+      color: var(--blue) !important;
+      background: white;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.2pt;
+      font-weight: 600;
+      letter-spacing: .02em;
+      text-decoration: none !important;
+      white-space: nowrap;
+    }
+    article.chapter h2 .toc-back { top: 0.04in; }
+    article.chapter h4 {
+      break-after: avoid;
+      margin: 0.20in 0 0.08in;
+      color: var(--blue-deep);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10.3pt;
+    }
+    article.chapter p {
+      margin: 0 0 0.12in;
+      orphans: 3;
+      widows: 3;
+    }
+    article.chapter strong { color: var(--blue-deep); }
+    article.chapter em { color: #44586c; }
+    article.chapter a {
+      color: var(--blue);
+      text-decoration-color: rgba(10,120,170,.45);
+      text-underline-offset: 2px;
+    }
+    .local-reference {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: 8.2pt;
+      font-weight: 600;
+    }
+    article.chapter ul,
+    article.chapter ol {
+      margin: 0.05in 0 0.15in 0.22in;
+      padding-left: 0.18in;
+    }
+    article.chapter li {
+      margin: 0.035in 0;
+      padding-left: 0.035in;
+      orphans: 2;
+      widows: 2;
+    }
+    article.chapter li::marker { color: var(--red); font-weight: 700; }
+    article.chapter input[type='checkbox'] {
+      width: 0.13in;
+      height: 0.13in;
+      margin-right: 0.06in;
+      accent-color: var(--blue);
+    }
+    article.chapter code {
+      padding: 1px 4px 2px;
+      border: 1px solid #d6e4ea;
+      border-radius: 4px;
+      color: #174f6d;
+      background: #eef5f8;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: .91em;
+      font-variant-ligatures: none;
+      text-rendering: geometricPrecision;
+    }
+    .micro-label {
+      margin: 0.16in 0 0.05in !important;
+      color: var(--muted);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .codebox {
+      break-inside: avoid;
+      margin: 0.14in 0 0.18in;
+      overflow: hidden;
+      border: 1px solid #0c2b44;
+      border-radius: 7px;
+      background: var(--blue-dark);
+      box-shadow: 0 5px 14px rgba(24,55,78,.10);
+    }
+    .codebox figcaption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 0.30in;
+      padding: 0.06in 0.11in;
+      color: #a9c4d6;
+      background: #0b2034;
+      border-bottom: 1px solid #25435a;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 6.6pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+    }
+    .terminal-dots { display: flex; gap: 4px; }
+    .terminal-dots i {
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+    .terminal-dots i:nth-child(2) { background: #ffc24b; }
+    .terminal-dots i:nth-child(3) { background: #55c791; }
+    .codebox pre {
+      margin: 0;
+      padding: 0.13in 0.15in 0.15in;
+      color: #f0f7fb;
+      background: transparent;
+      font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace;
+      font-size: 8.2pt;
+      line-height: 1.43;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      tab-size: 2;
+      direction: ltr;
+      unicode-bidi: plaintext;
+      font-variant-ligatures: none;
+      text-rendering: geometricPrecision;
+    }
+    .codebox pre code {
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+    }
+    .codebox--output {
+      border-color: #cfdde4;
+      background: #f3f7f9;
+      box-shadow: none;
+    }
+    .codebox--output figcaption {
+      color: #496174;
+      background: #e5eef2;
+      border-bottom-color: #cfdde4;
+    }
+    .codebox--output pre { color: #243d52; }
+    article.chapter table {
+      break-inside: avoid;
+      width: 100%;
+      margin: 0.14in 0 0.20in;
+      overflow: hidden;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #cfdee5;
+      border-radius: 7px;
+      font-size: 8.4pt;
+      line-height: 1.33;
+    }
+    article.chapter th {
+      padding: 0.08in 0.09in;
+      color: white;
+      background: var(--blue);
+      border-right: 1px solid rgba(255,255,255,.24);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 7.6pt;
+      font-weight: 600;
+      text-align: left;
+    }
+    article.chapter th:last-child { border-right: 0; }
+    article.chapter td {
+      padding: 0.07in 0.09in;
+      border-top: 1px solid #dbe6eb;
+      border-right: 1px solid #dbe6eb;
+      vertical-align: top;
+    }
+    article.chapter td:last-child { border-right: 0; }
+    article.chapter tbody tr:first-child td { border-top: 0; }
+    article.chapter tbody tr:nth-child(even) td { background: #f6f9fa; }
+    article.chapter blockquote {
+      break-inside: avoid;
+      margin: 0.14in 0;
+      padding: 0.11in 0.14in;
+      border-left: 4px solid var(--red);
+      color: #45586a;
+      background: #fff3f6;
+    }
+    article.chapter blockquote p:last-child { margin-bottom: 0; }
+    article.chapter hr {
+      margin: 0.26in 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+    .closing .divider-number {
+      color: white;
+      background: var(--blue);
+      border-color: var(--blue);
+      font-size: 22pt;
+    }
+    .closing h2 { font-size: 30pt; }
+    .closing-checks {
+      display: grid;
+      gap: 0.11in;
+      max-width: 5.55in;
+      margin-top: 0.32in;
+    }
+    .closing-checks div {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.11in;
+      padding: 0.12in 0.15in;
+      border: 1px solid #d2e0e7;
+      border-radius: 7px;
+      color: var(--blue-deep);
+      background: #f7fafb;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.35;
+    }
+    .closing-checks div::before {
+      content: '✓';
+      display: grid;
+      flex: 0 0 0.24in;
+      width: 0.24in;
+      height: 0.24in;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: var(--red);
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+    .next-session {
+      margin-top: 0.26in;
+      color: var(--blue);
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    @media screen {
+      body { background: #dde5e9; }
+      .cover, .overview, .section-divider {
+        margin: 20px auto;
+        box-shadow: 0 12px 30px rgba(25,55,75,.14);
+      }
+      article.chapter {
+        width: 7.1in;
+        margin: 0 auto;
+        padding: 0.76in 0 0.67in;
+        background: white;
+      }
+      .page-furniture { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="rounded-chevron" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .79 Q .815 0 .83 .03 L .992 .47 Q 1 .5 .992 .53 L .83 .97 Q .815 1 .79 1 H 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-hexagon" clipPathUnits="objectBoundingBox">
+        <path d="M .19 0 H .81 Q .83 0 .84 .035 L .992 .47 Q 1 .5 .992 .53 L .84 .965 Q .83 1 .81 1 H .19 Q .17 1 .16 .965 L .008 .53 Q 0 .5 .008 .47 L .16 .035 Q .17 0 .19 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-bottom-panel" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .65 Q .68 0 .70 .035 L .992 .965 Q 1 1 .96 1 H 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-right" clipPathUnits="objectBoundingBox">
+        <path d="M .30 0 H 1 V 1 H .03 Q 0 1 .018 .965 L .268 .035 Q .28 0 .30 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-right-wide" clipPathUnits="objectBoundingBox">
+        <path d="M .37 0 H 1 V 1 H .03 Q 0 1 .018 .965 L .338 .035 Q .35 0 .37 0 Z"/>
+      </clipPath>
+      <clipPath id="rounded-slant-left" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 H .35 Q .38 0 .40 .035 L .992 .965 Q 1 1 .96 1 H 0 Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+  <div class="page-furniture" aria-hidden="true">
+    <div class="frame-border"></div>
+    <div class="frame-top-blue"></div>
+    <div class="frame-top-red"></div>
+    <div class="frame-bottom-blue"></div>
+    <div class="frame-bottom-red"></div>
+    <div class="frame-brand">Linux desde cero</div>
+    <div class="frame-footer">TecGurus · Clase 4 · Material del alumno</div>
+  </div>
+
+  <section class="cover">
+    <div class="cover-top-shadow"></div>
+    <div class="cover-top-panel"><div class="dots"></div></div>
+    <img class="cover-logo" src="../shared/assets/tecgurus-logo.png" alt="TecGurus">
+    <div class="cover-title">
+      <div class="cover-kicker">Curso</div>
+      <h1>Linux<br>Desde Cero</h1>
+      <div class="cover-subtitle"><span class="class-pill">Clase 4</span> Regex, red y copias remotas</div>
+    </div>
+    <div class="cover-url">www.tecgurus.net</div>
+    <div class="cover-instructor"><span>Instructor</span>Ing. Abimael Domínguez</div>
+    <div class="cover-bottom-panel"></div>
+    <div class="photo-blue-back"></div>
+    <div class="photo-red-back"></div>
+    <img class="cover-photo" src="../shared/assets/portada-tecnologia.jpg" alt="Tecnología y archivos digitales">
+    <div class="cover-hex-outline"></div>
+  </section>
+
+  <section class="overview">
+    <header class="overview-header">
+      <div class="overview-kicker">Agenda · 09:00–14:00</div>
+      <h2>Clase 4 — Regex, red y copias remotas</h2>
+    </header>
+    <div class="overview-files">
+      <strong>Archivo:</strong> capítulo <span class="chapter-number">11</span> completo.
+    </div>
+    <table class="agenda-table" aria-label="Agenda de la clase 4">
+      <thead><tr><th>Hora</th><th>Actividad</th></tr></thead>
+      <tbody>
+  <tr class="">
+    <td class="agenda-time">09:00–09:15</td>
+    <td class="agenda-activity">Verificar datos, scripts y acceso remoto.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">09:15–09:50</td>
+    <td class="agenda-activity">Regex sobre logs.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">09:50–10:20</td>
+    <td class="agenda-activity">IP, rutas, puertos y DNS.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">10:20–11:00</td>
+    <td class="agenda-activity">SSH, claves y huellas.</td>
+  </tr>
+  <tr class="break-row">
+    <td class="agenda-time">11:00–11:30</td>
+    <td class="agenda-activity"><strong>Receso.</strong></td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">11:30–12:15</td>
+    <td class="agenda-activity">SCP/SFTP en ambos sentidos y hashes.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">12:15–12:45</td>
+    <td class="agenda-activity">Compilación, linkado y Makefile de Pac-Man.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">12:45–13:40</td>
+    <td class="agenda-activity">Reto 11: entrega DevOps.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:40–13:55</td>
+    <td class="agenda-activity">Diagnóstico, seguridad y Telnet/FTP como contexto.</td>
+  </tr>
+  <tr class="">
+    <td class="agenda-time">13:55–14:00</td>
+    <td class="agenda-activity">Limpieza de recursos y cierre.</td>
+  </tr></tbody>
+    </table>
+    <div class="overview-foot">
+      <div class="overview-note">
+        <p><strong>No recortar:</strong> regex básica, SSH, SCP y verificación.</p>
+        <p><strong>Recortar primero:</strong> ejecución del juego y detalles avanzados de DNS.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="toc-page toc-single" id="indice-interactivo">
+    <header class="toc-header">
+      <div class="toc-kicker">Navegación · Capítulo 11</div>
+      <h2>Índice interactivo</h2>
+      <p class="toc-description">Selecciona un apartado para ir directamente a su contenido. En cada encabezado encontrarás el enlace para volver aquí.</p>
+    </header>
+    <div class="toc-grid"><section class="toc-group"><a class="toc-chapter" href="#capitulo-11"><small>Capítulo 11 completo</small><strong>Compilación, regex, red y copias remotas</strong></a><a class="toc-link toc-level-2" href="#c11-panorama-de-la-sesion"><span>Panorama de la sesión</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-objetivos"><span>Objetivos</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-antes-de-empezar"><span>Antes de empezar</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-1-compilacion-en-linux"><span>11.1 Compilación en Linux</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-2-linkado"><span>11.2 Linkado</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-3-make"><span>11.3 make</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-4-busqueda-avanzada-y-regex"><span>11.4 Búsqueda avanzada y regex</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-5-caracteres-especiales"><span>11.5 Caracteres especiales</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-6-expresiones-de-un-caracter"><span>11.6 Expresiones de un carácter</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-7-expresiones-generales"><span>11.7 Expresiones generales</span><b>→</b></a><a class="toc-link toc-level-3" href="#c11-practica-regex-resuelta"><span>Práctica regex resuelta</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-8-comandos-utiles-de-red"><span>11.8 Comandos útiles de red</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-9-protocolos-de-internet"><span>11.9 Protocolos de Internet</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-10-nombres-y-dns"><span>11.10 Nombres y DNS</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-11-11-telnet-ftp-ssh-scp-y-sftp"><span>11.11 Telnet, FTP, SSH, SCP y SFTP</span><b>→</b></a><a class="toc-link toc-level-3" href="#c11-conexion-ssh"><span>Conexión SSH</span><b>→</b></a><a class="toc-link toc-level-3" href="#c11-copias-con-scp"><span>Copias con SCP</span><b>→</b></a><a class="toc-link toc-level-3" href="#c11-sftp"><span>SFTP</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-practica-guiada-resuelta-entrega-remota"><span>Práctica guiada resuelta — Entrega remota</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-errores-frecuentes"><span>Errores frecuentes</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-reto-11-entrega-devops"><span>Reto 11 — Entrega DevOps</span><b>→</b></a><a class="toc-link toc-level-3" href="#c11-criterios-de-comprobacion"><span>Criterios de comprobación</span><b>→</b></a><a class="toc-link toc-level-2" href="#c11-checklist"><span>Checklist</span><b>→</b></a></section></div>
+  </section>
+
+  <section class="section-divider" id="capitulo-11">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">11</div>
+      <div class="divider-kicker">Entrega reproducible</div>
+      <h2>Compilación, regex,<br>red y copias remotas</h2>
+      <p class="divider-description">Del diagnóstico de logs y red a una transferencia segura, verificable y reproducible mediante SSH.</p>
+      <div class="divider-tags"><span>Capítulo 11</span><span>regex</span><span>SSH · SCP · SFTP</span><span>sha256sum</span></div>
+    </div>
+  </section>
+  <article class="chapter chapter-11"><h2 id="c11-panorama-de-la-sesion">Panorama de la sesión<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El nombre comercial del tema es “SCP Copias Remotas”, pero el temario agrupa compilación, expresiones regulares y redes. Este capítulo los conecta mediante una entrega reproducible.</p>
+<h2 id="c11-objetivos">Objetivos<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Distinguir código fuente, objeto, librería y ejecutable.</li>
+<li>Automatizar un build con <code>make</code>.</li>
+<li>Extraer información de logs mediante regex.</li>
+<li>Diagnosticar IP, puertos y DNS.</li>
+<li>Conectarse y transferir archivos con SSH, SCP y SFTP.</li>
+</ul>
+<h2 id="c11-antes-de-empezar">Antes de empezar<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Abre una terminal en la raíz del curso y guarda esa ruta en una variable:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd ~/linux-desde-cero
+RAIZ_CURSO=$(pwd)
+printf 'Raíz del curso: %s\n' &quot;$RAIZ_CURSO&quot;
+</code></pre></figure><p><code>RAIZ_CURSO</code> permitirá volver al repositorio después de entrar a la carpeta de Pac-Man. Si cierras la terminal, ejecuta nuevamente estas tres líneas.</p>
+<p>En este capítulo se crearán artefactos únicamente dentro de <code>src/11-scp-copias-remotas/pacman-game/</code> y <code>laboratorio/</code>.</p>
+<h2 id="c11-11-1-compilacion-en-linux">11.1 Compilación en Linux<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El recurso <span class="local-reference">Pac-Man</span> permite observar el build sin aprender C.</p>
+<p>Usaremos estos nombres:</p>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pacman.c</code></td>
+<td>código fuente legible</td>
+</tr>
+<tr>
+<td><code>pacman.o</code></td>
+<td>objeto producido por la compilación</td>
+</tr>
+<tr>
+<td><code>pacman_game</code></td>
+<td>ejecutable producido por el linkado</td>
+</tr>
+<tr>
+<td><code>Makefile</code></td>
+<td>reglas para automatizar el build</td>
+</tr>
+</tbody>
+</table>
+<p>La primera línea entra a la carpeta del proyecto. Los comandos siguientes se ejecutan desde ahí.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd src/11-scp-copias-remotas/pacman-game
+sudo apt update
+sudo apt install -y build-essential libncurses-dev
+gcc -Wall -Wextra -Wpedantic -std=c11 -O2 \
+  -c pacman.c -o pacman.o
+file pacman.c pacman.o
+</code></pre></figure><p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>pacman.c: C source, Unicode text
+pacman.o: ELF 64-bit LSB relocatable, x86-64
+</code></pre></figure><ul>
+<li><code>-c</code>: compila sin enlazar.</li>
+<li><code>-o</code>: nombre de salida.</li>
+<li><code>-Wall -Wextra -Wpedantic</code>: habilita diagnósticos útiles.</li>
+<li><code>-O2</code>: optimización moderada.</li>
+<li><code>pacman.o</code> contiene código objeto, todavía no es un programa ejecutable.</li>
+</ul>
+<p><code>sudo apt install</code> instala compilador, <code>make</code> y headers de ncurses. Si ya están presentes, APT informa que están en su versión actual y no los duplica.</p>
+<h2 id="c11-11-2-linkado">11.2 Linkado<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>gcc pacman.o -o pacman_game -lncurses
+file pacman_game
+ldd pacman_game | grep ncurses
+./pacman_game
+</code></pre></figure><ul>
+<li>El linker resuelve símbolos y crea el ejecutable.</li>
+<li><code>-lncurses</code> solicita la librería <code>libncurses</code>.</li>
+<li><code>ldd</code> muestra bibliotecas dinámicas; no debe usarse sobre binarios no confiables.</li>
+<li>Dentro del juego, usa flechas y <code>q</code> para salir.</li>
+</ul>
+<h2 id="c11-11-3-make">11.3 <code>make</code><a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>El <code>Makefile</code> declara objetivos, dependencias y recetas:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>make clean
+make compilar
+make enlazar
+make run
+make clean
+</code></pre></figure><p class="micro-label">Salida representativa</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>gcc ... -c pacman.c -o pacman.o
+gcc pacman.o -o pacman_game -lncurses
+</code></pre></figure><ul>
+<li><code>make</code> ejecuta sólo lo necesario según dependencias y fechas.</li>
+<li>Una receta debe comenzar con tabulación.</li>
+<li><code>.PHONY</code> marca nombres que no representan archivos.</li>
+<li><code>clean</code> retira artefactos; el código fuente permanece.</li>
+</ul>
+<p>Después de <code>make clean</code>, vuelve a la raíz antes de trabajar con <code>data/</code>:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>cd &quot;$RAIZ_CURSO&quot;
+test -f data/dummy_logs.txt &amp;&amp; echo &quot;De vuelta en la raíz del curso&quot;
+</code></pre></figure><p>Si omites este paso, <code>grep data/dummy_logs.txt</code> fallará porque <code>data/</code> no existe dentro de <code>pacman-game</code>.</p>
+<h2 id="c11-11-4-busqueda-avanzada-y-regex">11.4 Búsqueda avanzada y regex<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Una expresión regular describe patrones de texto. Para logs se usarán expresiones extendidas con <code>grep -E</code>.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>grep -En 'WARN|ERROR' data/dummy_logs.txt
+grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}' data/dummy_logs.txt
+grep -oE 'User [[:alnum:]_-]+' data/dummy_logs.txt
+</code></pre></figure><ul>
+<li><code>^</code>/<code>$</code>: inicio/final.</li>
+<li><code>[0-9]</code>: un dígito.</li>
+<li><code>{4}</code>: repetición exacta.</li>
+<li><code>|</code>: alternancia.</li>
+<li><code>-o</code>: imprime sólo la coincidencia.</li>
+<li><code>[[:alnum:]]</code>: clase portable de letras y números.</li>
+</ul>
+<h2 id="c11-11-5-caracteres-especiales">11.5 Caracteres especiales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Regex y shell tienen metacaracteres distintos. Las comillas simples evitan que el shell transforme el patrón:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>grep -F '$100' data/specials.txt
+grep -F 'data[1].csv' data/specials.txt
+grep -F 'foo|bar' data/specials.txt
+</code></pre></figure><p><code>grep -F</code> trata el patrón literalmente; es preferible cuando no se necesita regex.</p>
+<h2 id="c11-11-6-expresiones-de-un-caracter">11.6 Expresiones de un carácter<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>grep -En 'User [[:alnum:]_-]+' data/dummy_logs.txt
+grep -En 'CPU|Disk|Network' data/dummy_logs.txt
+grep -En '[0-9]{2}:[0-9]{2}:[0-9]{2}' data/dummy_logs.txt
+</code></pre></figure><p><code>.</code> significa cualquier carácter; úsalo sólo cuando esa amplitud sea intencional. Para un punto literal usa <code>\.</code>.</p>
+<h2 id="c11-11-7-expresiones-generales">11.7 Expresiones generales<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<h3 id="c11-practica-regex-resuelta">Práctica regex resuelta<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>En este punto debes estar en la raíz del curso. El bloque crea dos archivos:</p>
+<ul>
+<li><code>incidentes.txt</code>: líneas completas que contienen <code>WARN</code> o <code>ERROR</code>;</li>
+<li><code>usuarios.txt</code>: únicamente nombres de usuario, ordenados y sin duplicados.</li>
+</ul>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/red
+grep -En 'WARN|ERROR' data/dummy_logs.txt \
+  | tee laboratorio/red/incidentes.txt
+
+grep -oE 'User [[:alnum:]_-]+' data/dummy_logs.txt \
+  | cut -d' ' -f2 \
+  | sort -u \
+  &gt; laboratorio/red/usuarios.txt
+
+printf 'Incidentes=%s Usuarios=%s\n' \
+  &quot;$(wc -l &lt; laboratorio/red/incidentes.txt)&quot; \
+  &quot;$(wc -l &lt; laboratorio/red/usuarios.txt)&quot;
+</code></pre></figure><p>La práctica separa extracción, normalización, ordenamiento y reporte para poder depurar cada etapa.</p>
+<p>Con los fixtures actuales, la última línea debe mostrar <code>Incidentes=3 Usuarios=3</code>.</p>
+<h2 id="c11-11-8-comandos-utiles-de-red">11.8 Comandos útiles de red<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Prepara las herramientas que no estén presentes en una instalación mínima:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>sudo apt update
+sudo apt install -y iproute2 iputils-ping curl dnsutils openssh-client
+</code></pre></figure><figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>ip -brief address
+ip route
+ss -tuln
+ping -c 3 1.1.1.1
+curl -I https://example.com
+</code></pre></figure><p>No necesitas reemplazar valores en este bloque. <code>1.1.1.1</code> y <code>example.com</code> son destinos públicos usados sólo para comprobar conectividad; si una red bloquea ICMP, <code>ping</code> puede fallar aunque <code>curl</code> funcione.</p>
+<ul>
+<li><code>ip -brief address</code>: interfaces y direcciones resumidas.</li>
+<li><code>ip route</code>: rutas; la línea <code>default</code> indica gateway.</li>
+<li><code>ss -tuln</code>: sockets TCP/UDP en escucha, sin resolver nombres.</li>
+<li><code>ping -c 3</code>: tres pruebas ICMP; un bloqueo de ICMP no demuestra por sí solo que el host esté caído.</li>
+<li><code>curl -I</code>: cabeceras HTTP.</li>
+</ul>
+<p><code>ifconfig</code> y <code>netstat</code> son referencias históricas; para nuevas prácticas se prefieren <code>ip</code> y <code>ss</code>.</p>
+<h2 id="c11-11-9-protocolos-de-internet">11.9 Protocolos de Internet<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li><strong>IP:</strong> direccionamiento y encaminamiento.</li>
+<li><strong>TCP:</strong> flujo confiable orientado a conexión; SSH usa normalmente TCP 22.</li>
+<li><strong>UDP:</strong> datagramas sin conexión; DNS puede usar UDP o TCP.</li>
+<li><strong>Puerto:</strong> identifica un servicio dentro de un host.</li>
+</ul>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>getent services ssh
+ss -tn state established
+</code></pre></figure><p>No confundas “puerto abierto” con “acceso autorizado”: todavía existen autenticación y políticas.</p>
+<h2 id="c11-11-10-nombres-y-dns">11.10 Nombres y DNS<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>getent hosts example.com
+dig example.com A +short
+cat /etc/resolv.conf
+</code></pre></figure><ul>
+<li><code>getent hosts</code>: usa la resolución configurada por el sistema, incluyendo <code>/etc/hosts</code> y DNS.</li>
+<li><code>dig</code>: consulta DNS con detalle.</li>
+<li><code>/etc/resolv.conf</code>: configuración efectiva; puede estar administrada por otra herramienta.</li>
+</ul>
+<p>Diagnóstico gradual:</p>
+<ol>
+<li>¿La interfaz tiene IP?</li>
+<li>¿Existe ruta por defecto?</li>
+<li>¿Resuelve el nombre?</li>
+<li>¿Responde el puerto/protocolo esperado?</li>
+<li>¿La aplicación autentica y responde correctamente?</li>
+</ol>
+<h2 id="c11-11-11-telnet-ftp-ssh-scp-y-sftp">11.11 Telnet, FTP, SSH, SCP y SFTP<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Telnet y FTP transmiten autenticación/datos sin la protección esperada actualmente. Se estudian sólo como contexto. Para acceso y transferencia se usan SSH, SCP o SFTP.</p>
+<h3 id="c11-conexion-ssh">Conexión SSH<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Hay tres datos que cambian para cada alumno:</p>
+<table>
+<thead>
+<tr>
+<th>Dato</th>
+<th>Valor usado en el curso</th>
+<th>De dónde sale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usuario remoto</td>
+<td><code>ubuntu</code></td>
+<td>usuario predeterminado de la AMI Ubuntu</td>
+</tr>
+<tr>
+<td>Clave privada</td>
+<td><code>~/.ssh/curso-linux.pem</code></td>
+<td>archivo descargado al crear EC2</td>
+</tr>
+<tr>
+<td>IP pública</td>
+<td>diferente por instancia</td>
+<td>consola EC2, columna Public IPv4 address</td>
+</tr>
+</tbody>
+</table>
+<p class="micro-label">Sintaxis general</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>chmod 400 &lt;ruta_clave_privada&gt;
+ssh -i &lt;ruta_clave_privada&gt; &lt;usuario&gt;@&lt;IP_PUBLICA&gt;
+</code></pre></figure><p>No copies literalmente los marcadores <code>&lt;...&gt;</code>. Para evitar repetir valores, define variables. Sustituye sólo la IP del ejemplo:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>CLAVE=&quot;$HOME/.ssh/curso-linux.pem&quot;
+USUARIO_REMOTO=&quot;ubuntu&quot;
+IP_PUBLICA=&quot;203.0.113.10&quot;  # Sustituye por la IP real de tu EC2
+
+chmod 400 &quot;$CLAVE&quot;
+ssh -i &quot;$CLAVE&quot; &quot;${USUARIO_REMOTO}@${IP_PUBLICA}&quot;
+</code></pre></figure><p><code>203.0.113.10</code> es una IP reservada para documentación y no corresponde a tu servidor. Después de asignar tu IP real, el resto del capítulo se puede copiar sin volver a editarla.</p>
+<p>Opciones importantes:</p>
+<ul>
+<li><code>-i</code>: archivo de identidad.</li>
+<li><code>-p</code>: puerto SSH cuando no es 22.</li>
+<li><code>-v</code>: diagnóstico; puede repetirse hasta <code>-vvv</code>.</li>
+</ul>
+<p>En <code>scp</code>, el puerto se indica con <code>-P</code> mayúscula; <code>-p</code> minúscula significa preservar tiempos y modos.</p>
+<p>La clave privada nunca se copia al servidor. El servidor almacena la clave pública autorizada.</p>
+<h3 id="c11-copias-con-scp">Copias con SCP<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<p>Los comandos siguientes usan <code>CLAVE</code>, <code>USUARIO_REMOTO</code> e <code>IP_PUBLICA</code> definidos en el apartado anterior. Si abriste una terminal nueva, vuelve a definirlos.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>scp -i &quot;$CLAVE&quot; \
+  laboratorio/red/incidentes.txt \
+  &quot;${USUARIO_REMOTO}@${IP_PUBLICA}:/home/ubuntu/&quot;
+
+scp -i &quot;$CLAVE&quot; \
+  &quot;${USUARIO_REMOTO}@${IP_PUBLICA}:/home/ubuntu/incidentes.txt&quot; \
+  laboratorio/red/incidentes-remoto.txt
+
+sha256sum laboratorio/red/incidentes*.txt
+</code></pre></figure><ul>
+<li>Sintaxis remota: <code>[usuario@]host:ruta</code>.</li>
+<li><code>-r</code>: copia directorios; para entregas se prefiere empaquetar y verificar.</li>
+<li><code>sha256sum</code>: confirma integridad, no autenticidad del origen.</li>
+</ul>
+<h3 id="c11-sftp">SFTP<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>sftp -i &quot;$CLAVE&quot; &quot;${USUARIO_REMOTO}@${IP_PUBLICA}&quot;
+</code></pre></figure><p>Dentro de SFTP: <code>pwd</code>/<code>ls</code> operan en remoto; <code>lpwd</code>/<code>lls</code> en local; <code>put</code> sube, <code>get</code> descarga y <code>bye</code> sale.</p>
+<h2 id="c11-practica-guiada-resuelta-entrega-remota">Práctica guiada resuelta — Entrega remota<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p>Requisitos antes de copiar:</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>test -s laboratorio/red/incidentes.txt \
+  &amp;&amp; test -s laboratorio/red/usuarios.txt \
+  &amp;&amp; echo &quot;Reportes listos&quot;
+</code></pre></figure><p>Si no aparece <code>Reportes listos</code>, completa primero la práctica 11.7. El siguiente bloque empaqueta esos dos archivos, genera el hash, sube ambos a <code>/home/ubuntu</code> y verifica el paquete en EC2.</p>
+<figure class="codebox"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>TERMINAL · BASH</span></figcaption><pre><code>mkdir -p laboratorio/entrega
+cp laboratorio/red/incidentes.txt laboratorio/entrega/
+cp laboratorio/red/usuarios.txt laboratorio/entrega/
+
+tar -czf laboratorio/entrega-linux.tar.gz -C laboratorio entrega
+tar -tzf laboratorio/entrega-linux.tar.gz
+(cd laboratorio &amp;&amp; \
+  sha256sum entrega-linux.tar.gz | tee entrega-linux.tar.gz.sha256)
+
+scp -i &quot;$CLAVE&quot; \
+  laboratorio/entrega-linux.tar.gz* \
+  &quot;${USUARIO_REMOTO}@${IP_PUBLICA}:/home/ubuntu/&quot;
+
+ssh -i &quot;$CLAVE&quot; &quot;${USUARIO_REMOTO}@${IP_PUBLICA}&quot; \
+  'sha256sum -c entrega-linux.tar.gz.sha256'
+</code></pre></figure><p>Salida principal:</p>
+<figure class="codebox codebox--output"><figcaption><span class="terminal-dots"><i></i><i></i><i></i></span><span>SALIDA REPRESENTATIVA</span></figcaption><pre><code>entrega-linux.tar.gz: OK
+</code></pre></figure><p>El hash se calcula localmente y se verifica remotamente. La comilla simple hace que el comando entre comillas se interprete en el host remoto.</p>
+<h2 id="c11-errores-frecuentes">Errores frecuentes<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>Copiar o publicar la clave privada.</li>
+<li>Abrir SSH a todo Internet sin necesidad.</li>
+<li>Aceptar una huella cambiada sin investigar.</li>
+<li>Usar Telnet/FTP para credenciales.</li>
+<li>Probar sólo <code>ping</code> y concluir que toda la aplicación funciona.</li>
+<li>Escribir regex demasiado amplia y confiar sin revisar muestras.</li>
+</ul>
+<h2 id="c11-reto-11-entrega-devops">Reto 11 — Entrega DevOps<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<p><span class="local-reference">Ver respuesta</span></p>
+<p>Trabaja dentro de <code>laboratorio/reto11</code>. Genera <code>incidentes.txt</code> con regex y <code>red.txt</code> con diagnóstico no sensible. Empaqueta la carpeta como <code>laboratorio/reto11.tar.gz</code>, calcula su hash, transfiere paquete y hash a EC2 y verifica allí su integridad. Recupera después <code>incidentes.txt</code> como <code>laboratorio/incidentes-recuperado.txt</code>.</p>
+<h3 id="c11-criterios-de-comprobacion">Criterios de comprobación<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h3>
+<ul>
+<li>El reporte se genera a partir de datos, no se edita manualmente.</li>
+<li>El paquete se lista antes de enviarse.</li>
+<li>La verificación remota muestra <code>OK</code>.</li>
+<li>Se demuestra transferencia en ambos sentidos.</li>
+<li>No se copia ni imprime la clave privada.</li>
+</ul>
+<h2 id="c11-checklist">Checklist<a class="toc-back" href="#indice-interactivo" aria-label="Volver al índice">Índice ↑</a></h2>
+<ul>
+<li>[ ] Distingo fuente, objeto, librería y ejecutable.</li>
+<li>[ ] Puedo ejecutar y limpiar un build con <code>make</code>.</li>
+<li>[ ] Extraigo información de logs con regex controladas.</li>
+<li>[ ] Diagnostico IP, ruta, DNS, puerto y aplicación por capas.</li>
+<li>[ ] Uso SSH/SCP/SFTP y verifico integridad.</li>
+</ul>
+</article>
+
+  <section class="section-divider closing">
+    <div class="divider-panel"><div class="divider-dots"></div></div>
+    <div class="divider-red"></div><div class="divider-blue-foot"></div>
+    <div class="divider-content">
+      <div class="divider-number">✓</div>
+      <div class="divider-kicker">Evidencia y cierre</div>
+      <h2>Clase 4 completada</h2>
+      <p class="divider-description">Al terminar la Clase 4, conserva el paquete transferido y la evidencia de su verificación remota.</p>
+      <div class="closing-checks">
+        <div>Extraigo incidentes y usuarios de los logs con expresiones regulares controladas.</div>
+        <div>Diagnostico IP, ruta, DNS, puerto y aplicación por capas.</div>
+        <div>Transfiero el paquete en ambos sentidos y verifico su hash remotamente.</div>
+      </div>
+      <div class="next-session">Curso completado · Linux desde cero</div>
+    </div>
+  </section>
+</body>
+</html>
