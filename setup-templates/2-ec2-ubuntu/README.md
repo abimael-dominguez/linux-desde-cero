@@ -1,84 +1,46 @@
-# Ubuntu EC2 Setup: Docker, Docker Compose, and AWS CLI
+# Template principal — EC2 Ubuntu del curso
 
-> Verified working on: 2026-02-27 (ISO 8601 date)
+Este directorio contiene el template usado para crear el entorno Linux principal:
 
-## Install Docker Engine and Docker Compose Plugin
+- [`ec2-ubuntu-ssh.yml`](ec2-ubuntu-ssh.yml)
+- [Tutorial completo: EC2 y VS Code](../../infraestructura-aws/01-ec2-y-vscode/README.md)
 
-```bash
-set -e
+No necesitas AWS CLI. El archivo se carga desde la consola web de CloudFormation.
 
-# 1) Remove conflicting packages
-sudo apt-get update
-sudo apt-get remove -y docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc || true
+## Antes de cargarlo
 
-# 2) Install prerequisites
-sudo apt-get install -y ca-certificates curl gnupg
+En la misma región de AWS:
 
-# 3) Add Docker's official GPG key and repository
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
+1. Crea un Key Pair y descarga su `.pem`.
+2. Elige una AMI Ubuntu Server LTS `x86_64` de Canonical o la imagen verificada por el instructor, y copia su AMI ID.
+3. Identifica la IPv4 pública de tu computadora y agrega `/32`.
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME}) stable" \
-| sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+## Parámetros que debes proporcionar
 
-# 4) Install Docker Engine + Compose plugin
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+| Parámetro | Ejemplo | Significado |
+|---|---|---|
+| `ProjectName` | `linux-course` | Prefijo visible de los recursos. |
+| `UbuntuAmiId` | `ami-0123456789abcdef0` | AMI de Ubuntu elegida en esa región. |
+| `UbuntuInstanceType` | `t3.micro` | Tipo de instancia del laboratorio. |
+| `UbuntuKeyName` | `linux-course-key` | Key Pair creado antes del stack. |
+| `SshAllowedCidr` | `203.0.113.10/32` | Única IPv4 autorizada para SSH. |
 
-# 5) Enable and start services
-sudo systemctl unmask docker.service docker.socket || true
-sudo rm -rf /etc/systemd/system/docker.service.d
-sudo systemctl daemon-reload
-sudo systemctl enable --now containerd docker.socket docker
-sudo systemctl restart docker
+Los CIDR privados de VPC y subnet ya tienen valores seguros para el laboratorio; no necesitas modificarlos.
 
-# 6) Optional: run docker without sudo
-sudo usermod -aG docker $USER
-newgrp docker
+El template sólo permite `t3.micro`. AWS lo incluye entre los tipos marcados como Free Tier elegibles en los programas anterior y actual, pero la consola de cada alumno debe confirmar cobertura, créditos y vigencia antes de crear el stack.
 
-# If daemon is not running:
-sudo systemctl start docker
+## Qué crea
 
-# 7) Verify
-docker --version
-docker compose version
-docker run --rm hello-world
-```
+- VPC `10.10.0.0/16` y subnet pública;
+- Internet Gateway y ruta de salida;
+- Security Group con SSH sólo desde `SshAllowedCidr`;
+- una EC2 Ubuntu con IMDSv2 y créditos de CPU en modo `standard`;
+- el disco raíz definido por la AMI elegida.
 
-## Install AWS CLI v2
+El template no fuerza el nombre, tamaño ni tipo del disco raíz. Así evita depender de `/dev/sda1` y funciona también con una AMI verificada del instructor. Antes de crear, revisa el tamaño y que **Delete on termination** esté activo en el block device mapping de la AMI.
 
-```bash
-set -e
+## Resultado
 
-# 1) Prerequisites
-sudo apt-get update
-sudo apt-get install -y curl unzip
+Cuando el stack muestre `CREATE_COMPLETE`, consulta **Outputs**. Allí encontrarás `PublicIp`, `PublicDnsName`, `RemoteUser` y un `SshCommand` de referencia.
 
-# 2) Download installer (x86_64)
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-
-# If your instance is ARM/Graviton, use this instead:
-# curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
-
-# 3) Install
-unzip -q awscliv2.zip
-sudo ./aws/install --update
-
-# 4) Verify
-aws --version
-```
-
-## Configure AWS credentials
-
-```bash
-# Access key profile
-aws configure
-
-# Named profile
-aws configure --profile dev
-
-# SSO profile
-aws configure sso
-aws sso login --profile <your-profile>
-```
+Para eliminar todo lo creado por este template usa **CloudFormation → Stacks → Delete**. No elimines únicamente la EC2, porque dejarías la red administrada por el stack.
