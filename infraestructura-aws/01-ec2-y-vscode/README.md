@@ -171,7 +171,7 @@ Completa los parámetros:
 
 Selecciona **Next**, conserva las opciones predeterminadas, vuelve a seleccionar **Next** y finalmente **Submit**. El template no solicita capabilities IAM.
 
-> **Free Tier.** El template fija `t3.micro` porque AWS lo incluye entre los tipos marcados como elegibles tanto en el programa anterior como en el actual. Aun así, antes de enviar confirma en tu consola que `t3.micro` y la AMI aparecen como **Free tier eligible**: la plantilla no puede conocer la antigüedad, el plan, los créditos ni el consumo de tu cuenta. Consulta [la tabla vigente de AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html).
+> **Free Tier.** El template acepta `t3.micro`, `t3.small` y `t3.medium`; el valor por defecto es `t3.micro` porque es el único marcado como Free Tier eligible. Antes de elegir otro tipo confirma costos en tu consola: la plantilla no puede conocer la antigüedad, el plan, los créditos ni el consumo de tu cuenta. Consulta [la tabla vigente de AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html).
 
 ### 3.6 Espera y lee los Outputs
 

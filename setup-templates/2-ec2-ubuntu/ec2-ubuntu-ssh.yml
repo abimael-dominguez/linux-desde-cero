@@ -20,7 +20,9 @@ Parameters:
     Default: t3.micro
     AllowedValues:
       - t3.micro
-    Description: Tipo pequeno usado por el laboratorio del curso.
+      - t3.small
+      - t3.medium
+    Description: Tipo de instancia para la EC2 del laboratorio.
 
   UbuntuKeyName:
     Type: AWS::EC2::KeyPair::KeyName

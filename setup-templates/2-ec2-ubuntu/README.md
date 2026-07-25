@@ -21,13 +21,13 @@ En la misma región de AWS:
 |---|---|---|
 | `ProjectName` | `linux-course` | Prefijo visible de los recursos. |
 | `UbuntuAmiId` | `ami-0123456789abcdef0` | AMI de Ubuntu elegida en esa región. |
-| `UbuntuInstanceType` | `t3.micro` | Tipo de instancia del laboratorio. |
+| `UbuntuInstanceType` | `t3.micro` | Tipo de instancia del laboratorio (`t3.micro`, `t3.small`, `t3.medium`). |
 | `UbuntuKeyName` | `linux-course-key` | Key Pair creado antes del stack. |
 | `SshAllowedCidr` | `203.0.113.10/32` | Única IPv4 autorizada para SSH. |
 
 Los CIDR privados de VPC y subnet ya tienen valores seguros para el laboratorio; no necesitas modificarlos.
 
-El template sólo permite `t3.micro`. AWS lo incluye entre los tipos marcados como Free Tier elegibles en los programas anterior y actual, pero la consola de cada alumno debe confirmar cobertura, créditos y vigencia antes de crear el stack.
+El template permite `t3.micro`, `t3.small` y `t3.medium`. Sólo `t3.micro` está marcado como Free Tier eligible; antes de elegir otro tipo confirma costos en tu cuenta.
 
 ## Qué crea
 
