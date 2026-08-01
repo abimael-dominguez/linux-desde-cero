@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/EventCard.tsx","./src/EventForm.tsx","./src/api.ts","./src/date.ts","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./test/App.test.tsx","./test/EventForm.test.tsx","./test/date.test.ts"],"version":"5.9.3"}
