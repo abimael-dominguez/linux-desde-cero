@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Eventos Cero - repositorio privado para la imagen Lambda.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: tecgurus-linux-events
+  Stage:
+    Type: String
+    Default: lab
+    AllowedPattern: "[a-z0-9-]+"
+
+Resources:
+  BackendRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub "tecgurus/linux-events-${Stage}-api"
+      EmptyOnDelete: true
+      ImageTagMutability: IMMUTABLE
+      EncryptionConfiguration:
+        EncryptionType: AES256
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [{
+              "rulePriority": 1,
+              "description": "Conservar solamente las cinco imágenes más recientes",
+              "selection": {"tagStatus": "any", "countType": "imageCountMoreThan", "countNumber": 5},
+              "action": {"type": "expire"}
+            }]
+          }
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Stage
+          Value: !Ref Stage
+        - Key: ManagedBy
+          Value: cloudformation
+
+Outputs:
+  RepositoryName:
+    Value: !Ref BackendRepository
+  RepositoryUri:
+    Value: !GetAtt BackendRepository.RepositoryUri
