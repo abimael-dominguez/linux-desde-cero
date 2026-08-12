@@ -41,6 +41,9 @@ else
   sudo apt install -y docker-compose
 fi
 
+sudo apt-get update
+sudo apt-get install docker-buildx-plugin
+
 sudo systemctl enable --now docker
 sudo usermod -aG docker "$USER"
 ```
