@@ -47,9 +47,11 @@ sudo usermod -aG docker "$USER"
 
 Sal de la sesión y vuelve a entrar para actualizar los grupos:
 
+Nota: teclear ```exit``` pudiera funcionar, per algo probado que que funciona es dar ```sudo reboot```, y también reiniciar la instancia en la consola de AWS. Luego volver aintentar reconectarse (veirficar que la DNS pública coincida. 
+
 ```bash
-exit
-ssh linux-course
+# Una vez reiniciada la EC2 comprobar
+id
 docker --version
 docker compose version 2>/dev/null || docker-compose --version
 docker run --rm hello-world
