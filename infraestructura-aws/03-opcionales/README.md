@@ -47,7 +47,8 @@ sudo usermod -aG docker "$USER"
 
 Sal de la sesión y vuelve a entrar para actualizar los grupos:
 
-Nota: teclear ```exit``` pudiera funcionar, per algo probado que que funciona es dar ```sudo reboot```, y también reiniciar la instancia en la consola de AWS. Luego volver aintentar reconectarse (veirficar que la DNS pública coincida. 
+Nota: 
+teclear ```exit``` pudiera funcionar, pero algo probado que que funciona es dar ```sudo reboot```, y también reiniciar la instancia en la consola de AWS. Luego volver a reconectarse (veirficar que la DNS pública coincida). 
 
 ```bash
 # Una vez reiniciada la EC2 comprobar
